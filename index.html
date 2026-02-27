@@ -45,7 +45,7 @@
             border-radius: 18px;
             margin-bottom: 12px;
             animation: fadeIn 0.3s ease;
-            word-wrap: break-word; /* Thêm để chống tràn chữ */
+            word-wrap: break-word;
         }
 
         @keyframes fadeIn {
@@ -109,15 +109,6 @@
                 </div>
             </div>
         </div>
-
-        <footer class="mt-16 text-gray-400 text-sm">
-            <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
-            <div class="flex justify-center gap-4 mt-2">
-                <i class="fab fa-facebook hover:text-white cursor-pointer"></i>
-                <i class="fab fa-instagram hover:text-white cursor-pointer"></i>
-                <i class="fab fa-github hover:text-white cursor-pointer"></i>
-            </div>
-        </footer>
     </div>
 
     <div id="modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
@@ -149,6 +140,7 @@
     </div>
 
     <script>
+        // Dữ liệu nội dung của các tính năng
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
@@ -211,7 +203,7 @@
                         <div class="bg-white/5 p-4 rounded-xl border border-white/10">
                             <h4 class="text-orange-400 font-bold">Nẫu</h4>
                             <p class="text-sm text-gray-300">Người ta, họ, anh ấy/chị ấy.</p>
-                            <em class="text-xs text-gray-500">VD: "Nẫu nói chi mặc nẫu" (Người ta nói gì kệ người ta).</em>
+                            <em class="text-xs text-gray-500">VD: "Nẫu nói chi mặc nẫu"</em>
                         </div>
                         <div class="bg-white/5 p-4 rounded-xl border border-white/10">
                             <h4 class="text-orange-400 font-bold">Chu cha</h4>
@@ -231,6 +223,7 @@
             }
         };
 
+        // Hàm mở các chức năng
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const title = document.getElementById('modal-title');
@@ -243,6 +236,7 @@
             icon.innerHTML = features[name].icon;
             content.innerHTML = features[name].content;
             
+            // Chỉ hiện ô nhập text nếu là Chatbot
             if (name === 'Chatbot Thổ Địa') {
                 chatArea.classList.remove('hidden');
             } else {
@@ -250,11 +244,12 @@
             }
         }
 
+        // Hàm đóng cửa sổ
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
         }
 
-        // Logic Chatbot Tích hợp Google Gemini API
+        // Hàm Chat với AI
         async function sendMessage(e) {
             e.preventDefault();
             const input = document.getElementById('ai-input');
@@ -263,31 +258,29 @@
             const userText = input.value.trim();
             if (!userText) return;
 
-            // 1. Hiển thị tin nhắn của user
-            const userMsg = \`<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> \${userText}</div>\`;
+            // 1. Hiện tin nhắn người dùng
+            const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${userText}</div>`;
             chatBox.innerHTML += userMsg;
             input.value = ''; 
             
-            // 2. Hiện trạng thái "Đang gõ"
+            // 2. Hiện đang gõ
             const typingId = 'typing-' + Date.now();
-            chatBox.innerHTML += \`<div id="\${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> Đang rặn chữ xí nhen... <i class="fa-solid fa-spinner fa-spin text-sm ml-2"></i></div>\`;
+            chatBox.innerHTML += `<div id="${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> Đang rặn chữ xí nhen... <i class="fa-solid fa-spinner fa-spin text-sm ml-2"></i></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // --- CẤU HÌNH API KEY CỦA BẠN ĐÃ ĐƯỢC CHÈN VÀO ĐÂY ---
+            // API KEY
             const API_KEY = 'AIzaSyCTjzqIMDnxY8AfnoGjqihcaOPViuxhxy0'; 
-            const url = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${API_KEY}\`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-            // Prompt ép AI đóng vai người bản địa Quy Nhơn
-            const promptContext = \`Bạn tên là 'Anh Tư Nẫu', một hướng dẫn viên du lịch ảo am hiểu tường tận về Quy Nhơn, Bình Định.
+            // Tạo câu lệnh ép vai
+            const promptContext = `Bạn tên là 'Anh Tư Nẫu', một hướng dẫn viên du lịch ảo am hiểu tường tận về Quy Nhơn, Bình Định.
 Trả lời câu hỏi sau bằng giọng điệu thân thiện, nhiệt tình.
-Sử dụng một vài từ ngữ địa phương xứ Nẫu (như nẫu, chu cha, dẫy nhen, nghen, xí, bảnh...) một cách tự nhiên nhưng vẫn đảm bảo khách du lịch mọi miền đều hiểu được. Trả lời ngắn gọn, trực diện vào trọng tâm. Đừng quá dài dòng.
-Câu hỏi của khách: "\${userText}"\`;
+Sử dụng một vài từ ngữ địa phương xứ Nẫu (như nẫu, chu cha, dẫy nhen, nghen, xí, bảnh...) một cách tự nhiên nhưng vẫn đảm bảo khách du lịch mọi miền đều hiểu được. Trả lời ngắn gọn, trực diện vào trọng tâm.
+Câu hỏi của khách: "${userText}"`;
 
             const requestBody = {
                 contents: [{
-                    parts: [{
-                        text: promptContext
-                    }]
+                    parts: [{ text: promptContext }]
                 }]
             };
 
@@ -300,26 +293,24 @@ Câu hỏi của khách: "\${userText}"\`;
                 });
 
                 if (!response.ok) {
-                    const errorDetail = await response.json();
-                    console.error("Lỗi từ Google:", errorDetail);
-                    throw new Error("Lỗi API: " + response.status);
+                    throw new Error("Lỗi mạng: " + response.status);
                 }
 
                 const data = await response.json();
                 
-                // Trích xuất câu trả lời
+                // Lấy kết quả từ AI
                 let aiReply = data.candidates[0].content.parts[0].text;
                 
-                // Thay thế Markdown in đậm (**) thành thẻ HTML (<b>) để hiển thị đẹp hơn
-                aiReply = aiReply.replace(/\\*\\*(.*?)\\*\\*/g, '<b>$1</b>');
-                aiReply = aiReply.replace(/\\n/g, '<br>'); // Xuống dòng
+                // Format lại để hiển thị trong HTML đẹp hơn (in đậm, xuống dòng)
+                aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                aiReply = aiReply.replace(/\n/g, '<br>');
 
-                // 3. Cập nhật kết quả lên UI
-                document.getElementById(typingId).innerHTML = \`<b>Anh Tư:</b> \${aiReply}\`;
+                // 3. Hiển thị câu trả lời
+                document.getElementById(typingId).innerHTML = `<b>Anh Tư:</b> ${aiReply}`;
 
             } catch (error) {
                 console.error('Lỗi khi gọi API:', error);
-                document.getElementById(typingId).innerHTML = \`<b>Anh Tư:</b> Chu cha, mạng mẽo chập chờn quá tui nghe hổng rõ. Bạn đợi xí rồi hỏi lại nghen!\`;
+                document.getElementById(typingId).innerHTML = `<b>Anh Tư:</b> Chu cha, mạng mẽo chập chờn quá tui nghe hổng rõ. Bạn đợi xí rồi hỏi lại nghen!`;
             }
 
             chatBox.scrollTop = chatBox.scrollHeight;
