@@ -258,21 +258,58 @@
             const userText = input.value.trim();
             if (!userText) return;
 
-            // 1. Hiện tin nhắn người dùng
             const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${userText}</div>`;
             chatBox.innerHTML += userMsg;
             input.value = ''; 
             
-            // 2. Hiện đang gõ
             const typingId = 'typing-' + Date.now();
             chatBox.innerHTML += `<div id="${typingId}" class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> Đang rặn chữ xí nhen... <i class="fa-solid fa-spinner fa-spin text-sm ml-2"></i></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // API KEY
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDnTeiQwv4z67inpfh5PtP42A_dnTTFrbQ`;
+            // DÁN API KEY VÀO ĐÂY:
+            const API_KEY = 'AIzaSyDnTeiQwv4z67inpfh5PtP42A_dnTTFrbQ'; 
+            
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-            // Tạo câu lệnh ép vai
-            const promptContext = `Bạn tên là 'Anh Tư Nẫu', một hướng dẫn viên du lịch ảo am hiểu tường tận về Quy Nhơn, Bình Định.
+            const requestBody = {
+                contents: [{
+                    parts: [{ text: userText }]
+                }]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                // Nếu có lỗi từ server Google, lấy nguyên nhân chi tiết
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Google báo lỗi [${response.status}]: ${errorData.error.message}`);
+                }
+
+                const data = await response.json();
+                let aiReply = data.candidates[0].content.parts[0].text;
+                aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+
+                document.getElementById(typingId).innerHTML = `<b>Anh Tư:</b> ${aiReply}`;
+
+            } catch (error) {
+                // IN THẲNG LỖI MÀU ĐỎ RA MÀN HÌNH CHAT
+                console.error("HỆ THỐNG BÁO LỖI:", error);
+                document.getElementById(typingId).innerHTML = `
+                    <div class="text-red-400 font-bold mb-1">⚠️ LỖI KỸ THUẬT:</div>
+                    <div class="text-red-200 text-sm font-mono bg-red-900/50 p-2 rounded">${error.message}</div>
+                `;
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+           
+             Tạo câu lệnh ép vai
+           const promptContext = `Bạn tên là 'Anh Tư Nẫu', một hướng dẫn viên du lịch ảo am hiểu tường tận về Quy Nhơn, Bình Định.
 Trả lời câu hỏi sau bằng giọng điệu thân thiện, nhiệt tình.
 Sử dụng một vài từ ngữ địa phương xứ Nẫu (như nẫu, chu cha, dẫy nhen, nghen, xí, bảnh...) một cách tự nhiên nhưng vẫn đảm bảo khách du lịch mọi miền đều hiểu được. Trả lời ngắn gọn, trực diện vào trọng tâm.
 Câu hỏi của khách: "${userText}"`;
@@ -317,5 +354,6 @@ Câu hỏi của khách: "${userText}"`;
     </script>
 </body>
 </html>
+
 
 
