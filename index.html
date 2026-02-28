@@ -527,9 +527,9 @@
                     const errorMessage = data.error ? data.error.message.toLowerCase() : '';
                     
                     if (errorMessage.includes('quota') || response.status === 429) {
-                        return "Chu cha, nãy giờ bà con hỏi thăm Quy Nhơn nhiều quá tui thở hổng kịp! Vinh đợi tui uống miếng nước chừng 1 phút rồi nhắn lại nghen!";
+                        return "Chu cha, nãy giờ bà con hỏi thăm Quy Nhơn nhiều quá tui thở hổng kịp! đợi tui uống miếng nước chừng 1 phút rồi nhắn lại nghen!";
                     }
-                    return `Anh Tư bị kẹt xíu rồi: ${data.error ? data.error.message : 'Không xác định'}`;
+                    return "Chu cha, nãy giờ bà con hỏi thăm Quy Nhơn nhiều quá tui thở hổng kịp! đợi tui uống miếng nước chừng 1 phút rồi nhắn lại nghen!";
                 }
 
                 if (data.candidates && data.candidates[0].content) {
@@ -544,3 +544,4 @@
     </script>
 </body>
 </html>
+
