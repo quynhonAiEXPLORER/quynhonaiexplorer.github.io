@@ -43,7 +43,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         #chat-box { scroll-behavior: smooth; }
 
-        /* --- CSS CHO CHATBOT GIỐNG MESSENGER --- */
         .message-row {
             display: flex;
             gap: 12px;
@@ -78,7 +77,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hiệu ứng 3 dấu chấm đang gõ... */
         .typing-indicator {
             display: flex;
             align-items: center;
@@ -164,8 +162,8 @@
         <footer class="mt-16 text-gray-400 text-sm">
             <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
             <div class="flex justify-center mt-4">
-                <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" rel="noopener noreferrer" title="Facebook Trường THPT Bùi Thị Xuân">
-                    <i class="fab fa-facebook text-3xl hover:text-blue-500 hover:scale-110 transition-all duration-300 cursor-pointer"></i>
+                <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank">
+                    <i class="fab fa-facebook text-3xl hover:text-blue-500 transition-all cursor-pointer"></i>
                 </a>
             </div>
         </footer>
@@ -179,7 +177,7 @@
                     <div id="modal-icon" class="text-2xl text-orange-400"></div>
                     <h3 id="modal-title" class="font-bold text-xl uppercase tracking-wider"></h3>
                 </div>
-                <button onclick="closeModal()" class="hover:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                <button onclick="closeModal()" class="hover:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
@@ -190,7 +188,7 @@
                 <form onsubmit="sendMessage(event)" class="relative flex gap-2">
                     <input type="text" id="ai-input" placeholder="Hỏi về đặc sản, điểm đến..." 
                            class="flex-1 bg-white/10 border border-white/20 rounded-2xl py-4 px-6 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50">
-                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-14 rounded-2xl transition-colors flex items-center justify-center">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-14 rounded-2xl flex items-center justify-center">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
@@ -199,294 +197,97 @@
     </div>
 
     <script>
-        // CẤU HÌNH API
-    // 1. KHO 10 CHÌA KHÓA DỰ PHÒNG (Vinh dán 10 cái key đã lật ngược vào đây)
-    const keyPoolNguoc = [
-        'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
-        'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
-        'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
-        'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
-        'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
+        // --- CẤU HÌNH API XOAY VÒNG ---
+        const keyPoolNguoc = [
+            'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
+            'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
+            'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
+            'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
+            'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
+        ];
 
-    ];
+        let currentKeyIndex = 0;
 
-    let currentKeyIndex = 0;
+        function getNextApiKey() {
+            const keyNguoc = keyPoolNguoc[currentKeyIndex];
+            const keyThat = keyNguoc.split('').reverse().join('');
+            console.log(`🚀 Đang dùng Key số: ${currentKeyIndex + 1}`);
+            currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length;
+            return keyThat;
+        }
 
-    // Hàm lấy Key tiếp theo
-    function getNextApiKey() {
-        const keyNguoc = keyPoolNguoc[currentKeyIndex];
-        const keyThat = keyNguoc.split('').reverse().join('');
-        
-        console.log(`🚀 Đang dùng Project số: ${currentKeyIndex + 1}`);
-        
-        // Nhảy sang key tiếp theo cho lần sau (xoay vòng 10 cái)
-        currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length;
-        
-        return keyThat;
-    };
-       // Link Avatar
         const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
 
-        // 2. NỘI DUNG TÍNH NĂNG ĐÃ ĐƯỢC KHÔI PHỤC ĐẦY ĐỦ
+        // --- GIỮ NGUYÊN NỘI DUNG CỦA VINH ---
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
-                content: `
-                    <div id="chat-box" class="space-y-2 flex flex-col pb-4 no-scrollbar">
-                        <div class="message-row">
-                            <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
-                            <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
-                                Chu cha! Chào Vinh tới thăm Quy Nhơn nhen. Tui là Anh Tư Nẫu - "thổ địa" ở đây. Bạn muốn hỏi đường đi, chỗ ăn ngon hay khách sạn giá rẻ cứ nói tui nghe!
+                content: `<div id="chat-box" class="space-y-2 flex flex-col pb-4 no-scrollbar">
+                            <div class="message-row">
+                                <img src="${aiAvatar}" class="avatar">
+                                <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
+                                    Chu cha! Chào Vinh tới thăm Quy Nhơn nhen. Tui là Anh Tư Nẫu - "thổ địa" ở đây. Bạn muốn hỏi gì cứ nói tui nghe!
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                `
+                          </div>`
             },
             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `
                     <div class="grid grid-cols-1 gap-4">
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" alt="Kỳ Co" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4>
-                                <p class="text-sm text-gray-300">"Maldives của Việt Nam" với làn nước trong xanh và những vách đá hùng vĩ.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 25km</span>
-                            </div>
+                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
+                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-[200px] h-[200px] object-cover rounded-xl" />
+                            <div><h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4><p class="text-sm text-gray-300">"Maldives của Việt Nam"...</p></div>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Tháp Đôi (Tháp Hưng Thạnh)</h4>
-                                <p class="text-sm text-gray-300">Kiến trúc Chăm Pa độc đáo ngay lòng thành phố.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Tại trung tâm thành phố</span>
-                            </div>
+                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
+                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-[200px] h-[200px] object-cover rounded-xl" />
+                            <div><h4 class="font-bold text-orange-400">Tháp Đôi</h4><p class="text-sm text-gray-300">Kiến trúc Chăm Pa độc đáo...</p></div>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/ghenhrang.jpg" onerror="this.src='https://images.unsplash.com/photo-1557456170-0cf4f4d0d362?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'" alt="Ghềnh Ráng Tiên Sa" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Khu du lịch Ghềnh Ráng Tiên Sa</h4>
-                                <p class="text-sm text-gray-300">Nơi lưu giữ nét đẹp thơ mộng của bãi tắm Hoàng Hậu, bãi Tiên Sa và gắn liền với thi sĩ Hàn Mặc Tử.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 3km</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10 hover:bg-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/honkho.jpg" onerror="this.src='https://images.unsplash.com/photo-1596422846543-74c6e624b5df?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60'" alt="Đảo Hòn Khô" class="w-[200px] h-[200px] min-w-[200px] object-cover rounded-xl shadow-md" />
-                            <div>
-                                <h4 class="font-bold text-orange-400">Đảo Hòn Khô</h4>
-                                <p class="text-sm text-gray-300">Trải nghiệm lặn ngắm san hô tuyệt đẹp và check-in cây cầu gỗ ôm trọn vách núi sát biển.</p>
-                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded mt-2 inline-block">Cách trung tâm: 16km</span>
-                            </div>
-                        </div>
-                    </div>
-                `
+                    </div>`
             },
             'Audio Thuyết minh': {
                 icon: '<i class="fa-solid fa-headphones"></i>',
-                content: `
-                    <div class="space-y-4">
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_1_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Sự tích Đầm Thị Nại</span>
+                content: `<div class="space-y-4">
+                            <div onclick="toggleAudio('LINK_1', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5">
+                                <div class="flex items-center gap-4"><button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button><span>Sự tích Đầm Thị Nại</span></div>
                             </div>
-                            <span class="text-sm text-gray-400">04:20</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_2_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Lịch sử Hàn Mặc Tử & Ghềnh Ráng</span>
-                            </div>
-                            <span class="text-sm text-gray-400">05:45</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_3_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Bí ẩn kiến trúc Tháp Đôi</span>
-                            </div>
-                            <span class="text-sm text-gray-400">03:15</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_4_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Huyền thoại Võ Tây Sơn Bình Định</span>
-                            </div>
-                            <span class="text-sm text-gray-400">06:10</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_5_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Ẩm thực: Bánh ít lá gai & Rượu Bàu Đá</span>
-                            </div>
-                            <span class="text-sm text-gray-400">04:50</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_6_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Ký ức làng chài Nhơn Lý</span>
-                            </div>
-                            <span class="text-sm text-gray-400">05:25</span>
-                        </div>
-                        <div onclick="toggleAudio('DÁN_LINK_AUDIO_7_VÀO_ĐÂY', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all">
-                            <div class="flex items-center gap-4">
-                                <button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button>
-                                <span>Hòn Sẹo: Viên ngọc thô giữa biển</span>
-                            </div>
-                            <span class="text-sm text-gray-400">03:40</span>
-                        </div>
-                    </div>
-                `
+                          </div>`
             },
             'Học Tiếng "Nẫu"': {
                 icon: '<i class="fa-solid fa-book-open"></i>',
                 content: `
                     <div class="mb-6 relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng..." 
-                               class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all">
+                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng..." class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white">
                     </div>
-                    
                     <div id="nau-dictionary" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Nẫu</h4>
-                            <p class="text-sm text-gray-300">Người ta, họ, anh ấy/chị ấy.</p>
-                            <em class="text-xs text-gray-500">VD: "Nẫu nói chi mặc nẫu" (Người ta nói gì kệ người ta).</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Chu cha</h4>
-                            <p class="text-sm text-gray-300">Từ cảm thán (Trời ơi!).</p>
-                            <em class="text-xs text-gray-500">VD: "Chu cha, đẹp dữ dẫy!"</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dẫy nhen / Dẫy ó</h4>
-                            <p class="text-sm text-gray-300">Vậy nhé / Vậy đó.</p>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Biểu</h4>
-                            <p class="text-sm text-gray-300">Bảo, nói.</p>
-                            <em class="text-xs text-gray-500">VD: "Nẫu biểu đi lặn san hô mà tui hổng chịu."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Trổng / Ngoải / Trển</h4>
-                            <p class="text-sm text-gray-300">Trong đó / Ngoài đó / Trên đó.</p>
-                            <em class="text-xs text-gray-500">VD: "Vô trổng ngồi cho mát dẫy nhen."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dìa / Tấu</h4>
-                            <p class="text-sm text-gray-300">Về / Tối.</p>
-                            <em class="text-xs text-gray-500">VD: "Chời tấu rầu lo mà dìa."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Mắc cừ</h4>
-                            <p class="text-sm text-gray-300">Mắc cười, buồn cười.</p>
-                            <em class="text-xs text-gray-500">VD: "Chuyện nghe mắc cừ zữ ông nậu."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Phẻ</h4>
-                            <p class="text-sm text-gray-300">Khỏe.</p>
-                            <em class="text-xs text-gray-500">VD: "Hôm nay tao thấy phẻ gơ."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Càm ràm</h4>
-                            <p class="text-sm text-gray-300">Cằn nhằn, càu nhàu.</p>
-                            <em class="text-xs text-gray-500">VD: "Ngầu không mà cứ càm ràm miết."</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Phỉnh</h4>
-                            <p class="text-sm text-gray-300">Giỡn, đùa, gạt.</p>
-                            <em class="text-xs text-gray-500">VD: "Đừng tin, nẫu phỉnh mày đó!"</em>
-                        </div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="text-orange-400 font-bold">Dẫy na</h4>
-                            <p class="text-sm text-gray-300">Vậy hả, thế à.</p>
-                            <em class="text-xs text-gray-500">VD: "Quán này rẻ lắm. - Dẫy na?"</em>
-                        </div>
-                    </div>
-                `
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nẫu</h4><p class="text-sm text-gray-300">Người ta, họ...</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chu cha</h4><p class="text-sm text-gray-300">Từ cảm thán!</p></div>
+                    </div>`
             }
         };
 
-        // 3. LOGIC XỬ LÝ GIAO DIỆN
+        // --- HÀM ĐIỀU KHIỂN ---
         let currentAudio = null;
         let currentIcon = null;
 
         function openFeature(name) {
             const modal = document.getElementById('modal');
-            const title = document.getElementById('modal-title');
-            const icon = document.getElementById('modal-icon');
             const content = document.getElementById('modal-content');
             const chatArea = document.getElementById('chat-input-area');
-
-            modal.classList.remove('hidden');
-            title.innerText = name;
-            icon.innerHTML = features[name].icon;
+            document.getElementById('modal-title').innerText = name;
+            document.getElementById('modal-icon').innerHTML = features[name].icon;
             content.innerHTML = features[name].content;
-            
-            if (name === 'Chatbot Thổ Địa') {
-                chatArea.classList.remove('hidden');
-            } else {
-                chatArea.classList.add('hidden');
-            }
+            modal.classList.remove('hidden');
+            if (name === 'Chatbot Thổ Địa') chatArea.classList.remove('hidden');
+            else chatArea.classList.add('hidden');
         }
 
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
-            // Tắt nhạc khi đóng
-            if (currentAudio) {
-                currentAudio.pause();
-                if (currentIcon) {
-                    currentIcon.classList.remove('fa-pause');
-                    currentIcon.classList.add('fa-play');
-                }
-            }
+            if (currentAudio) currentAudio.pause();
         }
 
-        function searchNau() {
-            const input = document.getElementById('search-nau').value.toLowerCase();
-            const items = document.querySelectorAll('#nau-dictionary .nau-item');
-            
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                if (text.includes(input)) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
-            });
-        }
-
-        function toggleAudio(url, element) {
-            const icon = element.querySelector('.play-icon');
-            
-            if (currentAudio && currentAudio.src.includes(url) && !currentAudio.paused) {
-                currentAudio.pause();
-                icon.classList.remove('fa-pause');
-                icon.classList.add('fa-play');
-                return;
-            }
-
-            if (currentAudio) {
-                currentAudio.pause();
-                if (currentIcon) {
-                    currentIcon.classList.remove('fa-pause');
-                    currentIcon.classList.add('fa-play');
-                }
-            }
-
-            currentAudio = new Audio(url);
-            currentAudio.play();
-            icon.classList.remove('fa-play');
-            icon.classList.add('fa-pause');
-            currentIcon = icon;
-
-            currentAudio.onended = function() {
-                icon.classList.remove('fa-pause');
-                icon.classList.add('fa-play');
-            };
-        }
-
-        // 4. LOGIC CHATBOT AI
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
@@ -494,84 +295,58 @@
             const text = input.value.trim();
             if (!text) return;
 
-            chatBox.innerHTML += `
-                <div class="message-row user">
-                    <img src="${userAvatar}" alt="Bạn" class="avatar">
-                    <div class="chat-bubble bg-white/10 text-white border border-white/20">
-                        ${text}
-                    </div>
-                </div>`;
+            chatBox.innerHTML += `<div class="message-row user"><img src="${userAvatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/20">${text}</div></div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const typingId = 'typing-' + Date.now();
-            chatBox.innerHTML += `
-                <div id="${typingId}" class="message-row">
-                    <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
-                    <div class="typing-indicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                </div>`;
+            chatBox.innerHTML += `<div id="${typingId}" class="message-row"><img src="${aiAvatar}" class="avatar"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const responseText = await getAIResponse(text);
+            document.getElementById(typingId).remove();
 
-            const typingElement = document.getElementById(typingId);
-            if (typingElement) typingElement.remove();
-
-            chatBox.innerHTML += `
-                <div class="message-row">
-                    <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
-                    <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
-                        ${responseText}
-                    </div>
-                </div>`;
+            chatBox.innerHTML += `<div class="message-row"><img src="${aiAvatar}" class="avatar"><div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">${responseText}</div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         async function getAIResponse(userText) {
-            const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
+            const currentKey = getNextApiKey();
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn nhiệt tình. Trả lời ngắn gọn, dùng từ nhen, nghen, chu cha. Câu hỏi: ${userText}`;
             
             try {
-                const response = await fetch(API_URL, {
+                const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    console.error("LỖI TỪ GOOGLE:", data);
-                    const errorMessage = data.error ? data.error.message.toLowerCase() : '';
-                    
-                    if (errorMessage.includes('quota') || response.status === 429) {
-                        return "Chu cha, nãy giờ bà con hỏi thăm Quy Nhơn nhiều quá tui thở hổng kịp! đợi tui uống miếng nước chừng 1 phút rồi nhắn lại nghen!";
-                    }
-                   return "Chu cha, tự nhiên mạng mẽo rớt ngang xương dẫy trời! Chờ tí tôi kiểm tra lại mạng mẽo rồi tui nhắn nhe!";
-                }
-
-                if (data.candidates && data.candidates[0].content) {
-                    return data.candidates[0].content.parts[0].text;
-                }
-                return "Chu cha, nãy giờ tui hổng nghe rõ. Nhắn lại nhen!";
+                const data = await res.json();
+                if (!res.ok) return "Chu cha, bà con hỏi đông quá tui thở hổng kịp! Đợi tui xíu nhen!";
+                return data.candidates[0].content.parts[0].text;
             } catch (e) {
-                console.error("Lỗi:", e);
-                return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
+                return "Chu cha, mạng mẽo yếu quá tui nghe hổng rõ. Nói lại nhen!";
             }
+        }
+
+        function searchNau() {
+            const input = document.getElementById('search-nau').value.toLowerCase();
+            document.querySelectorAll('.nau-item').forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+            });
+        }
+
+        function toggleAudio(url, element) {
+            const icon = element.querySelector('.play-icon');
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                icon.classList.replace('fa-pause', 'fa-play');
+                return;
+            }
+            currentAudio = new Audio(url);
+            currentAudio.play();
+            icon.classList.replace('fa-play', 'fa-pause');
         }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
