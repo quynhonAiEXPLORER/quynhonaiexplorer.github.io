@@ -200,10 +200,17 @@
 
     <script>
         // CẤU HÌNH API
-        const keyNguoc = 'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA';
-        const API_KEY = keyNguoc.split('').reverse().join(''); 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
-        // Link Avatar
+       <script src="api-config.js"></script>
+
+<script>
+    // Trong này bạn gọi hàm getNextApiKey() bình thường
+    async function getAIResponse(userText) {
+        const currentKey = getNextApiKey();
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+        
+        // ... giữ nguyên phần fetch và xử lý lỗi rớt mạng của bạn ...
+    };
+       // Link Avatar
         const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
 
@@ -544,6 +551,7 @@
     </script>
 </body>
 </html>
+
 
 
 
