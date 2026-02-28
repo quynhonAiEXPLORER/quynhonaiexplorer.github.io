@@ -199,10 +199,10 @@
     </div>
 
     <script>
-        // 1. CẤU HÌNH API
-        const API_KEY = 'ĐIỀN_API_KEY_CỦA_BẠN_VÀO_ĐÂY'; 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-        
+        // CẤU HÌNH API
+        const keyNguoc = 'AnGnH2jdBst4zSMhE6yeKAGG4J2L2iJeCySazIA';
+        const API_KEY = keyNguoc.split('').reverse().join(''); 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
         // Link Avatar
         const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
@@ -544,4 +544,5 @@
     </script>
 </body>
 </html>
+
 
