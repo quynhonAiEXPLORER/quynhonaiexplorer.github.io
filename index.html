@@ -232,38 +232,72 @@
                             </div>
                           </div>`
             },
-            'Bản đồ Khám phá': {
-                icon: '<i class="fa-solid fa-location-dot"></i>',
-                content: `
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-[200px] h-[200px] object-cover rounded-xl" />
-                            <div><h4 class="font-bold text-orange-400">Kỳ Co - Eo Gió</h4><p class="text-sm text-gray-300">"Maldives của Việt Nam"...</p></div>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl flex gap-4 border border-white/10">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-[200px] h-[200px] object-cover rounded-xl" />
-                            <div><h4 class="font-bold text-orange-400">Tháp Đôi</h4><p class="text-sm text-gray-300">Kiến trúc Chăm Pa độc đáo...</p></div>
-                        </div>
-                    </div>`
-            },
-            'Audio Thuyết minh': {
-                icon: '<i class="fa-solid fa-headphones"></i>',
-                content: `<div class="space-y-4">
-                            <div onclick="toggleAudio('LINK_1', this)" class="cursor-pointer flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5">
-                                <div class="flex items-center gap-4"><button class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-play play-icon"></i></button><span>Sự tích Đầm Thị Nại</span></div>
-                            </div>
-                          </div>`
-            },
-            'Học Tiếng "Nẫu"': {
+             'Học Tiếng Nẫu': {
                 icon: '<i class="fa-solid fa-book-open"></i>',
                 content: `
                     <div class="mb-6 relative">
-                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng..." class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng..." 
+                               class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all">
                     </div>
+                    
                     <div id="nau-dictionary" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nẫu</h4><p class="text-sm text-gray-300">Người ta, họ...</p></div>
-                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chu cha</h4><p class="text-sm text-gray-300">Từ cảm thán!</p></div>
-                    </div>`
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Nẫu</h4>
+                            <p class="text-sm text-gray-300">Người ta, họ, anh ấy/chị ấy.</p>
+                            <em class="text-xs text-gray-500">VD: "Nẫu nói chi mặc nẫu" (Người ta nói gì kệ người ta).</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Chu cha</h4>
+                            <p class="text-sm text-gray-300">Từ cảm thán (Trời ơi!).</p>
+                            <em class="text-xs text-gray-500">VD: "Chu cha, đẹp dữ dẫy!"</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Dẫy nhen / Dẫy ó</h4>
+                            <p class="text-sm text-gray-300">Vậy nhé / Vậy đó.</p>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Biểu</h4>
+                            <p class="text-sm text-gray-300">Bảo, nói.</p>
+                            <em class="text-xs text-gray-500">VD: "Nẫu biểu đi lặn san hô mà tui hổng chịu."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Trổng / Ngoải / Trển</h4>
+                            <p class="text-sm text-gray-300">Trong đó / Ngoài đó / Trên đó.</p>
+                            <em class="text-xs text-gray-500">VD: "Vô trổng ngồi cho mát dẫy nhen."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Dìa / Tấu</h4>
+                            <p class="text-sm text-gray-300">Về / Tối.</p>
+                            <em class="text-xs text-gray-500">VD: "Chời tấu rầu lo mà dìa."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Mắc cừ</h4>
+                            <p class="text-sm text-gray-300">Mắc cười, buồn cười.</p>
+                            <em class="text-xs text-gray-500">VD: "Chuyện nghe mắc cừ zữ ông nậu."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Phẻ</h4>
+                            <p class="text-sm text-gray-300">Khỏe.</p>
+                            <em class="text-xs text-gray-500">VD: "Hôm nay tao thấy phẻ gơ."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Càm ràm</h4>
+                            <p class="text-sm text-gray-300">Cằn nhằn, càu nhàu.</p>
+                            <em class="text-xs text-gray-500">VD: "Ngầu không mà cứ càm ràm miết."</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Phỉnh</h4>
+                            <p class="text-sm text-gray-300">Giỡn, đùa, gạt.</p>
+                            <em class="text-xs text-gray-500">VD: "Đừng tin, nẫu phỉnh mày đó!"</em>
+                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="text-orange-400 font-bold">Dẫy na</h4>
+                            <p class="text-sm text-gray-300">Vậy hả, thế à.</p>
+                            <em class="text-xs text-gray-500">VD: "Quán này rẻ lắm. - Dẫy na?"</em>
+                        </div>
+                    </div>
+                `
             }
         };
 
@@ -350,4 +384,5 @@
     </script>
 </body>
 </html>
+
 
