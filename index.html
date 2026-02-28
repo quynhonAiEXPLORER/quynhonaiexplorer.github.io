@@ -363,32 +363,92 @@
         }
 
         // Logic Chatbot giả lập
-        function sendMessage(e) {
-            e.preventDefault();
+     // 1. HÀM XỬ LÝ GIAO DIỆN TIN NHẮN (Giao diện Messenger xịn)
+        async function sendMessage(event) {
+            event.preventDefault();
             const input = document.getElementById('ai-input');
             const chatBox = document.getElementById('chat-box');
-            
-            if (!input.value.trim()) return;
+            const text = input.value.trim();
+            if (!text) return;
 
-            // User message
-            const userMsg = `<div class="chat-bubble bg-white/10 ml-auto border border-white/10"><b>Bạn:</b> ${input.value}</div>`;
-            chatBox.innerHTML += userMsg;
+            // Link Avatar
+            const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
+            const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
 
-            // Simple AI Logic
-            const text = input.value.toLowerCase();
-            let reply = "Chu cha, cái này tui đang học thêm nên chưa rõ. Để tui hỏi ông bà tui rồi trả lời sau nhen!";
-            
-            if (text.includes("ăn")) reply = "Ăn thì phải thử Bánh xèo tôm nhảy, Bún chả cá hoặc Bánh hỏi lòng heo nhen. Ngon bá cháy!";
-            if (text.includes("chơi")) reply = "Bạn đi Eo Gió ngắm hoàng hôn, hoặc qua đảo Kỳ Co tắm biển là hết sảy luôn!";
-            if (text.includes("đẹp")) reply = "Quy Nhơn mình chỗ nào cũng đẹp hết á, nhất là con đường biển Xuân Diệu buổi tối.";
-
-            setTimeout(() => {
-                chatBox.innerHTML += `<div class="chat-bubble bg-orange-500/20 border border-orange-500/20 text-orange-100"><b>Anh Tư:</b> ${reply}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 800);
-
+            // In tin nhắn của bạn
+            chatBox.innerHTML += `
+                <div class="message-row user">
+                    <img src="${userAvatar}" alt="Bạn" class="avatar">
+                    <div class="chat-bubble bg-white/10 text-white border border-white/20">
+                        ${text}
+                    </div>
+                </div>`;
             input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // In hiệu ứng Anh Tư Đang gõ...
+            const typingId = 'typing-' + Date.now();
+            chatBox.innerHTML += `
+                <div id="${typingId}" class="message-row">
+                    <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Lấy câu trả lời từ Google
+            const responseText = await getAIResponse(text);
+
+            // Xóa hiệu ứng đang gõ và in câu trả lời thật
+            const typingElement = document.getElementById(typingId);
+            if (typingElement) typingElement.remove();
+
+            chatBox.innerHTML += `
+                <div class="message-row">
+                    <img src="${aiAvatar}" alt="Anh Tư" class="avatar">
+                    <div class="chat-bubble bg-orange-500/20 text-orange-100 border border-orange-500/20">
+                        ${responseText}
+                    </div>
+                </div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 2. HÀM KẾT NỐI GOOGLE GEMINI (Đã vá lỗi Quá Tải Quota)
+        async function getAIResponse(userText) {
+            const prompt = `Bạn là "Anh Tư", một người Bình Định nhiệt tình. Trả lời ngắn gọn (dưới 50 từ). Sử dụng từ địa phương (nhen, nghen, chu cha, dẫy na). Tư vấn du lịch Quy Nhơn. Câu hỏi: ${userText}`;
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                // XỬ LÝ LỖI HẾT HẠN MỨC QUOTA TRONG NGÀY/PHÚT (MÃ 429)
+                if (response.status === 429) {
+                    return "Chu cha, nãy giờ bà con hỏi thăm Quy Nhơn nhiều quá tui thở hổng kịp! Vinh đợi tui uống miếng nước tầm 15 giây rồi nhắn lại nghen!";
+                }
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("LỖI TỪ GOOGLE:", data);
+                    return `Anh Tư bị kẹt xíu rồi: ${data.error ? data.error.message : 'Không xác định'}`;
+                }
+
+                if (data.candidates && data.candidates[0].content) {
+                    return data.candidates[0].content.parts[0].text;
+                }
+                return "Chu cha, nãy giờ tui hổng nghe rõ. Nhắn lại nhen!";
+            } catch (e) {
+                console.error("Lỗi:", e);
+                return "Chu cha, mạng yếu quá tui nghe hổng rõ. Nói lại nhen!";
+            }
         }
     </script>
 </body>
 </html>
+
