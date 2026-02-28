@@ -312,7 +312,7 @@
 
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn nhiệt tình. Trả lời ngắn gọn, dùng từ nhen, nghen, chu cha. Câu hỏi: ${userText}`;
             
             try {
@@ -350,3 +350,4 @@
     </script>
 </body>
 </html>
+
