@@ -206,7 +206,7 @@
     // Trong này bạn gọi hàm getNextApiKey() bình thường
     async function getAIResponse(userText) {
         const currentKey = getNextApiKey();
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
         
         // ... giữ nguyên phần fetch và xử lý lỗi rớt mạng của bạn ...
     };
@@ -551,6 +551,7 @@
     </script>
 </body>
 </html>
+
 
 
 
