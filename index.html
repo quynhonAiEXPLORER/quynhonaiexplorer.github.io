@@ -200,12 +200,30 @@
 
     <script>
         // CẤU HÌNH API
-      <script src="api-config.js"></script>
+    // 1. KHO 10 CHÌA KHÓA DỰ PHÒNG (Vinh dán 10 cái key đã lật ngược vào đây)
+    const keyPoolNguoc = [
+        'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
+        'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
+        'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
+        'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
+        'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
 
-<script>
-    async function getAIResponse(userMessage) {
-        // Lúc này nó mới biết getNextApiKey() là cái gì nè
-        const currentKey = getNextApiKey();
+    ];
+
+    let currentKeyIndex = 0;
+
+    // Hàm lấy Key tiếp theo
+    function getNextApiKey() {
+        const keyNguoc = keyPoolNguoc[currentKeyIndex];
+        const keyThat = keyNguoc.split('').reverse().join('');
+        
+        console.log(`🚀 Đang dùng Project số: ${currentKeyIndex + 1}`);
+        
+        // Nhảy sang key tiếp theo cho lần sau (xoay vòng 10 cái)
+        currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length;
+        
+        return keyThat;
+    };
        // Link Avatar
         const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
@@ -547,6 +565,7 @@
     </script>
 </body>
 </html>
+
 
 
 
