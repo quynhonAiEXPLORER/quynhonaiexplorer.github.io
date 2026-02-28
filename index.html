@@ -200,16 +200,12 @@
 
     <script>
         // CẤU HÌNH API
-       <script src="api-config.js"></script>
+      <script src="api-config.js"></script>
 
 <script>
-    // Trong này bạn gọi hàm getNextApiKey() bình thường
-    async function getAIResponse(userText) {
+    async function getAIResponse(userMessage) {
+        // Lúc này nó mới biết getNextApiKey() là cái gì nè
         const currentKey = getNextApiKey();
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-        
-        // ... giữ nguyên phần fetch và xử lý lỗi rớt mạng của bạn ...
-    };
        // Link Avatar
         const userAvatar = "https://ui-avatars.com/api/?name=Bạn&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
@@ -551,6 +547,7 @@
     </script>
 </body>
 </html>
+
 
 
 
