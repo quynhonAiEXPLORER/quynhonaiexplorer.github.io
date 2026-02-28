@@ -4,7 +4,7 @@ const keyPoolNguoc = [
     'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
     'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
     'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
-    'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA',
+    'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
 ];
 
 let currentKeyIndex = 0;
