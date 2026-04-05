@@ -93,14 +93,14 @@
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-purple-500/20 flex items-center justify-center text-purple-400 text-2xl md:text-3xl"><i class="fa-solid fa-headphones"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Audio Guide</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Nghe lịch sử</p></div>
             </div>
-            <div onclick="openFeature('Học Tiếng &quot;Nẫu&quot;')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+            <div onclick="openFeature('Học Tiếng "Nẫu"')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-book-open"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
         </div>
 
         <footer class="mt-12 md:mt-20 text-gray-400 text-xs md:text-sm pb-8 md:pb-4 flex flex-col items-center gap-4">
-            <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
+            <p>© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
             <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
         </footer>
     </div>
@@ -150,7 +150,7 @@
             if (hour >= 5 && hour < 11) text = "Sáng rầu! Lên đồ đi check-in Eo Gió là bao hình đẹp nhen bạn mình!";
             else if (hour >= 11 && hour < 14) text = "Trưa nắng gắt! Ghé làm dĩa Bánh xèo tôm nhảy cho mát dạ nhen.";
             else if (hour >= 14 && hour < 18) text = "Chiều mát, ra biển dạo hay làm ly nước mía lề đường hông?";
-            else text = "Tối dẫu nhen! Chợ đêm Quy Nhơn đang xôm, ra ăn ốc mỡ xào me xíu hông?";
+            else text = "Tối rầu nhen! Chợ đêm Quy Nhơn đang xôm, ra ăn ốc mỡ xào me xíu hông?";
             document.getElementById('dynamic-greeting').innerText = text;
         }
         window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
@@ -192,7 +192,7 @@
                         <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 transition">
                             <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-xl" />
                             <div class="flex-1 flex flex-col justify-center">
-                                <h4 class="font-bold text-orange-400 text-sm md:text-base">Kỳ Co - Eo Gió</h4>
+                                <h4 class="font-bold text-orange-400 text-sm md:text-base">Kỳ Co</h4>
                                 <p class="text-xs md:text-sm text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh.</p>
                             </div>
                         </div>
@@ -224,6 +224,7 @@
                     <div id="nau-dictionary" class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                         <div class="nau-item bg-white/5 p-3 md:p-4 rounded-xl border border-white/5 hover:bg-white/10 transition"><h4 class="text-orange-400 font-bold text-sm md:text-base">Nẫu</h4><p class="text-xs md:text-sm text-gray-300 mt-0.5 md:mt-1">Người ta, họ, anh ấy/chị ấy.</p></div>
                         <div class="nau-item bg-white/5 p-3 md:p-4 rounded-xl border border-white/5 hover:bg-white/10 transition"><h4 class="text-orange-400 font-bold text-sm md:text-base">Chu cha</h4><p class="text-xs md:text-sm text-gray-300 mt-0.5 md:mt-1">Từ cảm thán (Trời ơi!).</p></div>
+                        <div class="nau-item bg-white/5 p-3 md:p-4 rounded-xl border border-white/5 hover:bg-white/10 transition"><h4 class="text-orange-400 font-bold text-sm md:text-base">Dẫu</h4><p class="text-xs md:text-sm text-gray-300 mt-0.5 md:mt-1">Tối (Ban đêm).</p></div>
                     </div>`
             }
         };
@@ -255,6 +256,18 @@
             });
         }
 
+        // TỪ ĐIỂN ẢNH THẬT CHO CÁC ĐỊA ĐIỂM NỔI TIẾNG
+        const realImages = {
+            "Kỳ Co": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
+            "Bãi biển Kỳ Co": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
+            "Eo Gió": "https://images.unsplash.com/photo-1574482620811-1aa16ffe3c82?w=500&q=80",
+            "Tháp Đôi": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg",
+            "Bún chả cá Ngọc Liên": "https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=500&q=80",
+            "Bún rạm Mỹ Hạnh": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=500&q=80",
+            "Bánh xèo tôm nhảy": "https://images.unsplash.com/photo-1625467000000-000000000000?w=500&q=80", // Ảnh minh họa có thể đổi sau
+            "Surf Bar": "https://images.unsplash.com/photo-1543373072-69f3d4788832?w=500&q=80"
+        };
+
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
@@ -282,23 +295,29 @@
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
-                        // ĐÃ SỬA ĐỊNH DẠNG LINK GOOGLE MAPS TẠI ĐÂY
+                        
+                        // XỬ LÝ LINK MAPS CHUẨN XÁC
                         const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " Quy Nhơn")}`;
-                        // Thêm tham số ngẫu nhiên để ép trình duyệt tải ảnh mới
-                        const promptText = encodeURIComponent(place.name + " Quy Nhon, realistic photo");
-                        const autoImageUrl = `https://image.pollinations.ai/prompt/${promptText}?width=500&height=300&nologo=true&seed=${Math.floor(Math.random() * 100000)}`;
+                        
+                        // XỬ LÝ HÌNH ẢNH (Từ điển thật -> Ảnh minh họa an toàn)
+                        const safeKeyword = place.image_keyword ? place.image_keyword.replace(/[^a-zA-Z]/g, '') : 'vietnam';
+                        const randomId = Math.floor(Math.random() * 100000);
+                        
+                        // Lấy ảnh thật, nếu không có thì lấy ảnh minh họa ngẫu nhiên
+                        const autoImageUrl = realImages[place.name] || `https://loremflickr.com/500/300/${safeKeyword}?lock=${randomId}`;
+                        const fallbackImg = "https://placehold.co/500x300/1e293b/f97316?text=Quy+Nhon+AI";
 
-                        // Tạo link nhúng bản đồ Google Maps động dựa theo tên địa điểm AI trả về
-                        const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(place.name + " Quy Nhơn")}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-
-            finalHtml += `
-                    <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
-                        <iframe width="100%" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapEmbedUrl}"></iframe>
-    
-                    <div class="p-3">
-                        <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
-                        <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
-                        ```
+                        finalHtml += `
+                        <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
+                            <img src="${autoImageUrl}" onerror="this.src='${fallbackImg}'" class="w-full h-32 object-cover bg-gray-700">
+                            <div class="p-3">
+                                <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
+                                <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
+                                <p class="text-[11px] md:text-xs text-green-400 mb-3"><i class="fa-solid fa-tag w-4 text-green-400"></i> Giá tham khảo: ${place.price}</p>
+                                <div class="flex gap-2 mt-1">
+                                    <a href="${autoMapLink}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[12px] py-2 rounded-lg text-center font-bold flex items-center justify-center gap-1.5 transition">
+                                        <i class="fa-solid fa-map"></i> Xem Bản đồ
+                                    </a>
                                 </div>
                             </div>
                         </div>`;
@@ -316,6 +335,7 @@
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             
+            // PROMPT ĐÃ ĐƯỢC CẬP NHẬT CHUẨN XÁC
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". Trả lời: "${userText}"
 
 HƯỚNG DẪN TƯ DUY (BẮT BUỘC):
@@ -329,10 +349,10 @@ Cấu trúc JSON nếu GỢI Ý ĐỊA ĐIỂM:
   "text": "Câu trả lời tư vấn nhiệt tình...",
   "places": [
     {
-      "name": "Tên địa điểm chính xác",
+      "name": "Tên địa điểm chính xác (vd: Kỳ Co, Eo Gió, Tháp Đôi)",
       "address": "Tên đường/khu vực",
       "price": "Khoảng giá",
-      "image_keyword": "1 từ khóa TIẾNG ANH thật cụ thể, mô tả chính xác loại hình chỗ này (vd: beach, cham_tower, beef_noodles, resort)"
+      "image_keyword": "1 từ khóa TIẾNG ANH CHUNG CHUNG mô tả thể loại (vd: beach, food, hotel, mountain, cafe). TUYỆT ĐỐI KHÔNG dùng tên riêng."
     }
   ]
 }
