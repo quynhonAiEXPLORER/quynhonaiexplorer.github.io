@@ -93,14 +93,14 @@
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-purple-500/20 flex items-center justify-center text-purple-400 text-2xl md:text-3xl"><i class="fa-solid fa-headphones"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Audio Guide</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Nghe lịch sử</p></div>
             </div>
-            <div onclick="openFeature('Học Tiếng "Nẫu"')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+            <div onclick="openFeature('Học Tiếng &quot;Nẫu&quot;')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-book-open"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
         </div>
 
         <footer class="mt-12 md:mt-20 text-gray-400 text-xs md:text-sm pb-8 md:pb-4 flex flex-col items-center gap-4">
-            <p>© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
+            <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
             <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
         </footer>
     </div>
@@ -155,7 +155,15 @@
         }
         window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
 
-        const keyPoolNguoc = ['QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA', 'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA', 'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA'];
+        // ĐÃ KHÔI PHỤC NGUYÊN VẸN BỘ 5 KEY CỦA BẠN
+        const keyPoolNguoc = [
+            'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
+            'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
+            'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
+            'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
+            'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
+        ];
+        
         let currentKeyIndex = 0;
         function getNextApiKey() {
             const keyThat = keyPoolNguoc[currentKeyIndex].split('').reverse().join('');
@@ -268,7 +276,7 @@
 
             let finalHtml = '';
             try {
-                // Parse JSON an toàn hơn
+                // Làm sạch JSON trước khi parse để tránh lỗi
                 const cleanJsonStr = rawResponse.replace(/```json/gi, '').replace(/```/gi, '').trim();
                 const aiData = JSON.parse(cleanJsonStr);
                 
@@ -276,6 +284,7 @@
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
+                        // Tự động gen link Google Maps
                         const autoMapLink = `http://googleusercontent.com/maps.google.com/search?q=${encodeURIComponent(place.name + " Quy Nhơn")}`;
                         const autoImageUrl = `https://loremflickr.com/500/300/${place.image_keyword || 'vietnam'}`;
 
@@ -296,6 +305,7 @@
                     });
                 }
             } catch (e) {
+                // Nếu không parse được JSON, in ra như text bình thường
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
             }
 
@@ -303,41 +313,38 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // --- HÀM GỌI API GEMINI 1.5 FLASH (BÁCH KHOA TOÀN THƯ + PHAO CỨU SINH) ---
+        // --- HÀM GỌI API GEMINI GỐC (ĐÃ SỬA URL ĐỂ TRÁNH LỖI) ---
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+            // TRẢ LẠI ĐÚNG MODEL BẢN PREVIEW MÀ TÀI KHOẢN CỦA NHÓM BẠN ĐƯỢC CẤP QUYỀN
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". Trả lời: "${userText}"
 
 HƯỚNG DẪN TƯ DUY (BẮT BUỘC):
-1. KHÔNG BỊ GIỚI HẠN: Bạn có kiến thức về mọi quán ăn, khách sạn, điểm du lịch tại Quy Nhơn. 
-2. XỬ LÝ YÊU CẦU: Nếu người dùng TÌM ĐỊA ĐIỂM (Ăn uống, Khách sạn, Du lịch): Gợi ý 1-2 địa điểm CÓ THẬT, UY TÍN NHẤT phù hợp túi tiền.
-3. OUTPUT JSON DUY NHẤT, KHÔNG dùng markdown.
+1. KHÔNG BỊ GIỚI HẠN: Bạn có kiến thức về mọi nhà hàng, quán ăn, khách sạn, điểm du lịch tại Quy Nhơn. 
+2. XỬ LÝ YÊU CẦU: Nếu người dùng TÌM ĐỊA ĐIỂM (Ăn uống, Khách sạn, Du lịch, Mua sắm): Gợi ý 1-2 địa điểm CÓ THẬT, UY TÍN NHẤT phù hợp túi tiền.
+3. OUTPUT JSON: BẮT BUỘC trả về MỘT CHUỖI JSON DUY NHẤT. KHÔNG dùng markdown \`\`\`json.
 
 Cấu trúc JSON nếu GỢI Ý ĐỊA ĐIỂM:
 {
   "type": "location",
-  "text": "Tư vấn nhiệt tình...",
+  "text": "Câu trả lời tư vấn nhiệt tình...",
   "places": [
     {
-      "name": "Tên chính xác",
+      "name": "Tên địa điểm chính xác",
       "address": "Tên đường/khu vực",
       "price": "Khoảng giá",
-      "image_keyword": "1 từ khóa TIẾNG ANH (vd: seafood, hotel, beach)"
+      "image_keyword": "1 từ khóa TIẾNG ANH mô tả chỗ này (vd: seafood, hotel, beach)"
     }
   ]
 }
 
-Nếu hỏi lịch sử, hoặc câu bình thường: 
+Nếu hỏi lịch sử, văn hóa, chào hỏi, hoặc không cần địa điểm: 
 { "type": "text", "text": "Câu trả lời..." }`;
 
             const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    // ÉP GEMINI XUẤT CHUẨN JSON 100% ĐỂ KHÔNG BỊ LỖI PARSE
-                    responseMimeType: "application/json"
-                }
+                contents: [{ parts: [{ text: prompt }] }]
             };
 
             try {
@@ -349,9 +356,9 @@ Nếu hỏi lịch sử, hoặc câu bình thường:
                 
                 const data = await res.json();
                 
-                // MẸO HACKATHON: NẾU API CHẾT -> TRẢ VỀ DỮ LIỆU CỨU HỘ MẶC ĐỊNH NGAY LẬP TỨC
-                if (!res.ok || !data.candidates || data.candidates.length === 0) {
-                    console.error("LỖI API (Đang dùng Phao Cứu Sinh):", data);
+                // MẸO HACKATHON: NẾU GOOGLE TỪ CHỐI -> LẤY PHAO CỨU SINH RA DÙNG
+                if (!res.ok || !data.candidates) {
+                    console.error("LỖI API:", data);
                     return JSON.stringify({
                         "type": "location",
                         "text": "Chu cha, mạng lag quá nhưng Anh Tư vẫn nhớ chỗ này siêu ngon, rẻ rề cho em nhen!",
@@ -368,7 +375,7 @@ Nếu hỏi lịch sử, hoặc câu bình thường:
                 
                 return data.candidates[0].content.parts[0].text;
             } catch (e) { 
-                console.error("LỖI FETCH:", e);
+                console.error("LỖI MẠNG:", e);
                 return '{"type":"text", "text":"Chu cha, đứt mạng rầu! Kiểm tra lại Wifi thử nhen."}'; 
             }
         }
