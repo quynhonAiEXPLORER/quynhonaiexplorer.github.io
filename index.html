@@ -285,7 +285,8 @@
                         // ĐÃ SỬA ĐỊNH DẠNG LINK GOOGLE MAPS TẠI ĐÂY
                         const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " Quy Nhơn")}`;
                         // Thêm tham số ngẫu nhiên để ép trình duyệt tải ảnh mới
-                        const autoImageUrl = `https://loremflickr.com/500/300/${place.image_keyword || 'vietnam'}?random=${Math.random()}`;
+                        const promptText = encodeURIComponent(place.name + " Quy Nhon, realistic photo");
+                        const autoImageUrl = `https://image.pollinations.ai/prompt/${promptText}?width=500&height=300&nologo=true&seed=${Math.floor(Math.random() * 100000)}`;
 
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
