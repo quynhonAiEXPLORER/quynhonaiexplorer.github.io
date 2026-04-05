@@ -288,16 +288,17 @@
                         const promptText = encodeURIComponent(place.name + " Quy Nhon, realistic photo");
                         const autoImageUrl = `https://image.pollinations.ai/prompt/${promptText}?width=500&height=300&nologo=true&seed=${Math.floor(Math.random() * 100000)}`;
 
-                        finalHtml += `
-                        <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
-                            <img src="${autoImageUrl}" onerror="this.src='https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=80'" class="w-full h-32 object-cover">
-                            <div class="p-3">
-                                <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
-                                <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
-                                <p class="text-[11px] md:text-xs text-green-400 mb-3"><i class="fa-solid fa-tag w-4 text-green-400"></i> Giá tham khảo: ${place.price}</p>
-                                <div class="flex gap-2 mt-1">
-                                    <a href="${autoMapLink}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[12px] py-2 rounded-lg text-center font-bold flex items-center justify-center gap-1.5 transition">
-                                        <i class="fa-solid fa-map"></i> Xem Bản đồ
+                        // Tạo link nhúng bản đồ Google Maps động dựa theo tên địa điểm AI trả về
+                        const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(place.name + " Quy Nhơn")}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+            finalHtml += `
+                    <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
+                        <iframe width="100%" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapEmbedUrl}"></iframe>
+    
+                    <div class="p-3">
+                        <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
+                        <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
+                        ```
                                     </a>
                                 </div>
                             </div>
