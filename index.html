@@ -103,7 +103,7 @@
         </div>
 
         <footer class="mt-12 md:mt-20 text-gray-400 text-xs md:text-sm pb-8 md:pb-4 flex flex-col items-center gap-4">
-            <p>© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
+            <p>&copy; 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
             <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
         </footer>
     </div>
@@ -138,7 +138,7 @@
 
             <div id="chat-input-area" class="p-3 md:p-5 bg-gray-900/80 md:bg-white/5 border-t border-white/10 hidden pb-safe">
                 <form onsubmit="sendMessage(event)" class="relative flex gap-2">
-                    <input type="text" id="ai-input" placeholder="Hỏi Tư Nẫu chỗ ăn chơi nhen..." 
+                    <input type="text" id="ai-input" placeholder="Hỏi Tư Nẫu chỗ ăn, ngủ, chơi nghen..." 
                            class="flex-1 bg-white/10 border border-white/10 rounded-full md:rounded-2xl py-3 px-5 text-sm md:text-base text-white focus:outline-none focus:border-orange-500">
                     <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white w-12 md:w-14 rounded-full md:rounded-2xl flex items-center justify-center transition-colors cursor-pointer"><i class="fa-solid fa-paper-plane"></i></button>
                 </form>
@@ -176,7 +176,7 @@
                             <div class="message-row">
                                 <img src="${aiAvatar}" class="avatar border border-orange-500/30">
                                 <div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">
-                                    Chu cha! Chào Bạn. Tui là Anh Tư Nẫu. Bạn muốn đi chơi hay đi ăn cứ báo tui một tiếng nhen!
+                                    Chu cha! Chào Bạn. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, bạn muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!
                                 </div>
                             </div>
                           </div>`
@@ -289,16 +289,19 @@
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
-                        // Giao diện đã BỎ NÚT TIKTOK, CHỈ CÒN NÚT BẢN ĐỒ CHIẾM FULL CHIỀU NGANG
+                        // TẠO LINK BẢN ĐỒ VÀ ẢNH ĐỘNG THÔNG MINH
+                        const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " Quy Nhơn")}`;
+                        const autoImageUrl = `https://loremflickr.com/500/300/${place.image_keyword}`;
+
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
-                            <img src="${place.image_url}" onerror="this.src='https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=80'" class="w-full h-32 object-cover">
+                            <img src="${autoImageUrl}" onerror="this.src='https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=80'" class="w-full h-32 object-cover">
                             <div class="p-3">
                                 <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
                                 <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
-                                <p class="text-[11px] md:text-xs text-green-400 mb-3"><i class="fa-solid fa-tag w-4 text-green-400"></i> Giá: ${place.price}</p>
+                                <p class="text-[11px] md:text-xs text-green-400 mb-3"><i class="fa-solid fa-tag w-4 text-green-400"></i> Giá tham khảo: ${place.price}</p>
                                 <div class="flex gap-2 mt-1">
-                                    <a href="${place.map_link}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[12px] py-2 rounded-lg text-center font-bold flex items-center justify-center gap-1.5 transition">
+                                    <a href="${autoMapLink}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[12px] py-2 rounded-lg text-center font-bold flex items-center justify-center gap-1.5 transition">
                                         <i class="fa-solid fa-map"></i> Xem Bản đồ
                                     </a>
                                 </div>
@@ -314,56 +317,45 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
+        // --- HÀM GỌI API GEMINI 1.5 FLASH (BÁCH KHOA TOÀN THƯ) ---
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+            // Nâng cấp lên model gemini-1.5-flash để hỗ trợ cực tốt khả năng trích xuất
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
             
-            // PROMPT ĐÃ NÂNG CẤP: PHÂN RÕ ĐI CHƠI VÀ ĐI ĂN, TẠO SẴN LINK BẢN ĐỒ
-            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn. Giọng điệu thân thiện, hóm hỉnh, dùng từ "nhen", "nghen", "chu cha". Trả lời câu hỏi: "${userText}"
+            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". Trả lời: "${userText}"
 
---- DATABASE ĐỊA ĐIỂM QUY NHƠN (CHỈ DÙNG DỮ LIỆU TRONG NÀY):
+--- HƯỚNG DẪN TƯ DUY (BẮT BUỘC):
+1. KHÔNG BỊ GIỚI HẠN: Bạn có kiến thức rộng lớn về TẤT CẢ nhà hàng, quán ăn, khách sạn, điểm du lịch, đường đi tại Quy Nhơn. 
+2. XỬ LÝ YÊU CẦU: Nếu người dùng TÌM ĐỊA ĐIỂM cụ thể (Ăn uống, Khách sạn, Du lịch, Mua sắm...): Dựa vào hiểu biết thực tế của bạn, gợi ý 1 hoặc 2 địa điểm CÓ THẬT, UY TÍN NHẤT phù hợp với túi tiền họ yêu cầu. Đừng nói là không có thông tin.
+3. OUTPUT JSON: Trả về một CHUỖI JSON DUY NHẤT. KHÔNG dùng markdown \`\`\`json.
 
-[MỤC ĂN UỐNG]
-- Bánh Xèo Tôm Nhảy Gia Vỹ - Giá: 40k. Địa chỉ: 14 Diên Hồng. Ảnh: https://images.unsplash.com/photo-1625005470001-df5c1b6978df?w=500&q=80
-- Bún Cá Ngọc Liên - Giá: 35k. Địa chỉ: 379 Nguyễn Huệ. Ảnh: https://images.unsplash.com/photo-1594993877014-931bf88d44ee?w=500&q=80
-- Hải sản Eo Gió - Giá: 200k. Địa chỉ: Xã Nhơn Lý. Ảnh: https://images.unsplash.com/photo-1599084942896-675e73122f80?w=500&q=80
-
-[MỤC VUI CHƠI / THAM QUAN]
-- Tháp Đôi - Giá vé: 20k. Địa chỉ: Đường Trần Hưng Đạo. Ảnh: https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg
-- KDL Ghềnh Ráng & Mộ Hàn Mặc Tử - Giá vé: 10k. Địa chỉ: Ghềnh Ráng. Ảnh: https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/ghenhrang.jpg
-- Đảo Hòn Khô (Lặn san hô) - Giá: 100k. Địa chỉ: Xã Nhơn Hải. Ảnh: https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/honkho.jpg
-- Kỳ Co Eo Gió - Giá: 150k. Địa chỉ: Xã Nhơn Lý. Ảnh: https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg
-
---- BẮT BUỘC TUÂN THỦ CÁC BƯỚC SUY LUẬN SAU:
-1. Xác định ý định: Người dùng muốn "Đi chơi/Tham quan" hay "Đi ăn/uống"?
-   - Nếu hỏi ĐI CHƠI: TUYỆT ĐỐI KHÔNG đưa địa điểm ăn uống.
-   - Nếu hỏi ĐI ĂN: TUYỆT ĐỐI KHÔNG đưa địa điểm tham quan.
-2. Xác định ngân sách: Chọn địa điểm có Giá <= Ngân sách của họ.
-3. Xuất JSON: Trả về CHUỖI JSON DUY NHẤT, KHÔNG dùng markdown block (\`\`\`json).
-
-Cấu trúc JSON nếu tìm được địa điểm:
+Cấu trúc JSON nếu GỢI Ý ĐỊA ĐIỂM:
 {
   "type": "location",
-  "text": "Câu trả lời của bạn (Ví dụ: Chu cha, 100k đi chơi thì ra Hòn Khô nhen!)",
+  "text": "Câu trả lời của bạn tư vấn nhiệt tình...",
   "places": [
     {
-      "name": "Tên địa điểm",
-      "address": "Địa chỉ",
-      "price": "Giá",
-      "image_url": "Link ảnh tương ứng từ database",
-      "map_link": "https://www.google.com/maps/search/?api=1&query=[Tên+địa+điểm+Quy+Nhơn]"
+      "name": "Tên địa điểm chính xác",
+      "address": "Tên đường hoặc khu vực",
+      "price": "Khoảng giá",
+      "image_keyword": "1 từ khóa TIẾNG ANH mô tả chỗ này (ví dụ: seafood, hotel, beach, noodle, coffee)"
     }
   ]
 }
 
-Nếu câu hỏi không tìm địa điểm (chỉ chào hỏi), trả về: 
+Nếu hỏi lịch sử, văn hóa, hoặc không cần địa điểm cụ thể: 
 { "type": "text", "text": "Câu trả lời..." }`;
-            
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+
             try {
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (!res.ok) return '{"type":"text", "text":"Chu cha, mạng yếu tui hổng nghe rõ. Nói lại nhen!"}';
