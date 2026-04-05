@@ -256,15 +256,16 @@
             });
         }
 
-        // TỪ ĐIỂN ẢNH THẬT CHO CÁC ĐỊA ĐIỂM NỔI TIẾNG
+        // TỪ ĐIỂN ẢNH SIÊU BỀN (Link Wikipedia / GitHub)
         const realImages = {
             "kỳ co": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
-            "eo gió": "https://images.unsplash.com/photo-1574482620811-1aa16ffe3c82?w=500&q=80",
             "tháp đôi": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg",
-            "ngọc liên": "https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=500&q=80",
-            "bún rạm": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=500&q=80",
-            "tôm nhảy": "https://images.unsplash.com/photo-1625467000000-000000000000?w=500&q=80", 
-            "surf bar": "https://images.unsplash.com/photo-1543373072-69f3d4788832?w=500&q=80"
+            "eo gió": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Eo_Gio_-_Nhon_Ly_-_Quy_Nhon_-_Binh_Dinh.jpg/500px-Eo_Gio_-_Nhon_Ly_-_Quy_Nhon_-_Binh_Dinh.jpg",
+            "bún": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/B%C3%BAn_b%C3%B2_Hu%E1%BA%BF.jpg/500px-B%C3%BAn_b%C3%B2_Hu%E1%BA%BF.jpg",
+            "bánh hỏi": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Banh_hoi_thit_nuong.jpg/500px-Banh_hoi_thit_nuong.jpg",
+            "bánh xèo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/B%C3%A1nh_x%C3%A8o_1.jpg/500px-B%C3%A1nh_x%C3%A8o_1.jpg",
+            "hải sản": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Seafood_platter.jpg/500px-Seafood_platter.jpg",
+            "surf bar": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Quy_Nhon_beach.jpg/500px-Quy_Nhon_beach.jpg"
         };
 
         async function sendMessage(event) {
@@ -295,14 +296,13 @@
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
                         
-                        // FIX: LINK MAPS CHUẨN MỞ TRÊN ĐIỆN THOẠI/WEB ĐỀU ĐƯỢC
+                        // FIX: LINK MAPS HOẠT ĐỘNG THỰC TẾ
                         const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " Quy Nhơn")}`;
                         
                         // XỬ LÝ HÌNH ẢNH: Fuzzy Match (Tìm từ khóa)
                         let autoImageUrl = null;
                         const aiPlaceName = place.name.toLowerCase();
 
-                        // Quét qua từ điển xem tên AI trả về có chứa từ khóa của mình không
                         for (const key in realImages) {
                             if (aiPlaceName.includes(key)) {
                                 autoImageUrl = realImages[key];
@@ -310,11 +310,12 @@
                             }
                         }
 
-                        // Nếu không có trong từ điển thì lấy ảnh minh họa ngẫu nhiên an toàn
+                        // Nếu không có trong từ điển thì AI tự vẽ (bỏ loremflickr)
                         if (!autoImageUrl) {
-                            const safeKeyword = place.image_keyword ? place.image_keyword.replace(/[^a-zA-Z]/g, '') : 'vietnam';
+                            const safeKeyword = place.image_keyword ? place.image_keyword.replace(/[^a-zA-Z\s]/g, '') : 'vietnamese food';
+                            const promptAI = encodeURIComponent(safeKeyword + " Quy Nhon beautiful photography");
                             const randomId = Math.floor(Math.random() * 100000);
-                            autoImageUrl = `https://loremflickr.com/500/300/${safeKeyword}?lock=${randomId}`;
+                            autoImageUrl = `https://image.pollinations.ai/prompt/${promptAI}?width=500&height=300&nologo=true&seed=${randomId}`;
                         }
                         
                         const fallbackImg = "https://placehold.co/500x300/1e293b/f97316?text=Quy+Nhon+AI";
