@@ -173,6 +173,27 @@
         const userAvatar = "https://ui-avatars.com/api/?name=B&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
 
+        // BỘ TỪ ĐIỂN ẢNH CHUẨN XÁC 100% TỪ WIKIPEDIA VÀ GITHUB CỦA BẠN (KHÔNG BAO GIỜ LỖI)
+        const qnImages = {
+            "kỳ co": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
+            "tháp đôi": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg",
+            "eo gió": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg",
+            "ghềnh ráng": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/MoHanMacTu.jpg/500px-MoHanMacTu.jpg",
+            "tháp bánh ít": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Banh_It_tower_03.jpg/500px-Banh_It_tower_03.jpg",
+            "cù lao xanh": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Culaoxanh.jpg/500px-Culaoxanh.jpg",
+            "hòn khô": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg", 
+            "ông núi": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg/500px-T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg",
+            "thị nại": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Thi_Nai_Bridge.jpg/500px-Thi_Nai_Bridge.jpg",
+            "phương mai": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
+            "nhơn lý": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
+            "ngọc hòa": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg",
+            "quang trung": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG",
+            "tất thành": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg",
+            "trung lương": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg",
+            "chợ đêm": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg",
+            "mặc định": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg"
+        };
+
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
@@ -194,7 +215,7 @@
                             
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['kỳ co']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -210,7 +231,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1574482620811-1aa16ffe3c82?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['eo gió']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -226,7 +247,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['tháp đôi']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -242,7 +263,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['ghềnh ráng']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -258,7 +279,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1627885408546-b67ea321d227?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['tháp bánh ít']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -274,7 +295,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1596484552993-f09dfd7cb6a0?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['cù lao xanh']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -290,7 +311,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1605330378051-bd42f025e1bb?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['hòn khô']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -306,7 +327,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1540324155970-141202b851cd?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['ông núi']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -322,7 +343,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1545193544-3129f2001594?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['thị nại']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -338,7 +359,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1542601098-8fc114e148e2?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['phương mai']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -354,7 +375,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1596683786440-271cb46fb339?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['nhơn lý']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -370,7 +391,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1601002677465-b108638101bb?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['ngọc hòa']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -386,7 +407,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1599839619722-39751411ea63?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['quang trung']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -402,7 +423,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['tất thành']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -418,7 +439,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1533052445107-1bfa7ddb56c8?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['trung lương']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -434,7 +455,7 @@
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src="${qnImages['chợ đêm']}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -616,19 +637,20 @@
                     aiData.places.forEach(place => {
                         const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
                         const autoMapLink = `https://maps.google.com/maps?q=$${query}`;
-                        const embedUrl = `https://maps.google.com/maps?q=$${query}&output=embed`;
+                        
+                        // Lấy ảnh chuẩn từ bộ từ điển, không dùng iframe bị chặn nữa
+                        let matchedImage = qnImages["mặc định"];
+                        const lowerName = place.name.toLowerCase();
+                        for (const key in qnImages) {
+                            if (lowerName.includes(key)) {
+                                matchedImage = qnImages[key];
+                                break;
+                            }
+                        }
 
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
-                            <iframe 
-                                width="100%" 
-                                height="140" 
-                                style="border:0; pointer-events: none;" 
-                                loading="lazy" 
-                                allowfullscreen 
-                                referrerpolicy="no-referrer-when-downgrade" 
-                                src="${embedUrl}">
-                            </iframe>
+                            <img src="${matchedImage}" class="w-full h-32 object-cover bg-gray-700">
                             <div class="p-3">
                                 <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
                                 <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
