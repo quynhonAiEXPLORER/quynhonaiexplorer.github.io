@@ -173,7 +173,6 @@
         const userAvatar = "https://ui-avatars.com/api/?name=B&background=334155&color=fff&rounded=true";
         const aiAvatar = "https://github.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/blob/main/logo.png?raw=true";
 
-        // Thêm 2 tính năng mới vào cấu hình
         const features = {
             'Chatbot Thổ Địa': {
                 icon: '<i class="fa-regular fa-comments"></i>',
@@ -189,20 +188,266 @@
             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                        <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 transition">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-xl" />
-                            <div class="flex-1 flex flex-col justify-center">
-                                <h4 class="font-bold text-orange-400 text-sm md:text-base">Kỳ Co</h4>
-                                <p class="text-xs md:text-sm text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh.</p>
+                    <div class="space-y-4 pb-4">
+                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư 16 tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc đọc Wiki nhen!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                            
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Kỳ Co</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Bãi+Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/K%E1%BB%B3_Co" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 transition">
-                            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-xl" />
-                            <div class="flex-1 flex flex-col justify-center">
-                                <h4 class="font-bold text-orange-400 text-sm md:text-base">Tháp Đôi</h4>
-                                <p class="text-xs md:text-sm text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa độc đáo ngay lòng thành phố.</p>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1574482620811-1aa16ffe3c82?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Eo Gió</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Eo_Gi%C3%B3" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Đôi</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa cổ kính độc đáo ngay giữa lòng thành phố.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Th%C3%A1p_%C4%90%C3%B4i_(Quy_Nh%C6%A1n)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Ghềnh Ráng</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Bãi tắm đá trứng và nơi an nghỉ của thi sĩ Hàn Mặc Tử.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Khu+du+lịch+Ghềnh+Ráng+Tiên+Sa" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Gh%E1%BB%81nh_R%C3%A1ng_%E2%80%93_Ti%C3%AAn_Sa" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1627885408546-b67ea321d227?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Bánh Ít</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Quần thể tháp Chăm nghìn năm tuổi uy nghi trên đỉnh đồi.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Th%C3%A1p_B%C3%A1nh_%C3%8Dt" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1596484552993-f09dfd7cb6a0?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Cù Lao Xanh</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Hòn đảo ngọc nguyên sơ với ngọn hải đăng trăm tuổi.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/C%C3%B9_Lao_Xanh" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1605330378051-bd42f025e1bb?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Hòn Khô</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nổi tiếng với con đường cát xuyên biển và rạn san hô tuyệt đẹp.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Hòn+Khô+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/H%C3%B2n_Kh%C3%B4" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1540324155970-141202b851cd?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chùa Ông Núi</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Sở hữu tượng Phật ngồi cao nhất Đông Nam Á uy nghi trước biển.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Ch%C3%B9a_%C3%94ng_N%C3%BAi" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1545193544-3129f2001594?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Đầm Thị Nại</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Đầm nước mặn lớn nhất Bình Định, nơi có cây cầu vượt biển lừng danh.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Đầm+Thị+Nại+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/%C4%90%E1%BA%A7m_Th%E1%BB%8B_N%E1%BA%A1i" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1542601098-8fc114e148e2?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Đồi Cát Phương Mai</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Đồi cát khổng lồ thay đổi hình dạng theo gió mỗi ngày.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Đồi+Cát+Phương+Mai+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/B%C3%A1n_%C4%91%E1%BA%A3o_Ph%C6%B0%C6%A1ng_Mai" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1596683786440-271cb46fb339?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Làng chài Nhơn Lý</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Những con dốc bích họa tuyệt đẹp đậm chất Địa Trung Hải.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Nh%C6%A1n_L%C3%BD" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1601002677465-b108638101bb?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tịnh xá Ngọc Hòa</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi có tượng Phật đôi Quan Thế Âm cao nhất Việt Nam.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Tịnh+xá+Ngọc+Hòa+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Quy_Nh%C6%A1n" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1599839619722-39751411ea63?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Bảo tàng Quang Trung</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Lưu giữ những di vật và hào khí cờ đào của phong trào Tây Sơn.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Bảo+tàng+Quang+Trung+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/B%E1%BA%A3o_t%C3%A0ng_Quang_Trung" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Quảng trường TP</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Trái tim của thành phố biển với tượng đài Nguyễn Sinh Sắc và Nguyễn Tất Thành.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Quảng+trường+Nguyễn+Tất+Thành+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Quy_Nh%C6%A1n" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1533052445107-1bfa7ddb56c8?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>KDN Trung Lương</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Được ví như "Đảo Jeju phiên bản Việt" cực kỳ thơ mộng.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/B%C3%ACnh_%C4%90%E1%BB%8Bnh" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chợ Đêm Quy Nhơn</h4>
+                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Thiên đường ăn vặt và mua sắm sầm uất nhất về đêm.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="https://vi.wikipedia.org/wiki/Quy_Nh%C6%A1n" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-brands fa-wikipedia-w"></i> Wiki</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>`
             },
@@ -284,7 +529,6 @@
             });
         }
 
-        // --- Logic gọi API AI dạng Text chung ---
         async function fetchSpecialAI(promptText) {
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
@@ -297,7 +541,6 @@
             } catch(e) { return null; }
         }
 
-        // --- Tính năng: Nhật Ký AI ---
         async function generateJournal(event) {
             const btn = event.currentTarget;
             const originalHtml = btn.innerHTML;
@@ -318,7 +561,6 @@
             btn.disabled = false;
         }
 
-        // --- Tính năng: Gacha Thử Thách ---
         async function rollGacha(event) {
             const btn = event.currentTarget;
             const originalHtml = btn.innerHTML;
@@ -345,7 +587,6 @@
             btn.disabled = false;
         }
 
-        // --- Chatbot Thổ Địa ---
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
