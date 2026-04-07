@@ -93,7 +93,7 @@
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-purple-500/20 flex items-center justify-center text-purple-400 text-2xl md:text-3xl"><i class="fa-solid fa-headphones"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Audio Guide</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Nghe lịch sử</p></div>
             </div>
-            <div onclick="openFeature('Học Tiếng "Nẫu"')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+            <div onclick="openFeature('Học Tiếng &quot;Nẫu&quot;')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-book-open"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
@@ -256,28 +256,6 @@
             });
         }
 
-        // 1. TỪ ĐIỂN ẢNH BẤT TỬ (Đã test 100% link sống, không bị chặn)
-        const realImages = {
-            "kỳ co": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/kyco4.jpg",
-            "tháp đôi": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/refs/heads/main/thapdoi.jpg",
-            "eo gió": "https://images.unsplash.com/photo-1574482620811-1aa16ffe3c82?w=500",
-            "bún": "https://images.unsplash.com/photo-1596683786440-271cb46fb339?w=500",
-            "rạm": "https://images.unsplash.com/photo-1596683786440-271cb46fb339?w=500",
-            "bánh hỏi": "https://images.unsplash.com/photo-1633504581786-316c8002b1b9?w=500",
-            "bánh xèo": "https://images.unsplash.com/photo-1648986877983-662f551a3195?w=500",
-            "hải sản": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=500",
-            "ốc": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=500",
-            "cafe": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500",
-            "surf bar": "https://images.unsplash.com/photo-1543373072-69f3d4788832?w=500"
-        };
-
-        // 2. DANH SÁCH ẢNH DỰ PHÒNG XỊN SÒ
-        const safeFallbacks = [
-            "https://images.unsplash.com/photo-1555126634-323283e090fa?w=500",
-            "https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?w=500",
-            "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500"
-        ];
-
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
@@ -306,33 +284,26 @@
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
                         
-                        // FIX: LINK BẢN ĐỒ CHUẨN XÁC
-                        const query = encodeURIComponent(place.name + " Quy Nhơn");
-                        const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${query}`;
+                        // Tạo query tìm kiếm chuẩn xác gắn liền với Quy Nhơn
+                        const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
                         
-                        // XỬ LÝ HÌNH ẢNH
-                        let autoImageUrl = null;
-                        const aiPlaceName = place.name.toLowerCase();
-
-                        // Quét từ điển
-                        for (const key in realImages) {
-                            if (aiPlaceName.includes(key)) {
-                                autoImageUrl = realImages[key];
-                                break; 
-                            }
-                        }
-
-                        // Nếu không có, lấy random ảnh đẹp dự phòng
-                        if (!autoImageUrl) {
-                            const randomIndex = Math.floor(Math.random() * safeFallbacks.length);
-                            autoImageUrl = safeFallbacks[randomIndex];
-                        }
+                        // Link để mở sang tab Google Maps mới
+                        const autoMapLink = `https://maps.google.com/maps?q=$${query}`;
                         
-                        const fallbackImg = "https://placehold.co/500x300/1e293b/f97316?text=Quy+Nhon+AI";
+                        // Sử dụng thủ thuật &output=embed để nhúng trực tiếp bản đồ không cần API Key
+                        const embedUrl = `https://maps.google.com/maps?q=$${query}&output=embed`;
 
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
-                            <img src="${autoImageUrl}" onerror="this.src='${fallbackImg}'" class="w-full h-32 object-cover bg-gray-700">
+                            <iframe 
+                                width="100%" 
+                                height="140" 
+                                style="border:0; pointer-events: none;" 
+                                loading="lazy" 
+                                allowfullscreen 
+                                referrerpolicy="no-referrer-when-downgrade" 
+                                src="${embedUrl}">
+                            </iframe>
                             <div class="p-3">
                                 <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
                                 <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
