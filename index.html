@@ -567,7 +567,7 @@
         // Gọi AI bằng mô hình gemini-1.5-flash để ổn định, không bị lỗi 503
         async function fetchSpecialAI(promptText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             const payload = { 
                 contents: [{ parts: [{ text: promptText }] }],
                 generationConfig: { temperature: 0.7 } 
