@@ -1258,8 +1258,9 @@
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
             }
 
-            chatBox.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.innerHTML += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10">${text}</div></div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight
 
             if (currentUser.isLoggedIn) {
                 currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
