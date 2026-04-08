@@ -53,6 +53,7 @@
         @keyframes ping-slow { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
         
         .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
     </style>
 </head>
 <body class="flex flex-col items-center pt-20 pb-24 md:pb-8"> 
@@ -397,7 +398,7 @@
         }
 
         // ==========================================
-        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ (STEP-BY-STEP)
+        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS THẬT CHO TỪNG NGÀY
         // ==========================================
         let itinData = { days: '', style: '', budget: '', lat: null, lng: null, useLocation: false };
 
@@ -527,6 +528,7 @@
             content.innerHTML = stepHtml;
         }
 
+        // Xử lý lấy vị trí
         function getLocationAndNext() {
             const btn = document.getElementById('btn-location');
             btn.innerHTML = '<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> Đang lấy vị trí...</div>';
@@ -563,65 +565,138 @@
             renderStep(step + 1);
         }
 
+        // Gọi AI bằng mô hình gemini-1.5-flash để ổn định, không bị lỗi 503
+        async function fetchSpecialAI(promptText) {
+            const currentKey = getNextApiKey();
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+            const payload = { 
+                contents: [{ parts: [{ text: promptText }] }],
+                generationConfig: { temperature: 0.7 } 
+            };
+            
+            try {
+                const res = await fetch(API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+                const data = await res.json();
+                console.log("Dữ liệu AI trả về:", data);
+                if (data.candidates && data.candidates.length > 0) {
+                    return data.candidates[0].content.parts[0].text;
+                }
+                return null;
+            } catch(e) { 
+                console.error("Lỗi xử lý kết quả:", e);
+                return null; 
+            }
+        }
+
         async function startFinalGeneration() {
             renderStep('loading');
             const content = document.getElementById('modal-content');
             const userName = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
 
-            let locationContext = "Người dùng chưa chia sẻ vị trí, hãy tự động sắp xếp xuất phát từ trung tâm thành phố Quy Nhơn.";
+            let locationContext = "Tính từ trung tâm thành phố Quy Nhơn.";
             if (itinData.useLocation && itinData.lat && itinData.lng) {
-                locationContext = `Người dùng đang đứng tại tọa độ GPS: Latitude ${itinData.lat}, Longitude ${itinData.lng}. 
-                NẾU TỌA ĐỘ NÀY Ở QUY NHƠN: Hãy ưu tiên chọn điểm ăn sáng/tham quan đầu tiên CỰC KỲ GẦN tọa độ này.
-                NẾU TỌA ĐỘ NÀY KHÔNG Ở QUY NHƠN: Hãy vui vẻ thông báo "Ủa bạn đang ở xa lắc xa lơ mà", và vẫn lên lịch trình tại Quy Nhơn xuất phát từ Sân bay Phù Cát hoặc trung tâm thành phố.`;
+                locationContext = `Tọa độ GPS hiện tại: ${itinData.lat}, ${itinData.lng}. Gợi ý điểm gần nhất.`;
             }
 
-            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}" bằng giọng điệu miền Trung (nhen, nghen, chu cha).
-            Nhiệm vụ: Lập lịch trình du lịch cá nhân hóa.
-            - Thời gian: ${itinData.days}
-            - Gu du lịch: ${itinData.style}
-            - Ngân sách: ${itinData.budget}
-            - Ngữ cảnh vị trí thực: ${locationContext}
+            // Ép AI xuất JSON mảng, đảm bảo ngày nào cũng có highlight_place để chèn Map
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".
+            Lập lịch trình du lịch: ${itinData.days}, Gu: ${itinData.style}, Ngân sách: ${itinData.budget}.
+            Vị trí: ${locationContext}
             
             YÊU CẦU BẮT BUỘC:
-            1. Chỉ trả về mã HTML có sử dụng Tailwind CSS. TUYỆT ĐỐI KHÔNG DÙNG FORMAT MARKDOWN (không có dấu \`\`\`html).
-            2. Gợi ý cụ thể tên quán ăn, địa điểm có thật ở Quy Nhơn.
-            3. Trả về cấu trúc HTML bắt buộc như sau cho mỗi ngày:
-            <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
-                <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày X: [Chủ đề ngày]</h3>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> [Nội dung]</p>
-            </div>
-            4. Thêm 1 đoạn text cảm ơn hài hước cuối cùng.`;
+            1. CHỈ TRẢ VỀ CHUỖI JSON DUY NHẤT. KHÔNG DÙNG MARKDOWN.
+            2. BẮT BUỘC mảng "itinerary" phải có số lượng phần tử bằng đúng với số ngày khách yêu cầu (Ví dụ: khách chọn 3 ngày 2 đêm thì mảng phải có ĐÚNG 3 object cho Ngày 1, Ngày 2, Ngày 3).
+            3. Mỗi ngày BẮT BUỘC phải có trường "highlight_place" điền tên 1 địa danh hoặc quán ăn cụ thể.
+            4. Cấu trúc JSON BẮT BUỘC:
+            {
+                "message": "Lời chào và tóm tắt ngắn gọn lịch trình...",
+                "itinerary": [
+                    {
+                        "day": "Ngày 1",
+                        "title": "Chủ đề ngày",
+                        "morning": "Nội dung sáng...",
+                        "noon": "Nội dung trưa...",
+                        "afternoon": "Nội dung chiều...",
+                        "evening": "Nội dung tối...",
+                        "highlight_place": "Tên 1 địa danh nổi bật (VD: Kỳ Co)"
+                    }
+                ]
+            }`;
 
             const res = await fetchSpecialAI(prompt);
             
             if (res) {
-                content.innerHTML = `
-                    <div class="pb-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-bold uppercase"><i class="fa-solid fa-check"></i> Hoàn tất</span>
-                            <button onclick="openItineraryPlanner()" class="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 transition"><i class="fa-solid fa-rotate-right"></i> Làm lại</button>
-                        </div>
-                        ${res.replace(/```html/gi, '').replace(/```/gi, '').trim()}
-                    </div>`;
-                
-                if (currentUser.isLoggedIn) {
-                    currentUser.itineraries.push(`Lịch trình ${itinData.days} - Gu: ${itinData.style.split(',')[0]}`);
-                    saveUserData();
+                try {
+                    const cleanJsonStr = res.replace(/```json/gi, '').replace(/```html/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanJsonStr);
+
+                    let htmlContent = `
+                        <div class="pb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-bold uppercase"><i class="fa-solid fa-check"></i> Hoàn tất</span>
+                                <button onclick="openItineraryPlanner()" class="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 transition"><i class="fa-solid fa-rotate-right"></i> Làm lại</button>
+                            </div>
+                            <p class="text-sm text-gray-300 italic mb-4 border-l-2 border-orange-500 pl-3">"${data.message}"</p>
+                    `;
+
+                    // Duyệt qua TẤT CẢ các ngày và vẽ Google Maps thật
+                    data.itinerary.forEach(day => {
+                        const query = encodeURIComponent(day.highlight_place + ", Quy Nhơn, Bình Định");
+                        const embedUrl = `https://maps.google.com/maps?q=${query}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+                        htmlContent += `
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
+                            <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">${day.day}: ${day.title}</h3>
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> ${day.morning}</p>
+                            
+                            <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="${embedUrl}"></iframe>
+                            
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> ${day.noon}</p>
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> ${day.afternoon}</p>
+                            <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> ${day.evening}</p>
+                        </div>`;
+                    });
+
+                    htmlContent += `</div>`;
+                    content.innerHTML = htmlContent;
+                    
+                    if (currentUser.isLoggedIn) {
+                        currentUser.itineraries.push(`Lịch trình ${itinData.days} - Gu: ${itinData.style.split(',')[0]}`);
+                        saveUserData();
+                    }
+
+                } catch (err) {
+                    console.error("Lỗi Parse JSON:", err);
+                    renderFallback(content);
                 }
             } else {
-                content.innerHTML = `
-                    <div class="text-center py-10">
-                        <p class="text-red-400 mb-4">Trời ới, đứt mạng rầu! Tư Nẫu hổng vắt óc được, bạn thử lại nhen.</p>
-                        <button onclick="openItineraryPlanner()" class="bg-orange-500 text-white font-bold px-6 py-2.5 rounded-xl">Thử lại</button>
-                    </div>`;
+                renderFallback(content);
             }
         }
 
+        function renderFallback(content) {
+            content.innerHTML = `
+                <div class="pb-6">
+                    <div class="bg-red-500/10 border border-red-500/30 p-3 rounded-xl text-red-400 text-sm text-center mb-4">
+                        Mạng chập chờn xíu, gửi tạm bạn lịch trình chuẩn này tham khảo trước nhen!
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
+                        <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày 1: Biển xanh vẫy gọi</h3>
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> Khám phá eo biển Eo Gió tuyệt đẹp.</p>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> Ăn hải sản ven biển Nhơn Lý.</p>
+                        <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> Càn quét Chợ đêm Quy Nhơn.</p>
+                    </div>
+                    <button onclick="openItineraryPlanner()" class="w-full mt-2 bg-orange-500 text-white font-bold py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition">Thử tạo lại lịch trình AI</button>
+                </div>`;
+        }
+
         // ==========================================
-        // 4. TÍNH NĂNG CÒN LẠI (GIỮ NGUYÊN)
+        // 5. CÁC TÍNH NĂNG KHÁC (GIỮ NGUYÊN)
         // ==========================================
         const features = {
             'Bản đồ Khám phá': {
@@ -633,7 +708,7 @@
                             
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -641,15 +716,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Kỳ+Co,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Kỳ+Co,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -657,15 +732,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Eo+Gió,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Eo+Gió,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -673,15 +748,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa cổ kính độc đáo ngay giữa lòng thành phố.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Tháp+Đôi+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Tháp+Đôi,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Tháp+Đôi,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Tháp+Đôi+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Tháp+Đôi+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/MoHanMacTu.jpg/500px-MoHanMacTu.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/MoHanMacTu.jpg/500px-MoHanMacTu.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/MoHanMacTu.jpg/500px-MoHanMacTu.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -689,15 +764,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Bãi tắm đá trứng và nơi an nghỉ của thi sĩ Hàn Mặc Tử.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng+Tiên+Sa+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+khu+du+lịch+Ghềnh+Ráng+Tiên+Sa" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng,+Tiên+Sa,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng,+Tiên+Sa,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+khu+du+lịch+Ghềnh+Ráng+Tiên+Sa](https://www.google.com/search?q=Review+khu+du+lịch+Ghềnh+Ráng+Tiên+Sa)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Banh_It_tower_03.jpg/500px-Banh_It_tower_03.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Banh_It_tower_03.jpg/500px-Banh_It_tower_03.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Banh_It_tower_03.jpg/500px-Banh_It_tower_03.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -705,15 +780,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Quần thể tháp Chăm nghìn năm tuổi uy nghi trên đỉnh đồi.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+tham+quan+Tháp+Bánh+Ít" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít,+Bình+Định](https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít,+Bình+Định)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+tham+quan+Tháp+Bánh+Ít](https://www.google.com/search?q=Kinh+nghiệm+tham+quan+Tháp+Bánh+Ít)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Culaoxanh.jpg/500px-Culaoxanh.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Culaoxanh.jpg/500px-Culaoxanh.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Culaoxanh.jpg/500px-Culaoxanh.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -721,15 +796,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Hòn đảo ngọc nguyên sơ với ngọn hải đăng trăm tuổi.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Cù+Lao+Xanh+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Cù+Lao+Xanh+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Cù+Lao+Xanh+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -737,15 +812,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nổi tiếng với con đường cát xuyên biển và rạn san hô tuyệt đẹp.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Hòn+Khô+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+du+lịch+đảo+Hòn+Khô+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Hòn+Khô,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Hòn+Khô,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+du+lịch+đảo+Hòn+Khô+Quy+Nhơn](https://www.google.com/search?q=Review+du+lịch+đảo+Hòn+Khô+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg/500px-T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg/500px-T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg/500px-T%C6%B0%E1%BB%A3ng_Ph%E1%BA%ADt_ch%C3%B9a_%C3%94ng_N%C3%BAi.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -753,15 +828,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Sở hữu tượng Phật ngồi cao nhất Đông Nam Á uy nghi trước biển.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Chùa+Ông+Núi+Bình+Định" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi,+Bình+Định](https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi,+Bình+Định)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Chùa+Ông+Núi+Bình+Định](https://www.google.com/search?q=Review+Chùa+Ông+Núi+Bình+Định)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Thi_Nai_Bridge.jpg/500px-Thi_Nai_Bridge.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Thi_Nai_Bridge.jpg/500px-Thi_Nai_Bridge.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Thi_Nai_Bridge.jpg/500px-Thi_Nai_Bridge.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -769,15 +844,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Đầm nước mặn lớn nhất Bình Định, nơi có cây cầu vượt biển lừng danh.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Đầm+Thị+Nại+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Đầm+Thị+Nại" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Đầm+Thị+Nại,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Đầm+Thị+Nại,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Đầm+Thị+Nại](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Đầm+Thị+Nại)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -785,15 +860,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Đồi cát khổng lồ thay đổi hình dạng theo gió mỗi ngày.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Đồi+cát+Phương+Mai+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Đồi+Cát+Phương+Mai+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Đồi+Cát+Phương+Mai,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Đồi+Cát+Phương+Mai,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Đồi+Cát+Phương+Mai+Quy+Nhơn](https://www.google.com/search?q=Review+Đồi+Cát+Phương+Mai+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -801,15 +876,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Những con dốc bích họa tuyệt đẹp đậm chất Địa Trung Hải.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Làng+chài+Nhơn+Lý+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Làng+chài+Nhơn+Lý+Quy+Nhơn](https://www.google.com/search?q=Review+Làng+chài+Nhơn+Lý+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -817,15 +892,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi có tượng Phật đôi Quan Thế Âm cao nhất Việt Nam.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Tịnh+xá+Ngọc+Hòa+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Tịnh+xá+Ngọc+Hòa+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Tịnh+xá+Ngọc+Hòa,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Tịnh+xá+Ngọc+Hòa,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Tịnh+xá+Ngọc+Hòa+Quy+Nhơn](https://www.google.com/search?q=Review+Tịnh+xá+Ngọc+Hòa+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG](https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -833,15 +908,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Lưu giữ những di vật và hào khí cờ đào của phong trào Tây Sơn.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Bảo+tàng+Quang+Trung+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Bảo+tàng+Quang+Trung+Bình+Định" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Bảo+tàng+Quang+Trung,+Bình+Định](https://www.google.com/maps/search/?api=1&query=Bảo+tàng+Quang+Trung,+Bình+Định)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Bảo+tàng+Quang+Trung+Bình+Định](https://www.google.com/search?q=Review+Bảo+tàng+Quang+Trung+Bình+Định)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg/500px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Nguy%E1%BB%85n_Sinh_S%E1%BA%AFc_v%C3%A0_Nguy%E1%BB%85n_T%E1%BA%A5t_Th%C3%A0nh.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -849,15 +924,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Trái tim của thành phố biển với tượng đài Nguyễn Sinh Sắc và Nguyễn Tất Thành.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Quảng+trường+Nguyễn+Tất+Thành+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+vui+chơi+Quảng+trường+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Quảng+trường+Nguyễn+Tất+Thành,+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Quảng+trường+Nguyễn+Tất+Thành,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+vui+chơi+Quảng+trường+Quy+Nhơn](https://www.google.com/search?q=Review+vui+chơi+Quảng+trường+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -865,15 +940,15 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Được ví như "Đảo Jeju phiên bản Việt" cực kỳ thơ mộng.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương+Bình+Định" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Review+Khu+dã+ngoại+Trung+Lương+Bình+Định" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương,+Bình+Định](https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương,+Bình+Định)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Review+Khu+dã+ngoại+Trung+Lương+Bình+Định](https://www.google.com/search?q=Review+Khu+dã+ngoại+Trung+Lương+Bình+Định)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                    <img src="[https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg](https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
@@ -881,8 +956,8 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Thiên đường ăn vặt và mua sắm sầm uất nhất về đêm.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+ăn+uống+Chợ+Đêm+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <a href="[https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn](https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://www.google.com/search?q=Kinh+nghiệm+ăn+uống+Chợ+Đêm+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+ăn+uống+Chợ+Đêm+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
                             </div>
@@ -1061,7 +1136,6 @@
                 content.innerHTML = features[name]?.content || '';
                 chatArea.classList.add('hidden');
                 
-                // NẾU LÀ THỜI TIẾT THÌ GỌI API LẤY DỮ LIỆU
                 if (name === 'Thời Tiết & Đi Đảo') {
                     fetchRealWeather();
                 }
@@ -1076,18 +1150,6 @@
             document.querySelectorAll('.nau-item').forEach(item => {
                 item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
             });
-        }
-
-        async function fetchSpecialAI(promptText) {
-            const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
-            const payload = { contents: [{ parts: [{ text: promptText }] }] };
-            try {
-                const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                const data = await res.json();
-                if(data.candidates) return data.candidates[0].content.parts[0].text;
-                return null;
-            } catch(e) { return null; }
         }
 
         async function generateJournal(event) {
@@ -1174,8 +1236,8 @@
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     aiData.places.forEach(place => {
                         const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
-                        const autoMapLink = 'https://www.google.com/maps/search/?api=1&query=' + query;
-                        const embedUrl = 'https://maps.google.com/maps?q=' + query + '&output=embed';
+                        const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${query}`;
+                        const embedUrl = `https://maps.google.com/maps?q=${query}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
 
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
@@ -1256,12 +1318,10 @@ Nếu không cần địa điểm:
         // HÀM LẤY THỜI TIẾT THỰC TẾ VÀ DỰ BÁO 5 NGÀY (OPEN-METEO)
         async function fetchRealWeather() {
             try {
-                // Tọa độ của Quy Nhơn: 13.77° N, 109.22° E
-                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
+                const url = '[https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok](https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok)';
                 const res = await fetch(url);
                 const data = await res.json();
                 
-                // 1. Xử lý thời tiết hiện tại
                 const current = data.current_weather;
                 const temp = Math.round(current.temperature);
                 const isDay = current.is_day;
@@ -1278,7 +1338,6 @@ Nếu không cần địa điểm:
                 let canoState = 'Hoạt Động 🟢';
                 let advice = '';
 
-                // Phân tích mã thời tiết, tốc độ gió và NHIỆT ĐỘ để tư vấn
                 if (weatherCode >= 51 && weatherCode <= 67) {
                     desc = 'Trời có mưa';
                     icon = '<i class="fa-solid fa-cloud-rain"></i>';
@@ -1299,7 +1358,6 @@ Nếu không cần địa điểm:
                     colorClass = 'text-yellow-200';
                     advice = 'Tối rầu, biển êm nhưng cano không chạy nữa đâu. Lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
                 } else {
-                    // Ban ngày và không mưa -> Đánh giá theo nhiệt độ
                     if (weatherCode >= 1 && weatherCode <= 3) {
                         desc = 'Có mây rải rác';
                         icon = '<i class="fa-solid fa-cloud-sun"></i>';
@@ -1323,7 +1381,6 @@ Nếu không cần địa điểm:
                 document.getElementById('cano-state').innerHTML = canoState;
                 document.getElementById('weather-advice').innerHTML = advice;
 
-                // 2. Xử lý dự báo 5 ngày (Bắt đầu từ ngày mai - index 1)
                 const forecastContainer = document.getElementById('forecast-container');
                 forecastContainer.innerHTML = '';
                 
