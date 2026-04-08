@@ -527,6 +527,7 @@
             content.innerHTML = stepHtml;
         }
 
+        // Xử lý lấy vị trí
         function getLocationAndNext() {
             const btn = document.getElementById('btn-location');
             btn.innerHTML = '<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> Đang lấy vị trí...</div>';
@@ -552,15 +553,45 @@
             }
         }
 
+        // Chuyển bước
         function selectStep(step, value) {
             if (step === 2) itinData.days = value;
             if (step === 3) itinData.style = value;
             if (step === 4) {
                 itinData.budget = value;
-                startFinalGeneration();
+                startFinalGeneration(); // Gọi AI
                 return;
             }
             renderStep(step + 1);
+        }
+
+        // ==========================================
+        // CẬP NHẬT GỌI AI VỚI PROMPT MỚI, ÉP TRẢ VỀ GOOGLE MAPS
+        // ==========================================
+        async function fetchSpecialAI(promptText) {
+            const currentKey = getNextApiKey();
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+            const payload = { 
+                contents: [{ parts: [{ text: promptText }] }],
+                generationConfig: { temperature: 0.7 } 
+            };
+            
+            try {
+                const res = await fetch(API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+                const data = await res.json();
+                console.log("Dữ liệu AI trả về:", data);
+                if (data.candidates && data.candidates.length > 0) {
+                    return data.candidates[0].content.parts[0].text;
+                }
+                return null;
+            } catch(e) { 
+                console.error("Lỗi xử lý kết quả:", e);
+                return null; 
+            }
         }
 
         async function startFinalGeneration() {
@@ -568,43 +599,39 @@
             const content = document.getElementById('modal-content');
             const userName = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
 
-            let locationContext = "Người dùng chưa chia sẻ vị trí, hãy tự động sắp xếp xuất phát từ trung tâm thành phố Quy Nhơn.";
+            let locationContext = "Tính từ trung tâm thành phố Quy Nhơn.";
             if (itinData.useLocation && itinData.lat && itinData.lng) {
-                locationContext = `Người dùng đang đứng tại tọa độ GPS: Latitude ${itinData.lat}, Longitude ${itinData.lng}. 
-                NẾU TỌA ĐỘ NÀY Ở QUY NHƠN: Hãy ưu tiên chọn điểm ăn sáng/tham quan đầu tiên CỰC KỲ GẦN tọa độ này.
-                NẾU TỌA ĐỘ NÀY KHÔNG Ở QUY NHƠN: Hãy vui vẻ thông báo "Ủa bạn đang ở xa lắc xa lơ mà", và vẫn lên lịch trình tại Quy Nhơn xuất phát từ Sân bay Phù Cát hoặc trung tâm thành phố.`;
+                locationContext = `Tọa độ GPS hiện tại: ${itinData.lat}, ${itinData.lng}. Gợi ý điểm gần nhất.`;
             }
 
-            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}" bằng giọng điệu miền Trung (nhen, nghen, chu cha).
-            Nhiệm vụ: Lập lịch trình du lịch cá nhân hóa.
-            - Thời gian: ${itinData.days}
-            - Gu du lịch: ${itinData.style}
-            - Ngân sách: ${itinData.budget}
-            - Ngữ cảnh vị trí thực: ${locationContext}
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn.
+            Lập lịch trình: ${itinData.days}, Gu: ${itinData.style}, Ngân sách: ${itinData.budget}.
+            Vị trí: ${locationContext}
             
             YÊU CẦU BẮT BUỘC:
-            1. Chỉ trả về mã HTML có sử dụng Tailwind CSS. TUYỆT ĐỐI KHÔNG DÙNG FORMAT MARKDOWN (không có dấu \`\`\`html).
-            2. Gợi ý cụ thể tên quán ăn, địa điểm có thật ở Quy Nhơn.
-            3. Trả về cấu trúc HTML bắt buộc như sau cho mỗi ngày:
+            1. CHỈ TRẢ VỀ MÃ HTML THUẦN (dùng Tailwind CSS). TUYỆT ĐỐI KHÔNG DÙNG FORMAT MARKDOWN (không bao bọc bởi \`\`\`html).
+            2. TUYỆT ĐỐI KHÔNG dùng thẻ <img> với link ảnh tự bịa. Nếu có địa điểm nổi bật, hãy chèn iframe Google Maps Embed bằng cấu trúc: <iframe width="100%" height="150" class="rounded-xl mt-2 mb-2 opacity-90" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=[Tên_địa_điểm]+Quy+Nhon&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+            3. Cấu trúc mỗi ngày:
             <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
-                <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày X: [Chủ đề ngày]</h3>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> [Nội dung]</p>
-                <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> [Nội dung]</p>
-            </div>
-            4. Thêm 1 đoạn text cảm ơn hài hước cuối cùng.`;
+                <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày X: [Chủ đề]</h3>
+                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> [Địa điểm]</p>
+                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> [Quán ăn]</p>
+                <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> [Địa điểm]</p>
+                <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> [Quán ăn]</p>
+            </div>`;
 
             const res = await fetchSpecialAI(prompt);
             
             if (res) {
+                let cleanHtml = res.replace(/```html/gi, '').replace(/```/gi, '').trim();
+
                 content.innerHTML = `
                     <div class="pb-6">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-bold uppercase"><i class="fa-solid fa-check"></i> Hoàn tất</span>
                             <button onclick="openItineraryPlanner()" class="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 transition"><i class="fa-solid fa-rotate-right"></i> Làm lại</button>
                         </div>
-                        ${res.replace(/```html/gi, '').replace(/```/gi, '').trim()}
+                        ${cleanHtml}
                     </div>`;
                 
                 if (currentUser.isLoggedIn) {
@@ -613,15 +640,24 @@
                 }
             } else {
                 content.innerHTML = `
-                    <div class="text-center py-10">
-                        <p class="text-red-400 mb-4">Trời ới, đứt mạng rầu! Tư Nẫu hổng vắt óc được, bạn thử lại nhen.</p>
-                        <button onclick="openItineraryPlanner()" class="bg-orange-500 text-white font-bold px-6 py-2.5 rounded-xl">Thử lại</button>
+                    <div class="pb-6">
+                        <div class="bg-red-500/10 border border-red-500/30 p-3 rounded-xl text-red-400 text-sm text-center mb-4">
+                            Tư Nẫu đang bận xíu, gửi tạm bạn lịch trình chuẩn này tham khảo trước nhen!
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
+                            <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày 1: Biển xanh vẫy gọi</h3>
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> Khám phá eo biển Eo Gió tuyệt đẹp.</p>
+                            <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Eo+Gio+Quy+Nhon&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> Ăn hải sản ven biển Nhơn Lý.</p>
+                            <p class="text-sm text-gray-300"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> Càn quét Chợ đêm Quy Nhơn.</p>
+                        </div>
+                        <button onclick="openItineraryPlanner()" class="w-full mt-2 bg-orange-500 text-white font-bold py-3 rounded-2xl shadow-lg">Thử tạo lại lịch trình AI</button>
                     </div>`;
             }
         }
 
         // ==========================================
-        // 4. TÍNH NĂNG CÒN LẠI (GIỮ NGUYÊN)
+        // 5. CÁC TÍNH NĂNG KHÁC (GIỮ NGUYÊN)
         // ==========================================
         const features = {
             'Bản đồ Khám phá': {
@@ -1061,7 +1097,6 @@
                 content.innerHTML = features[name]?.content || '';
                 chatArea.classList.add('hidden');
                 
-                // NẾU LÀ THỜI TIẾT THÌ GỌI API LẤY DỮ LIỆU
                 if (name === 'Thời Tiết & Đi Đảo') {
                     fetchRealWeather();
                 }
@@ -1076,18 +1111,6 @@
             document.querySelectorAll('.nau-item').forEach(item => {
                 item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
             });
-        }
-
-        async function fetchSpecialAI(promptText) {
-            const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
-            const payload = { contents: [{ parts: [{ text: promptText }] }] };
-            try {
-                const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                const data = await res.json();
-                if(data.candidates) return data.candidates[0].content.parts[0].text;
-                return null;
-            } catch(e) { return null; }
         }
 
         async function generateJournal(event) {
@@ -1208,7 +1231,7 @@
 
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
             const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Khách";
             
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". 
@@ -1278,7 +1301,6 @@ Nếu không cần địa điểm:
                 let canoState = 'Hoạt Động 🟢';
                 let advice = '';
 
-                // Phân tích mã thời tiết, tốc độ gió và NHIỆT ĐỘ để tư vấn
                 if (weatherCode >= 51 && weatherCode <= 67) {
                     desc = 'Trời có mưa';
                     icon = '<i class="fa-solid fa-cloud-rain"></i>';
@@ -1299,7 +1321,6 @@ Nếu không cần địa điểm:
                     colorClass = 'text-yellow-200';
                     advice = 'Tối rầu, biển êm nhưng cano không chạy nữa đâu. Lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
                 } else {
-                    // Ban ngày và không mưa -> Đánh giá theo nhiệt độ
                     if (weatherCode >= 1 && weatherCode <= 3) {
                         desc = 'Có mây rải rác';
                         icon = '<i class="fa-solid fa-cloud-sun"></i>';
@@ -1323,7 +1344,7 @@ Nếu không cần địa điểm:
                 document.getElementById('cano-state').innerHTML = canoState;
                 document.getElementById('weather-advice').innerHTML = advice;
 
-                // 2. Xử lý dự báo 5 ngày (Bắt đầu từ ngày mai - index 1)
+                // 2. Xử lý dự báo 5 ngày
                 const forecastContainer = document.getElementById('forecast-container');
                 forecastContainer.innerHTML = '';
                 
