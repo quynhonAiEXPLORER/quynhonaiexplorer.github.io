@@ -1103,9 +1103,13 @@ Nếu không cần địa điểm:
 
         async function fetchRealWeather() {
             try {
-                const url = '[https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok](https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok)';
+                // Đã xóa &windspeed_10m=true và sửa thành timezone=Asia/Bangkok
+                const url = '[https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia/Bangkok](https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia/Bangkok)';
                 const res = await fetch(url);
                 const data = await res.json();
+                
+                // Nếu API trả về thông báo lỗi, lập tức ném lỗi để nhảy vào catch
+                if (data.error) throw new Error(data.reason);
                 
                 const current = data.current_weather;
                 const temp = Math.round(current.temperature);
