@@ -598,7 +598,8 @@
 
         async function fetchSpecialAI(promptText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+            // Đã cập nhật model gemini-1.5-flash-latest
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${currentKey}`;
             const payload = { 
                 contents: [{ parts: [{ text: promptText }] }],
                 generationConfig: { temperature: 0.7 } 
@@ -629,7 +630,7 @@
 
             let locationContext = "Tính từ trung tâm thành phố Quy Nhơn.";
             if (itinData.useLocation && itinData.lat && itinData.lng) {
-                locationContext = `Tọa độ GPS hiện tại: ${itinData.lat}, ${itinData.lng}. Gợi ý điểm gần nhất.`;
+                locationContext = `Tọa độ GPS hiện tại: ${itinData.lat}, ${itinData.lng}. Gợi điểm gần nhất.`;
             }
 
             const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".
@@ -727,14 +728,14 @@
                         <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày 1: Biển xanh vẫy gọi</h3>
                         
                         <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> Khám phá eo biển Eo Gió tuyệt đẹp.</p>
-                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Eo+Gio+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Eo+Gio+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
                         
                         <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> Ăn hải sản ven biển Nhơn Lý.</p>
                         <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> Lặn ngắm san hô tại bãi tắm Kỳ Co.</p>
-                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Bãi+tắm+Kỳ+Co,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Bãi+tắm+Kỳ+Co,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Ky+Co+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Ky+Co+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
                         
                         <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> Càn quét ẩm thực tại Chợ đêm Quy Nhơn.</p>
-                        <iframe width="100%" height="150" class="rounded-xl mt-2 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Chợ+Đêm+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Chợ+Đêm+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="[https://maps.google.com/maps?q=Cho+dem+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed](https://maps.google.com/maps?q=Cho+dem+Quy+Nhon&t=&z=14&ie=UTF8&iwloc=&output=embed)"></iframe>
                     </div>
                     <button onclick="openItineraryPlanner()" class="w-full mt-2 bg-orange-500 text-white font-bold py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition">Thử tạo lại lịch trình AI</button>
                 </div>`;
@@ -761,7 +762,7 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="[https://maps.google.com/maps?q=Kỳ+Co,+Quy+Nhơn](https://maps.google.com/maps?q=Kỳ+Co,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://maps.google.com/maps?q=Kỳ+Co+Quy+Nhơn](https://maps.google.com/maps?q=Kỳ+Co+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
                                         <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
@@ -777,7 +778,7 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="[https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn](https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://maps.google.com/maps?q=Eo+Gió+Quy+Nhơn](https://maps.google.com/maps?q=Eo+Gió+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
                                         <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
@@ -793,7 +794,7 @@
                                         <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa cổ kính độc đáo ngay giữa lòng thành phố.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
-                                        <a href="[https://maps.google.com/maps?q=Tháp+Đôi,+Quy+Nhơn](https://maps.google.com/maps?q=Tháp+Đôi,+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <a href="[https://maps.google.com/maps?q=Tháp+Đôi+Quy+Nhơn](https://maps.google.com/maps?q=Tháp+Đôi+Quy+Nhơn)" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
                                         <a href="[https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Tháp+Đôi+Quy+Nhơn](https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Tháp+Đôi+Quy+Nhơn)" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
                                     </div>
                                 </div>
@@ -1056,7 +1057,8 @@
 
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+            // Đã cập nhật model gemini-1.5-flash-latest
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${currentKey}`;
             const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Khách";
             
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". 
@@ -1093,6 +1095,7 @@ Nếu không cần địa điểm:
                 if (!res.ok || !data.candidates) throw new Error("API Error");
                 return data.candidates[0].content.parts[0].text;
             } catch (e) { 
+                console.error("Lỗi API Tư Nẫu:", e);
                 return JSON.stringify({
                     "type": "location",
                     "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, nhưng Anh Tư vẫn nhớ chỗ này siêu ngon nhen!`,
@@ -1103,19 +1106,18 @@ Nếu không cần địa điểm:
 
         async function fetchRealWeather() {
             try {
-                // Đã xóa &windspeed_10m=true và sửa thành timezone=Asia/Bangkok
-                const url = '[https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia/Bangkok](https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia/Bangkok)';
+                const url = '[https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current=temperature_2m,is_day,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max&timezone=Asia%2FBangkok](https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current=temperature_2m,is_day,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max&timezone=Asia%2FBangkok)';
+                
                 const res = await fetch(url);
+                if (!res.ok) throw new Error("Không thể kết nối đến máy chủ thời tiết");
+                
                 const data = await res.json();
                 
-                // Nếu API trả về thông báo lỗi, lập tức ném lỗi để nhảy vào catch
-                if (data.error) throw new Error(data.reason);
-                
-                const current = data.current_weather;
-                const temp = Math.round(current.temperature);
+                const current = data.current;
+                const temp = Math.round(current.temperature_2m);
                 const isDay = current.is_day;
-                const weatherCode = current.weathercode;
-                const windSpeed = current.windspeed;
+                const weatherCode = current.weather_code;
+                const windSpeed = current.wind_speed_10m;
                 
                 document.getElementById('temp-display').innerText = temp + '°C';
                 
@@ -1176,10 +1178,11 @@ Nếu không cần địa điểm:
                 const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
                 
                 for (let i = 1; i <= 5; i++) {
+                    if (!data.daily.time[i]) continue;
                     const date = new Date(data.daily.time[i]);
                     const dayName = days[date.getDay()];
                     const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
-                    const code = data.daily.weathercode[i];
+                    const code = data.daily.weather_code[i];
                     
                     let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
                     if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
@@ -1197,10 +1200,10 @@ Nếu không cần địa điểm:
             } catch (error) {
                 console.error("Lỗi lấy thời tiết:", error);
                 document.getElementById('temp-display').innerText = '30°C';
-                document.getElementById('weather-desc').innerText = 'Nắng vàng biển xanh (Dữ liệu offline)';
+                document.getElementById('weather-desc').innerText = 'Trời đẹp (Dữ liệu Offline)';
                 document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                document.getElementById('weather-advice').innerText = 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
-                document.getElementById('forecast-container').innerHTML = '<span class="text-xs text-gray-500">Không tải được dự báo.</span>';
+                document.getElementById('weather-advice').innerText = 'Anh Tư không cập nhật được thời tiết mới nhất rầu, bạn xem tạm dữ liệu mặc định nhen!';
+                document.getElementById('forecast-container').innerHTML = '<span class="text-xs text-red-400 pl-1">Không tải được dự báo.</span>';
             }
         }
 
