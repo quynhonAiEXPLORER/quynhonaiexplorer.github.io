@@ -118,7 +118,7 @@
     </div>
 
     <div class="fixed bottom-[85px] right-4 md:bottom-10 md:right-10 z-40">
-        <button onclick="alert('Đang khởi động Camera AI...')" class="relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-[0_4px_20px_rgba(249,115,22,0.5)] active:scale-90 transition-transform">
+        <button onclick="openCamera()" class="relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-[0_4px_20px_rgba(249,115,22,0.5)] active:scale-90 transition-transform">
             <i class="fa-solid fa-camera"></i>
             <span class="absolute inset-0 rounded-full border-2 border-orange-400 animate-ping-slow pointer-events-none"></span>
         </button>
@@ -155,6 +155,27 @@
         </div>
     </div>
 
+    <div id="camera-modal" class="fixed inset-0 z-[60] hidden bg-black flex flex-col modal-slide-up">
+        <div class="flex justify-between items-center p-4 bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 right-0 z-10">
+            <h3 class="text-white font-bold text-lg drop-shadow-md"><i class="fa-solid fa-camera text-orange-500 mr-2"></i>Mắt Thần AI</h3>
+            <button onclick="closeCamera()" class="text-white bg-white/20 hover:bg-white/30 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+
+        <div class="flex-1 relative flex items-center justify-center bg-black overflow-hidden">
+            <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover"></video>
+            <img id="camera-preview" class="w-full h-full object-cover hidden">
+            <canvas id="camera-canvas" class="hidden"></canvas>
+        </div>
+
+        <div class="p-6 bg-gradient-to-t from-black via-black/80 to-transparent flex justify-center items-center gap-6 absolute bottom-0 left-0 right-0 pb-safe h-32">
+            <button id="btn-retake" onclick="retakePhoto()" class="hidden text-white font-semibold py-2.5 px-5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition">Chụp lại</button>
+            <button id="btn-capture" onclick="takePhoto()" class="w-16 h-16 rounded-full bg-white/20 border-4 border-white flex items-center justify-center active:scale-90 transition-transform">
+                <div class="w-12 h-12 bg-white rounded-full"></div>
+            </button>
+            <button id="btn-analyze" onclick="analyzePhoto()" class="hidden bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-2.5 px-6 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition">Hỏi Tư Nẫu</button>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // 1. CẤU HÌNH FIREBASE AUTHENTICATION & FIRESTORE
@@ -172,9 +193,8 @@
         try {
             firebase.initializeApp(firebaseConfig);
             auth = firebase.auth();
-            db = firebase.firestore(); // Khởi tạo Firestore
+            db = firebase.firestore(); 
             googleProvider = new firebase.auth.GoogleAuthProvider();
-            // Đã xóa facebookProvider theo yêu cầu
         } catch(e) {
             console.error("Firebase Init Error:", e);
         }
@@ -204,7 +224,6 @@
                         itineraries: []
                     };
 
-                    // Kéo dữ liệu từ Cloud Firestore về
                     if (db) {
                         try {
                             const doc = await db.collection('users').doc(user.uid).get();
@@ -227,7 +246,6 @@
             });
         }
 
-        // Hàm đẩy dữ liệu lên Firestore
         async function saveUserData() {
             if (currentUser.isLoggedIn && currentUser.uid && db) {
                 try {
@@ -317,11 +335,9 @@
             document.getElementById('modal-content').innerHTML = `
             <div class="w-full max-w-sm mx-auto bg-white rounded-2xl p-6 md:p-8 text-gray-800 shadow-xl mt-2 mb-4">
                 <h2 class="text-2xl md:text-3xl font-black text-center text-orange-600 mb-6 uppercase tracking-wide">Đăng nhập</h2>
-                
                 <button type="button" onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-lg hover:bg-orange-50 mb-6 transition cursor-pointer">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"><span class="font-bold text-gray-700">Tiếp tục với Google</span>
                 </button>
-
                 <div class="flex items-center gap-3 mb-6">
                     <div class="flex-1 h-px bg-gray-300"></div><span class="text-sm text-gray-500">hoặc</span><div class="flex-1 h-px bg-gray-300"></div>
                 </div>
@@ -415,7 +431,7 @@
         }
 
         // ==========================================
-        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS THẬT CHO TỪNG NGÀY
+        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS
         // ==========================================
         let itinData = { days: '', style: '', budget: '', lat: null, lng: null, useLocation: false };
 
@@ -582,7 +598,6 @@
 
         async function fetchSpecialAI(promptText) {
             const currentKey = getNextApiKey();
-            // TUYỆT ĐỐI GIỮ NGUYÊN MODEL gemini-3-flash-preview NHƯ YÊU CẦU
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             const payload = { 
                 contents: [{ parts: [{ text: promptText }] }],
@@ -726,7 +741,7 @@
         }
 
         // ==========================================
-        // 5. CÁC TÍNH NĂNG KHÁC (GIỮ NGUYÊN)
+        // 5. CÁC TÍNH NĂNG KHÁC 
         // ==========================================
         const features = {
             'Bản đồ Khám phá': {
@@ -1041,7 +1056,6 @@
 
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
-            // TUYỆT ĐỐI GIỮ NGUYÊN MODEL gemini-3-flash-preview NHƯ YÊU CẦU
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Khách";
             
@@ -1184,6 +1198,98 @@ Nếu không cần địa điểm:
                 document.getElementById('weather-advice').innerText = 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
                 document.getElementById('forecast-container').innerHTML = '<span class="text-xs text-gray-500">Không tải được dự báo.</span>';
             }
+        }
+
+        // ==========================================
+        // MODULE: CAMERA AI (WebRTC)
+        // ==========================================
+        let cameraStream = null;
+
+        async function openCamera() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-stream');
+            const preview = document.getElementById('camera-preview');
+            const btnCapture = document.getElementById('btn-capture');
+            const btnRetake = document.getElementById('btn-retake');
+            const btnAnalyze = document.getElementById('btn-analyze');
+
+            // Reset UI
+            preview.classList.add('hidden');
+            video.classList.remove('hidden');
+            btnCapture.classList.remove('hidden');
+            btnRetake.classList.add('hidden');
+            btnAnalyze.classList.add('hidden');
+            modal.classList.remove('hidden');
+
+            try {
+                // Yêu cầu quyền và mở camera sau
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "environment" },
+                    audio: false
+                });
+                video.srcObject = cameraStream;
+            } catch (err) {
+                console.error("Lỗi Camera:", err);
+                alert("Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh nhen.");
+                closeCamera();
+            }
+        }
+
+        function closeCamera() {
+            document.getElementById('camera-modal').classList.add('hidden');
+            if (cameraStream) {
+                // Tắt tất cả các luồng camera để tiết kiệm pin
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.getElementById('camera-canvas');
+            const preview = document.getElementById('camera-preview');
+            
+            // Khớp kích thước canvas với video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Vẽ frame hiện tại lên canvas
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Xuất ra Base64
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            preview.src = imageDataUrl;
+            
+            // Chuyển đổi UI sang chế độ xem trước
+            video.classList.add('hidden');
+            preview.classList.remove('hidden');
+            document.getElementById('btn-capture').classList.add('hidden');
+            document.getElementById('btn-retake').classList.remove('hidden');
+            document.getElementById('btn-analyze').classList.remove('hidden');
+        }
+
+        function retakePhoto() {
+            document.getElementById('camera-preview').classList.add('hidden');
+            document.getElementById('camera-stream').classList.remove('hidden');
+            document.getElementById('btn-capture').classList.remove('hidden');
+            document.getElementById('btn-retake').classList.add('hidden');
+            document.getElementById('btn-analyze').classList.add('hidden');
+        }
+
+        function analyzePhoto() {
+            // Lấy chuỗi Base64 của ảnh vừa chụp
+            const base64Image = document.getElementById('camera-preview').src;
+            
+            // Loại bỏ tiền tố "data:image/jpeg;base64," để truyền vào API nếu cần
+            const pureBase64 = base64Image.split(',')[1];
+            
+            console.log("Ảnh đã sẵn sàng dạng Base64:", pureBase64.substring(0, 50) + "...");
+            
+            // Đóng camera
+            closeCamera();
+            
+            // Thông báo cho bước tiếp theo
+            alert("Chụp ảnh thành công! Dữ liệu hình ảnh đã sẵn sàng để gửi cho AI.");
         }
     </script>
 </body>
