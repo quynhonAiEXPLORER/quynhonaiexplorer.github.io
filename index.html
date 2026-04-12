@@ -106,7 +106,7 @@
             </div>
 
             <div onclick="openFeature('Từ Điển Tiếng Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-language"></i></div>
+                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-book-open"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
         </div>
@@ -1052,37 +1052,70 @@
                     </div>`
             },
             'Từ Điển Tiếng Nẫu': {
-                icon: '<i class="fa-solid fa-language"></i>',
+                icon: '<i class="fa-solid fa-book-open"></i>',
                 content: `
-                    <div class="flex flex-col gap-5 h-full pb-8">
-                        <p class="text-sm text-gray-300 text-center px-4">Nhập từ vựng tiếng Nẫu dzo đây, AI sẽ tra cứu và dịch mượt như Google Translate nhen!</p>
+                    <div class="mb-6 relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-nau" onkeyup="searchNau()" placeholder="Tìm từ vựng hoặc cụm từ nhen..." 
+                               class="w-full bg-white/10 border border-white/20 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all">
+                    </div>
+                    
+                    <div id="nau-dictionary" class="grid grid-cols-1 md:grid-cols-2 gap-3 h-[55vh] overflow-y-auto no-scrollbar pb-10 pr-1">
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nẫu</h4><p class="text-sm text-gray-300">Người ta, họ, anh ấy/chị ấy.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Tui / Mi</h4><p class="text-sm text-gray-300">Tôi / Mày.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Bay</h4><p class="text-sm text-gray-300">Tụi mày, các bạn.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Qua / Bậu</h4><p class="text-sm text-gray-300">Anh / Em (Cách xưng hô tình tứ xưa).</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chế</h4><p class="text-sm text-gray-300">Chị.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Tía / Má</h4><p class="text-sm text-gray-300">Cha / Mẹ.</p></div>
                         
-                        <div class="bg-white/5 rounded-3xl border border-white/10 overflow-hidden shadow-2xl flex flex-col relative">
-                            
-                            <div class="p-5 border-b border-white/10 bg-black/40">
-                                <div class="flex justify-between items-center mb-3">
-                                    <span class="text-xs font-black text-orange-400 uppercase tracking-widest"><i class="fa-solid fa-pen-nib mr-1"></i> Tiếng Nẫu</span>
-                                </div>
-                                <textarea id="nau-input" rows="3" placeholder="Nhập từ hoặc câu (VD: Chu cha, nẫu mần chi dẫy)..." 
-                                          class="w-full bg-transparent text-white focus:outline-none resize-none text-lg placeholder-gray-500"></textarea>
-                            </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chu cha / Chu choa</h4><p class="text-sm text-gray-300">Trời ơi! (Biểu lộ sự ngạc nhiên).</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Gơ / Gớm</h4><p class="text-sm text-gray-300">Ghê (nhấn mạnh mức độ). VD: Đẹp gơ!</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Dữ dằn / Dữ thần</h4><p class="text-sm text-gray-300">Rất nhiều, ghê gớm.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Đẹp ác / Ngon ác</h4><p class="text-sm text-gray-300">Rất đẹp / Rất ngon.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nhức nách / Hết sẩy</h4><p class="text-sm text-gray-300">Cực kỳ ngon, không chê vào đâu được.</p></div>
 
-                            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 mt-1">
-                                <button onclick="translateNau()" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.5)] transition-transform active:scale-90 border-4 border-[#121c2d] cursor-pointer">
-                                    <i class="fa-solid fa-arrow-down-up-across-line text-xl"></i>
-                                </button>
-                            </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Phẻ</h4><p class="text-sm text-gray-300">Khỏe.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Quỡn</h4><p class="text-sm text-gray-300">Rảnh rỗi.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Mắc cừ</h4><p class="text-sm text-gray-300">Buồn cười.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Trớt quớt</h4><p class="text-sm text-gray-300">Sai bét, không liên quan.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chà bá</h4><p class="text-sm text-gray-300">Siêu to khổng lồ.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chút ét</h4><p class="text-sm text-gray-300">Một chút xíu siêu.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Làm nư</h4><p class="text-sm text-gray-300">Giận dỗi, vòi vĩnh.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chóc ngóc</h4><p class="text-sm text-gray-300">Ngồi đợi một mình lẻ loi.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Rề rề</h4><p class="text-sm text-gray-300">Chậm chạp.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Ngộ</h4><p class="text-sm text-gray-300">Lạ hoặc Đẹp (tùy ngữ cảnh).</p></div>
 
-                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent pt-10 min-h-[140px] flex flex-col">
-                                <div class="flex justify-between items-center mb-3">
-                                    <span class="text-xs font-black text-blue-400 uppercase tracking-widest"><i class="fa-solid fa-spell-check mr-1"></i> Tiếng Phổ Thông</span>
-                                    <button onclick="copyTranslation()" class="text-gray-400 hover:text-white transition-colors cursor-pointer" title="Copy kết quả"><i class="fa-regular fa-copy"></i></button>
-                                </div>
-                                <div id="nau-output" class="text-lg text-white font-medium">
-                                    <span class="text-gray-500 italic text-base font-normal">Kết quả dịch sẽ hiện ra ở đây...</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Mần</h4><p class="text-sm text-gray-300">Làm. VD: Đang mần chi dẫy?</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Dìa</h4><p class="text-sm text-gray-300">Về.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Biểu</h4><p class="text-sm text-gray-300">Bảo, nói.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Phỉnh</h4><p class="text-sm text-gray-300">Lừa dối, trêu chọc.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Càm ràm</h4><p class="text-sm text-gray-300">Càu nhàu, nói nhiều.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Ngầu</h4><p class="text-sm text-gray-300">Ngồi.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nghía</h4><p class="text-sm text-gray-300">Nhìn, xem.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Hỗng</h4><p class="text-sm text-gray-300">Không.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Miết / Hoài</h4><p class="text-sm text-gray-300">Liên tục, không ngừng.</p></div>
+
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Gộ</h4><p class="text-sm text-gray-300">Gạo. VD: Ăn gộ (Ăn cơm).</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nứ</h4><p class="text-sm text-gray-300">Nước.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Rọt</h4><p class="text-sm text-gray-300">Ruột.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Gầu</h4><p class="text-sm text-gray-300">Đầu.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Quấn</h4><p class="text-sm text-gray-300">Quần.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Xà lách</h4><p class="text-sm text-gray-300">Quần đùi.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Mền</h4><p class="text-sm text-gray-300">Cái chăn.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chén</h4><p class="text-sm text-gray-300">Cái bát.</p></div>
+
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Trổng / Ngoải</h4><p class="text-sm text-gray-300">Trong đó / Ngoài đó.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Trển / Dưới</h4><p class="text-sm text-gray-300">Trên đó / Dưới đó.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Tấu</h4><p class="text-sm text-gray-300">Buổi tối.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Sáng mơi</h4><p class="text-sm text-gray-300">Sáng mai.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Hồi nãy / Hồi tê</h4><p class="text-sm text-gray-300">Vừa nãy / Lúc nãy (xa hơn).</p></div>
+
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Dẫy / Dẫy na</h4><p class="text-sm text-gray-300">Vậy / Vậy hả.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Dẫy nhen</h4><p class="text-sm text-gray-300">Vậy nhé.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Chết ngắc</h4><p class="text-sm text-gray-300">Chết rồi.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Nhột</h4><p class="text-sm text-gray-300">Cảm giác buồn khi bị cù.</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Huề</h4><p class="text-sm text-gray-300">Hòa (không ai thắng ai).</p></div>
+                        <div class="nau-item bg-white/5 p-4 rounded-xl border border-white/10"><h4 class="text-orange-400 font-bold">Lầm</h4><p class="text-sm text-gray-300">Sai, nhầm lẫn.</p></div>
                     </div>
                 `
             },
@@ -1156,6 +1189,13 @@
         }
 
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
+        function searchNau() {
+            const input = document.getElementById('search-nau').value.toLowerCase();
+            document.querySelectorAll('.nau-item').forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(input) ? "" : "none";
+            });
+        }
 
         async function generateJournal(event) {
             const btn = event.currentTarget;
@@ -1273,6 +1313,7 @@
             }
         }
 
+        // ĐÃ NÂNG CẤP: Tích hợp Google Search vào Chatbot
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
@@ -1283,7 +1324,7 @@ Người đang chat với bạn tên là: "${userNameContext}". Hãy khéo léo 
 Khách hỏi: "${userText}"
 
 HƯỚNG DẪN TƯ DUY (BẮT BUỘC):
-1. KHÔNG BỊ GIỚI HẠN: Bạn có kiến thức về mọi nhà hàng, quán ăn, khách sạn, điểm du lịch tại Quy Nhơn. 
+1. DỮ LIỆU THỰC TẾ: Ưu tiên dùng công cụ Google Search để lấy thông tin xác thực nhất (giá vé, review, giờ mở cửa) của thời điểm hiện tại.
 2. XỬ LÝ YÊU CẦU: Nếu người dùng TÌM ĐỊA ĐIỂM: Gợi ý 1-2 địa điểm CÓ THẬT, UY TÍN NHẤT.
 3. OUTPUT JSON: BẮT BUỘC trả về MỘT CHUỖI JSON DUY NHẤT. KHÔNG dùng markdown \`\`\`json.
 
@@ -1292,14 +1333,17 @@ Cấu trúc JSON nếu GỢI Ý ĐỊA ĐIỂM:
   "type": "location",
   "text": "Câu trả lời...",
   "places": [
-    { "name": "Tên", "address": "Địa chỉ", "price": "Giá", "image_keyword": "keyword" }
+    { "name": "Tên", "address": "Địa chỉ", "price": "Giá (tham khảo thực tế)", "image_keyword": "keyword" }
   ]
 }
 
 Nếu không cần địa điểm: 
 { "type": "text", "text": "Câu trả lời..." }`;
 
-            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            const payload = { 
+                contents: [{ parts: [{ text: prompt }] }],
+                tools: [{ googleSearch: {} }] // Kích hoạt công cụ tìm kiếm Google
+            };
 
             try {
                 const res = await fetch(API_URL, {
@@ -1312,6 +1356,7 @@ Nếu không cần địa điểm:
                 if (!res.ok || !data.candidates) throw new Error("API Error");
                 return data.candidates[0].content.parts[0].text;
             } catch (e) { 
+                console.error("Lỗi AI:", e);
                 return JSON.stringify({
                     "type": "location",
                     "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, nhưng Anh Tư vẫn nhớ chỗ này siêu ngon nhen!`,
@@ -1495,58 +1540,38 @@ Nếu không cần địa điểm:
             document.getElementById('btn-analyze').classList.add('hidden');
         }
 
-        function analyzePhoto() {
-            // Lấy chuỗi Base64 của ảnh vừa chụp
+        // ĐÃ NÂNG CẤP: Gửi ảnh cho Gemini Vision phân tích
+        async function analyzePhoto() {
             const base64Image = document.getElementById('camera-preview').src;
-            
-            // Loại bỏ tiền tố "data:image/jpeg;base64," để truyền vào API nếu cần
             const pureBase64 = base64Image.split(',')[1];
             
-            console.log("Ảnh đã sẵn sàng dạng Base64:", pureBase64.substring(0, 50) + "...");
-            
-            // Đóng camera
-            closeCamera();
-            
-            // Thông báo cho bước tiếp theo
-            alert("Chụp ảnh thành công! Dữ liệu hình ảnh đã sẵn sàng để gửi cho AI.");
-        }
+            closeCamera(); // Đóng camera
 
-        // ==========================================
-        // MODULE: AI DỊCH TIẾNG NẪU
-        // ==========================================
-        async function translateNau() {
-            const input = document.getElementById('nau-input').value.trim();
-            const outputDiv = document.getElementById('nau-output');
-
-            if (!input) {
-                outputDiv.innerHTML = '<span class="text-red-400 text-base">Nhập chữ dzo rồi mới dịch được chớ!</span>';
-                return;
-            }
-
-            // Hiển thị trạng thái đang tải
-            outputDiv.innerHTML = '<span class="text-orange-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang ngẫm nghĩ...</span>';
-
-            // Prompt tối ưu hóa cho kiến thức nội tại của Gemini về tiếng Nẫu
-            const prompt = `Đóng vai "Anh Tư", một thổ địa rành rẽ 100% tiếng Nẫu (phương ngữ Bình Định, Phú Yên).
-            Nhiệm vụ: Dịch từ hoặc câu tiếng Nẫu sau đây sang tiếng Việt phổ thông chuẩn.
-            Yêu cầu:
-            1. Trả về nghĩa chính xác và tự nhiên nhất.
-            2. Giải thích ngắn gọn sắc thái hoặc ngữ cảnh sử dụng.
-            3. Trả lời bằng giọng điệu thân thiện, có thể xưng "Anh Tư" và gọi "bạn mình".
-            4. Nếu từ đó không có nghĩa hoặc không phải tiếng Nẫu, hãy nói rõ là Anh Tư chưa nghe từ này bao giờ.
+            // Mở modal hiển thị trạng thái đang xử lý
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            document.getElementById('modal-title').innerText = 'Mắt Thần AI';
+            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-eye"></i>';
+            document.getElementById('chat-input-area').classList.add('hidden');
             
-            Nội dung cần dịch: "${input}"
-            
-            QUAN TRỌNG: Chỉ xuất ra nội dung text trực tiếp, tuyệt đối không dùng định dạng markdown như \`\`\` hay in đậm.`;
+            content.innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fa-solid fa-spinner fa-spin text-5xl text-orange-500 mb-4"></i>
+                    <p class="text-gray-300">Anh Tư đang dòm thử bức hình này nhen...</p>
+                </div>`;
+            modal.classList.remove('hidden');
 
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-            
+
             const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { 
-                    temperature: 0.4 // Nhiệt độ vừa phải để giữ độ chính xác nhưng văn phong vẫn tự nhiên
-                } 
+                contents: [{
+                    parts: [
+                        { text: "Đóng vai 'Anh Tư' thổ địa Quy Nhơn. Bức ảnh này chụp địa danh, cảnh vật hay món ăn nào (ưu tiên liên quan đến Quy Nhơn/Bình Định)? Dùng Google Search để xác thực thông tin nếu cần. Giải thích xúc tích, chính xác, dùng từ địa phương (nhen, nghen, chu cha)." },
+                        { inlineData: { mimeType: "image/jpeg", data: pureBase64 } }
+                    ]
+                }],
+                tools: [{ googleSearch: {} }] // Bật Search để nhận diện hình ảnh chuẩn xác hơn
             };
 
             try {
@@ -1557,23 +1582,28 @@ Nếu không cần địa điểm:
                 });
                 const data = await res.json();
                 
-                if (data.candidates && data.candidates.length > 0) {
-                    let text = data.candidates[0].content.parts[0].text;
-                    outputDiv.innerHTML = text.replace(/\n/g, '<br>');
-                } else {
-                    outputDiv.innerHTML = '<span class="text-red-400 text-base">Ca này khó quá, Anh Tư bí rầu!</span>';
-                }
-            } catch(e) {
-                console.error(e);
-                outputDiv.innerHTML = '<span class="text-red-400 text-base">Đứt cáp mạng rầu, bạn mình thử lại sau nhen!</span>';
-            }
-        }
+                if (!res.ok || !data.candidates) throw new Error("API Error");
+                const aiText = data.candidates[0].content.parts[0].text;
 
-        function copyTranslation() {
-            const text = document.getElementById('nau-output').innerText;
-            if(text && !text.includes("Kết quả dịch sẽ hiện ra ở đây") && !text.includes("đang ngẫm nghĩ")) {
-                navigator.clipboard.writeText(text);
-                alert("Đã copy bản dịch nhen!");
+                // Hiển thị kết quả ra UI
+                content.innerHTML = `
+                    <div class="space-y-4 pb-4">
+                        <img src="${base64Image}" class="w-full h-48 md:h-64 object-cover rounded-xl border border-white/20 shadow-lg">
+                        <div class="bg-orange-500/10 border border-orange-500/30 p-4 rounded-xl text-white text-sm leading-relaxed">
+                            ${aiText.replace(/\n/g, '<br>')}
+                        </div>
+                        <button onclick="openCamera()" class="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-camera-rotate"></i> Chụp tấm khác
+                        </button>
+                    </div>
+                `;
+            } catch (e) {
+                console.error(e);
+                content.innerHTML = `
+                    <div class="text-center py-10">
+                        <p class="text-red-400 mb-4">Chu cha, mạng yếu quá Anh Tư nhìn hông ra! Thử lại nghen.</p>
+                        <button onclick="openCamera()" class="px-6 py-2 bg-orange-500 rounded-full font-bold">Chụp lại</button>
+                    </div>`;
             }
         }
     </script>
