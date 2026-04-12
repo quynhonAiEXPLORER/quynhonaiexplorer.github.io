@@ -596,35 +596,56 @@
             renderStep(step + 1);
         }
 
-        async function fetchSpecialAI(promptText) {
-            const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-            
-            const payload = { 
-                contents: [{ parts: [{ text: promptText }] }],
-                generationConfig: { 
-                    temperature: 0.7,
-                    responseMimeType: "application/json" 
-                } 
-            };
-            
-            try {
-                const res = await fetch(API_URL, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(payload) 
-                });
-                const data = await res.json();
-                console.log("Dữ liệu AI trả về:", data);
-                if (data.candidates && data.candidates.length > 0) {
-                    return data.candidates[0].content.parts[0].text;
-                }
-                return null;
-            } catch(e) { 
-                console.error("Lỗi xử lý kết quả:", e);
-                return null; 
+        async function fetchSpecialAI(promptText, maxRetries = 3) {
+    const payload = { 
+        contents: [{ parts: [{ text: promptText }] }],
+        generationConfig: { 
+            temperature: 0.7,
+            responseMimeType: "application/json" 
+        } 
+    };
+    
+    // Vòng lặp thử lại tối đa maxRetries lần (mặc định 3 lần)
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const currentKey = getNextApiKey();
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+        
+        try {
+            const res = await fetch(API_URL, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(payload) 
+            });
+
+            // Nếu gặp lỗi 503 (Server quá tải) hoặc 429 (Hết rate limit)
+            if (res.status === 503 || res.status === 429) {
+                console.warn(`Lỗi ${res.status}. Đang thử lại lần ${attempt + 1}...`);
+                // Nghỉ 1.5 giây rồi mới vòng lại gọi tiếp để server đỡ ngợp
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                continue; 
             }
+
+            const data = await res.json();
+            if (data.candidates && data.candidates.length > 0) {
+                return data.candidates[0].content.parts[0].text;
+            }
+            return null; // Trả về null nếu không có data hợp lệ
+
+        } catch(e) { 
+            console.error("Lỗi mạng hoặc xử lý:", e);
+            // Nếu lỗi mạng bthg mà chưa hết lượt thử thì cũng ráng đợi xíu rồi thử lại
+            if (attempt < maxRetries - 1) {
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                continue;
+            }
+            return null; 
         }
+    }
+    
+    // Đã thử hết 3 lần mà vẫn rớt mạng thì trả về null để UI hiện giao diện dự phòng
+    console.error("Đã thử 3 lần nhưng server Google vẫn bận!");
+    return null;
+}
 
         async function startFinalGeneration() {
             renderStep('loading');
