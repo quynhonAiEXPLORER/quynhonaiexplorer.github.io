@@ -596,19 +596,12 @@
             renderStep(step + 1);
         }
 
-        // TỐI ƯU HÀM FETCH AI: Hỗ trợ isJsonMode
-        async function fetchSpecialAI(promptText, isJsonMode = false) {
+        async function fetchSpecialAI(promptText) {
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-            
-            const generationConfig = { temperature: 0.7 };
-            if (isJsonMode) {
-                generationConfig.response_mime_type = "application/json";
-            }
-
             const payload = { 
                 contents: [{ parts: [{ text: promptText }] }],
-                generationConfig: generationConfig 
+                generationConfig: { temperature: 0.7 } 
             };
             
             try {
@@ -618,7 +611,7 @@
                     body: JSON.stringify(payload) 
                 });
                 const data = await res.json();
-                
+                console.log("Dữ liệu AI trả về:", data);
                 if (data.candidates && data.candidates.length > 0) {
                     return data.candidates[0].content.parts[0].text;
                 }
@@ -644,9 +637,10 @@
             Vị trí: ${locationContext}
             
             YÊU CẦU BẮT BUỘC:
-            1. BẮT BUỘC mảng "itinerary" phải có số lượng phần tử bằng đúng với số ngày khách yêu cầu.
-            2. Mỗi ngày BẮT BUỘC phải cung cấp 3 địa điểm nổi bật cho 3 buổi: "morning_place", "afternoon_place", "evening_place" (Chỉ điền tên 1 địa danh hoặc quán ăn cụ thể để tìm trên bản đồ).
-            3. Cấu trúc JSON BẮT BUỘC:
+            1. CHỈ TRẢ VỀ CHUỖI JSON DUY NHẤT. KHÔNG DÙNG MARKDOWN.
+            2. BẮT BUỘC mảng "itinerary" phải có số lượng phần tử bằng đúng với số ngày khách yêu cầu.
+            3. Mỗi ngày BẮT BUỘC phải cung cấp 3 địa điểm nổi bật cho 3 buổi: "morning_place", "afternoon_place", "evening_place" (Chỉ điền tên 1 địa danh hoặc quán ăn cụ thể để tìm trên bản đồ).
+            4. Cấu trúc JSON BẮT BUỘC:
             {
                 "message": "Lời chào và tóm tắt ngắn gọn lịch trình...",
                 "itinerary": [
@@ -664,12 +658,10 @@
                 ]
             }`;
 
-            // Kích hoạt JSON mode
-            const res = await fetchSpecialAI(prompt, true);
+            const res = await fetchSpecialAI(prompt);
             
             if (res) {
                 try {
-                    // Cẩn thận loại bỏ markdown nếu có, mặc dù đã dùng JSON mode
                     const cleanJsonStr = res.replace(/```json/gi, '').replace(/```html/gi, '').replace(/```/gi, '').trim();
                     const data = JSON.parse(cleanJsonStr);
 
@@ -1213,7 +1205,7 @@
 
             const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Du khách";
             const prompt = `Đóng vai một du khách gen Z tên là ${userNameContext}, viết 1 đoạn nhật ký ngắn gọn (3-4 câu) khoe vừa đi thăm Tháp Đôi, biển Kỳ Co và ăn bánh xèo tôm nhảy ở Quy Nhơn. Giọng điệu vui nhộn, xài emoji. Không markdown.`;
-            let res = await fetchSpecialAI(prompt, false);
+            let res = await fetchSpecialAI(prompt);
             
             const contentDiv = document.getElementById('journal-content');
             let finalContent = res ? res.replace(/\n/g, '<br>') : `Hôm nay đi chơi đã quá chừng! Sáng ghé Tháp Đôi chụp hình xịn sò, chiều lặn biển Kỳ Co nước xanh ngắt, tối làm dĩa Bánh Xèo Tôm Nhảy giòn rụm! Hẹn Quy Nhơn một ngày không xa nhen 🌊🔥✨`;
@@ -1237,7 +1229,7 @@
             btn.disabled = true;
 
             const prompt = `Tạo ngẫu nhiên 3 thử thách du lịch ngắn gọn, thú vị tại Quy Nhơn để du khách thực hiện. Trình bày dạng danh sách HTML (<ul><li>...</li></ul>). Không thêm text thừa.`;
-            let res = await fetchSpecialAI(prompt, false);
+            let res = await fetchSpecialAI(prompt);
             
             const resultDiv = document.getElementById('gacha-result');
             resultDiv.classList.remove('hidden');
@@ -1281,8 +1273,7 @@
 
             let finalHtml = '';
             try {
-                // Parse thẳng luôn vì API đã trả về JSON chuẩn
-                const aiData = JSON.parse(rawResponse); 
+                const aiData = JSON.parse(rawResponse);
                 
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
 
@@ -1321,42 +1312,41 @@
             }
         }
 
-        // TỐI ƯU HÀM GET AI CHO CHATBOT: Hỗ trợ Native JSON và Schema
         async function getAIResponse(userText) {
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Khách";
             
-            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Dùng từ "nhen", "nghen", "chu cha". 
-Người đang chat với bạn tên là: "${userNameContext}".
-Khách hỏi: "${userText}"`;
+            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn. Xưng hô "Tui" và gọi người chat là "${userNameContext}". Dùng các từ địa phương như "nhen", "nghen", "chu cha".
+
+HƯỚNG DẪN TƯ DUY (BẮT BUỘC):
+1. TÌM KIẾM REAL-TIME: Sử dụng công cụ Google Search để lấy thông tin mới nhất và chính xác nhất.
+2. PHÂN BIỆT RÕ RÀNG YÊU CẦU:
+   - Nếu khách hỏi chỗ "đi chơi", "tham quan", "ngắm cảnh": CHỈ gợi ý địa danh, bãi biển, tháp, khu du lịch. TUYỆT ĐỐI KHÔNG gợi ý quán ăn.
+   - Nếu khách hỏi "ăn uống", "món ngon": CHỈ gợi ý nhà hàng, quán ăn, quán cafe.
+3. CẤU TRÚC PHẢN HỒI JSON DUY NHẤT:
+
+Nếu có gợi ý địa điểm:
+{
+  "type": "location",
+  "text": "Câu trả lời giải thích của Anh Tư...",
+  "places": [
+    { "name": "Tên địa điểm", "address": "Địa chỉ cụ thể", "price": "Giá vé/Giá món tham khảo" }
+  ]
+}
+
+Nếu chỉ là trò chuyện thông thường: 
+{ 
+  "type": "text", 
+  "text": "Câu trả lời..." 
+}`;
 
             const payload = { 
-                contents: [{ parts: [{ text: prompt }] }],
+                contents: [{ parts: [{ text: prompt }, { text: `Khách hỏi: "${userText}"` }] }],
+                tools: [{ googleSearch: {} }], 
                 generationConfig: {
                     temperature: 0.7,
-                    maxOutputTokens: 1500, 
-                    response_mime_type: "application/json",
-                    response_schema: {
-                        type: "OBJECT",
-                        properties: {
-                            type: { type: "STRING", description: "Điền 'location' nếu có gợi ý địa điểm, ngược lại điền 'text'" },
-                            text: { type: "STRING", description: "Câu trả lời của Anh Tư" },
-                            places: {
-                                type: "ARRAY",
-                                description: "Danh sách 1-2 địa điểm nếu có",
-                                items: {
-                                    type: "OBJECT",
-                                    properties: {
-                                        name: { type: "STRING" },
-                                        address: { type: "STRING" },
-                                        price: { type: "STRING" }
-                                    }
-                                }
-                            }
-                        },
-                        required: ["type", "text"]
-                    }
+                    responseMimeType: "application/json"
                 }
             };
 
@@ -1372,10 +1362,11 @@ Khách hỏi: "${userText}"`;
                 
                 return data.candidates[0].content.parts[0].text;
             } catch (e) { 
+                console.error("Lỗi AI:", e);
                 return JSON.stringify({
                     "type": "location",
-                    "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, nhưng Anh Tư vẫn nhớ chỗ này siêu ngon nhen!`,
-                    "places": [{ "name": "Bánh Xèo Tôm Nhảy Gia Vỹ", "address": "14 Diên Hồng", "price": "Khoảng 40k" }]
+                    "text": `Chu cha, mạng mẽo chập chờn rầu ${userNameContext} ơi, nhưng Anh Tư gợi ý lẹ chỗ này nhen!`,
+                    "places": [{ "name": "Bánh Xèo Tôm Nhảy Gia Vỹ", "address": "14 Diên Hồng, Quy Nhơn", "price": "Khoảng 40k" }]
                 });
             }
         }
