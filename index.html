@@ -91,22 +91,22 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 relative z-10">
             <div onclick="openFeature('Chatbot Thổ Địa')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-blue-500/20 flex items-center justify-center text-blue-400 text-2xl md:text-3xl"><i class="fa-regular fa-comments"></i></div>
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-blue-500/20 flex items-center justify-center text-blue-400 text-2xl md:text-3xl"><i class="fa-regular fa-comments"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tư Nẫu</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Hỏi đáp 24/7</p></div>
             </div>
             
             <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-green-500/20 flex items-center justify-center text-green-400 text-2xl md:text-3xl"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-green-500/20 flex items-center justify-center text-green-400 text-2xl md:text-3xl"><i class="fa-solid fa-location-dot"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Check-in</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Tọa độ HOT</p></div>
             </div>
             
             <div onclick="openFeature('Thời Tiết & Đi Đảo')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl md:text-3xl"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl md:text-3xl"><i class="fa-solid fa-cloud-sun-rain"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Thời Tiết</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Biển & Đi đảo</p></div>
             </div>
 
             <div onclick="openFeature('Từ Điển Tiếng Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-language"></i></div>
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-language"></i></div>
                 <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
         </div>
@@ -745,8 +745,8 @@
         // ==========================================
         // 5. CÁC TÍNH NĂNG KHÁC 
         // ==========================================
-       const features = {
-    'Bản đồ Khám phá': {
+        const features = {
+             'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `
                     <div class="space-y-4 pb-4">
@@ -1012,160 +1012,104 @@
                         </div>
                     </div>`
             },
-    },
-    'Thời Tiết & Đi Đảo': {
-        icon: '<i class="fa-solid fa-cloud-sun-rain"></i>',
-        content: `
-            <div class="space-y-5 text-center pb-2">
-                <div class="flex justify-center items-center gap-6 py-2">
-                    <div id="weather-icon" class="text-6xl text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)] animate-pulse">
-                        <i class="fa-solid fa-spinner fa-spin"></i>
+            'Thời Tiết & Đi Đảo': {
+                icon: '<i class="fa-solid fa-cloud-sun-rain"></i>',
+                content: `
+                    <div class="space-y-5 text-center pb-2">
+                        <div class="flex justify-center items-center gap-6 py-2">
+                            <div id="weather-icon" class="text-6xl text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)] animate-pulse">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="text-left">
+                                <div id="temp-display" class="text-5xl font-black text-white tracking-tighter">--°C</div>
+                                <div id="weather-desc" class="text-sm text-cyan-300 font-medium mt-1">Đang tải...</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 flex flex-col items-center">
+                                <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Tình trạng biển</span>
+                                <span id="sea-state" class="text-sm font-bold text-blue-300">...</span>
+                            </div>
+                            <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-3 flex flex-col items-center">
+                                <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Cano đi đảo</span>
+                                <span id="cano-state" class="text-sm font-bold text-green-400">...</span>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 ml-1">Dự báo 5 ngày tới</h4>
+                            <div id="forecast-container" class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                                <div class="animate-pulse text-gray-500 text-xs">Đang lấy dữ liệu dự báo...</div>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-orange-500/10 rounded-bl-full blur-xl"></div>
+                            <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-lightbulb"></i> Lời khuyên Anh Tư:
+                            </h4>
+                            <p id="weather-advice" class="text-xs text-gray-300 leading-relaxed italic">...</p>
+                        </div>
                     </div>
-                    <div class="text-left">
-                        <div id="temp-display" class="text-5xl font-black text-white tracking-tighter">--°C</div>
-                        <div id="weather-desc" class="text-sm text-cyan-300 font-medium mt-1">Đang tải...</div>
+                `
+            },
+            'Từ Điển Tiếng Nẫu': {
+                icon: '<i class="fa-solid fa-language"></i>',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm text-gray-300 text-center">Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!</p>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <input type="text" id="nau-input" placeholder="Ví dụ: Chu cha, dữ thần, ngừ ta..." class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition mb-3">
+                            <button onclick="translateNau()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition">
+                                <i class="fa-solid fa-language"></i> Dịch sang tiếng Phổ Thông
+                            </button>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 relative min-h-[100px]">
+                            <div class="absolute top-3 right-3 flex gap-2">
+                                <button onclick="copyTranslation()" class="text-gray-400 hover:text-white transition" title="Copy"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div id="nau-output" class="text-sm text-gray-200 mt-2 leading-relaxed">Kết quả dịch sẽ hiện ra ở đây...</div>
+                        </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 flex flex-col items-center">
-                        <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Tình trạng biển</span>
-                        <span id="sea-state" class="text-sm font-bold text-blue-300">...</span>
+                `
+            },
+            'Nhật ký AI': {
+                icon: '<i class="fa-solid fa-book"></i>',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm text-gray-300">
+                            Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" cho hành trình khám phá Quy Nhơn của bạn hôm nay!
+                        </p>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 min-h-[120px] relative">
+                            <div id="journal-content" class="text-sm text-white italic leading-relaxed">
+                                Nhấn nút bên dưới để AI tự động soạn thảo...
+                            </div>
+                        </div>
+                        <button onclick="generateJournal(event)" 
+                                class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Nhật Ký AI
+                        </button>
                     </div>
-                    <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-3 flex flex-col items-center">
-                        <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Cano đi đảo</span>
-                        <span id="cano-state" class="text-sm font-bold text-green-400">...</span>
+                `
+            },
+            'Gacha Thử Thách': {
+                icon: '<i class="fa-solid fa-dice"></i>',
+                content: `
+                    <div class="space-y-4 text-center">
+                        <p class="text-sm text-gray-300">
+                            Nhân phẩm hôm nay thế nào? Rút thẻ để nhận 3 thử thách khám phá Quy Nhơn ngẫu nhiên từ AI nhen!
+                        </p>
+                        <div class="flex justify-center py-2">
+                            <i class="fa-solid fa-gem text-6xl text-orange-400 animate-pulse drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]"></i>
+                        </div>
+                        <div id="gacha-result" class="bg-white/5 p-4 rounded-2xl border border-white/5 text-sm text-left space-y-2 hidden"></div>
+                        <button onclick="rollGacha(event)" 
+                                class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-rotate"></i> Rút Thẻ Ngay
+                        </button>
                     </div>
-                </div>
-                <div class="text-left">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 ml-1">Dự báo 5 ngày tới</h4>
-                    <div id="forecast-container" class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-                        <div class="animate-pulse text-gray-500 text-xs">Đang lấy dữ liệu dự báo...</div>
-                    </div>
-                </div>
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-orange-500/10 rounded-bl-full blur-xl"></div>
-                    <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-lightbulb"></i> Lời khuyên Anh Tư:
-                    </h4>
-                    <p id="weather-advice" class="text-xs text-gray-300 leading-relaxed italic">...</p>
-                </div>
-            </div>
-        `
-    },
-    async function translateNau() {
-            const input = document.getElementById('nau-input').value.trim();
-            const outputDiv = document.getElementById('nau-output');
-
-            if (!input) {
-                outputDiv.innerHTML = '<span class="text-red-400 text-base">Nhập chữ dzo rồi mới dịch được chớ!</span>';
-                return;
+                `
             }
+        };
 
-            outputDiv.innerHTML = '<span class="text-orange-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang tra từ điển...</span>';
-
-            const lowerInput = input.toLowerCase();
-            let localMatches = [];
-
-            for (let key in nauDictionary) {
-                const regex = new RegExp(`\\b${key}\\b`, 'g');
-                if (regex.test(lowerInput)) {
-                    localMatches.push(`<span class="text-orange-400 font-bold capitalize">${key}</span>: <span class="text-gray-200">${nauDictionary[key]}</span>`);
-                }
-            }
-
-            if (localMatches.length > 0) {
-                setTimeout(() => {
-                    let html = `<div class="mb-3 text-[11px] font-bold text-green-400 bg-green-500/10 inline-block px-2 py-1 rounded border border-green-500/20"><i class="fa-solid fa-database mr-1"></i> Dữ liệu Local siêu tốc</div><br>`;
-                    html += localMatches.join('<br><br>');
-                    outputDiv.innerHTML = html;
-                }, 300);
-                return;
-            }
-
-            outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-bolt"></i> Đang gọi AI Gemini phân tích...</span>';
-
-            const prompt = `Đóng vai "Anh Tư" rành tiếng Nẫu. Dịch từ/câu sau sang tiếng phổ thông.
-            YÊU CẦU NGHIÊM NGẶT:
-            1. VÀO THẲNG VẤN ĐỀ, KHÔNG CHÀO HỎI, KHÔNG GIẢI THÍCH LÊ THÊ.
-            2. TUYỆT ĐỐI KHÔNG DÙNG MARKDOWN (không dùng dấu sao **, không gạch đầu dòng).
-            3. Chỉ trả về đúng 2 dòng theo mẫu sau:
-            Nghĩa: [Giải nghĩa ngắn gọn trong vài chữ]
-            Ví dụ: [1 câu ngữ cảnh sử dụng thực tế]
-            
-            Nội dung cần dịch: "${input}"`;
-
-            const currentKey = getNextApiKey();
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-            
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.4 } 
-            };
-
-            try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                
-                if (data.error) throw new Error(data.error.message);
-
-                if (data.candidates && data.candidates.length > 0) {
-                    let text = data.candidates[0].content.parts[0].text;
-                    let html = `<div class="mb-3 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-block px-2 py-1 rounded border border-blue-500/20"><i class="fa-solid fa-robot mr-1"></i> Trí tuệ nhân tạo Gemini</div><br>`;
-                    html += text.replace(/\n/g, '<br>');
-                    outputDiv.innerHTML = html;
-                } else {
-                    throw new Error("No candidates");
-                }
-            } catch(e) {
-                console.error("Lỗi API Gemini:", e);
-                outputDiv.innerHTML = `
-                    <span class="text-red-400 text-base font-bold">Lỗi sập nguồn rầu! 🔌</span><br>
-                    <span class="text-sm text-gray-300">Không tìm thấy trong Từ điển và AI cũng đang mất mạng. Bạn thử lại sau nhen!</span>
-                `;
-            }
-        },
-    'Nhật ký AI': {
-        icon: '<i class="fa-solid fa-book"></i>',
-        content: `
-            <div class="space-y-4">
-                <p class="text-sm text-gray-300">
-                    Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" cho hành trình khám phá Quy Nhơn của bạn hôm nay!
-                </p>
-                <div class="bg-white/5 p-4 rounded-2xl border border-white/5 min-h-[120px] relative">
-                    <div id="journal-content" class="text-sm text-white italic leading-relaxed">
-                        Nhấn nút bên dưới để AI tự động soạn thảo...
-                    </div>
-                </div>
-                <button onclick="generateJournal(event)" 
-                        class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Nhật Ký AI
-                </button>
-            </div>
-        `
-    },
-    'Gacha Thử Thách': {
-        icon: '<i class="fa-solid fa-dice"></i>',
-        content: `
-            <div class="space-y-4 text-center">
-                <p class="text-sm text-gray-300">
-                    Nhân phẩm hôm nay thế nào? Rút thẻ để nhận 3 thử thách khám phá Quy Nhơn ngẫu nhiên từ AI nhen!
-                </p>
-                <div class="flex justify-center py-2">
-                    <i class="fa-solid fa-gem text-6xl text-orange-400 animate-pulse drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]"></i>
-                </div>
-                <div id="gacha-result" class="bg-white/5 p-4 rounded-2xl border border-white/5 text-sm text-left space-y-2 hidden"></div>
-                <button onclick="rollGacha(event)" 
-                        class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-rotate"></i> Rút Thẻ Ngay
-                </button>
-            </div>
-        `
-    }
-};
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
@@ -1574,6 +1518,7 @@ Nếu không cần địa điểm:
             "má": "Mẹ, má.",
             "chu cha": "Trời ơi! (Biểu lộ sự ngạc nhiên). VD: Chu cha, ngon ác!",
             "chu choa": "Trời ơi! (Biểu lộ sự ngạc nhiên).",
+            "chèn ơi": "Trời ơi! (Câu cảm thán).",
             "gơ": "Ghê, rất (nhấn mạnh mức độ). VD: Đẹp gơ!",
             "gớm": "Ghê, rất.",
             "dữ thần": "Rất nhiều, ghê gớm, dữ dằn.",
@@ -1595,6 +1540,7 @@ Nếu không cần địa điểm:
             "biểu": "Bảo, nói. VD: Tui biểu mi rồi (Tao bảo mày rồi).",
             "phỉnh": "Lừa dối, trêu chọc, dụ dỗ.",
             "càm ràm": "Càu nhàu, nói đi nói lại.",
+            "cự nự": "Cãi cọ, phàn nàn.",
             "ngầu": "Ngồi.",
             "nghía": "Nhìn, xem trộm.",
             "hỗng": "Không. VD: Hỗng chịu (Không chịu).",
@@ -1617,12 +1563,14 @@ Nếu không cần địa điểm:
             "hồi nãy": "Vừa nãy.",
             "hồi tê": "Lúc nãy (xa hơn một chút).",
             "dẫy": "Vậy, thế. VD: Mần chi dẫy? (Làm gì thế?)",
+            "dị": "Vậy. VD: Dị hả? (Vậy hả?).",
             "dẫy na": "Vậy hả.",
             "dẫy nhen": "Vậy nhé.",
+            "nhen": "Nhé.",
             "chết ngắc": "Chết rồi, hỏng rồi.",
             "nhột": "Buồn buồn (cảm giác khi bị cù lét), hoặc chột dạ.",
             "huề": "Hòa (không ai thắng ai).",
-            "lầm": "Sai, nhầm lẫn."
+            "lầm": "Sai, nhầm lẫn.",
         };
 
         async function translateNau() {
@@ -1634,45 +1582,51 @@ Nếu không cần địa điểm:
                 return;
             }
 
-            outputDiv.innerHTML = '<span class="text-orange-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang tra từ điển...</span>';
-
             const lowerInput = input.toLowerCase();
             let localMatches = [];
 
-            for (let key in nauDictionary) {
-                const regex = new RegExp(`\\b${key}\\b`, 'g');
-                if (regex.test(lowerInput)) {
+            // 1. Tối ưu Local: Sắp xếp từ dài lên trước (để ưu tiên "ngừ ta" trước khi xét "ngừ")
+            const sortedKeys = Object.keys(nauDictionary).sort((a, b) => b.length - a.length);
+            let tempInput = lowerInput;
+
+            for (let key of sortedKeys) {
+                // FIX LỖI: Không dùng \b vì \b không nhận diện được chữ có dấu tiếng Việt (ừ, ã, ệ...)
+                // Thay bằng Regex bắt đầu/kết thúc bằng khoảng trắng hoặc dấu câu
+                const regex = new RegExp(`(^|[\\s.,!?])` + key + `([\\s.,!?]|$)`, 'i');
+                
+                if (regex.test(tempInput)) {
                     localMatches.push(`<span class="text-orange-400 font-bold capitalize">${key}</span>: <span class="text-gray-200">${nauDictionary[key]}</span>`);
+                    // Xóa cụm đã match để không bị tìm trùng (VD: đã thấy "ngừ ta" thì bỏ qua "ngừ")
+                    tempInput = tempInput.replace(regex, ' ');
                 }
             }
 
             if (localMatches.length > 0) {
-                setTimeout(() => {
-                    let html = `<div class="mb-3 text-[11px] font-bold text-green-400 bg-green-500/10 inline-block px-2 py-1 rounded border border-green-500/20"><i class="fa-solid fa-database mr-1"></i> Dữ liệu Local siêu tốc</div><br>`;
-                    html += localMatches.join('<br><br>');
-                    outputDiv.innerHTML = html;
-                }, 300);
+                let html = `<div class="mb-3 text-[11px] font-bold text-green-400 bg-green-500/10 inline-block px-2 py-1 rounded border border-green-500/20"><i class="fa-solid fa-bolt mr-1"></i> Dữ liệu Local siêu tốc</div><br>`;
+                html += localMatches.join('<br><br>');
+                outputDiv.innerHTML = html;
                 return;
             }
 
-            outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-bolt"></i> Đang gọi AI Gemini phân tích...</span>';
+            // 2. Gọi AI nếu không có trong Local
+            outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Đang nhờ AI dịch...</span>';
 
-            const prompt = `Đóng vai "Anh Tư" rành tiếng Nẫu. Dịch từ/câu sau sang tiếng phổ thông.
-            YÊU CẦU NGHIÊM NGẶT:
-            1. VÀO THẲNG VẤN ĐỀ, KHÔNG CHÀO HỎI, KHÔNG GIẢI THÍCH LÊ THÊ.
-            2. TUYỆT ĐỐI KHÔNG DÙNG MARKDOWN (không dùng dấu sao **, không gạch đầu dòng).
-            3. Chỉ trả về đúng 2 dòng theo mẫu sau:
-            Nghĩa: [Giải nghĩa ngắn gọn trong vài chữ]
-            Ví dụ: [1 câu ngữ cảnh sử dụng thực tế]
-            
-            Nội dung cần dịch: "${input}"`;
+            // FIX: Nhắc AI giải nghĩa rõ ràng kể cả khi đó chỉ là biến âm
+            const prompt = `Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông: "${input}"
+            Nếu là từ phát âm trại đi (biến âm), hãy dịch thẳng nghĩa gốc của nó.
+            Vui lòng KHÔNG dùng markdown (không in đậm, không gạch đầu).
+            Chỉ trả về đúng 2 dòng theo định dạng sau:
+            Nghĩa: (giải nghĩa ngắn gọn)`;
 
             const currentKey = getNextApiKey();
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
             
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.4 } 
+                generationConfig: { 
+                    temperature: 0.4, 
+                    maxOutputTokens: 400 // Nới lỏng token để AI viết thoải mái hơn
+                } 
             };
 
             try {
@@ -1699,14 +1653,6 @@ Nếu không cần địa điểm:
                     <span class="text-red-400 text-base font-bold">Lỗi sập nguồn rầu! 🔌</span><br>
                     <span class="text-sm text-gray-300">Không tìm thấy trong Từ điển và AI cũng đang mất mạng. Bạn thử lại sau nhen!</span>
                 `;
-            }
-        }
-
-        function copyTranslation() {
-            const text = document.getElementById('nau-output').innerText;
-            if(text && !text.includes("Kết quả dịch sẽ hiện ra ở đây") && !text.includes("đang tra từ điển") && !text.includes("Đang gọi AI")) {
-                navigator.clipboard.writeText(text);
-                alert("Đã copy bản dịch nhen!");
             }
         }
     </script>
