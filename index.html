@@ -503,6 +503,17 @@
                                 <button onclick="selectStep(2, '3 ngày 2 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
                                     <span>3 Ngày 2 Đêm (Tiêu chuẩn)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
                                 </button>
+                                <button onclick="selectStep(2, '4 ngày 3 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
+                                    <span>4 Ngày 3 Đêm (Khám phá sâu)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                                </button>
+                                
+                                <div class="mt-1 flex gap-2 w-full">
+                                    <input type="text" id="custom-days" placeholder="Hoặc nhập tùy ý (vd: Đi nửa ngày, 1 tuần...)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
+                                    <button onclick="handleCustomStep(2, 'custom-days')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>`;
                     break;
@@ -524,6 +535,18 @@
                                     <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400"><i class="fa-solid fa-umbrella-beach"></i></div>
                                     <div><p class="font-bold text-sm">Chill & Nghỉ dưỡng</p><p class="text-[10px] text-gray-400">Nhẹ nhàng, thư giãn</p></div>
                                 </button>
+                                <button onclick="selectStep(3, 'Khám phá Văn hóa & Lịch sử')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400"><i class="fa-solid fa-landmark"></i></div>
+                                    <div><p class="font-bold text-sm">Văn hóa & Lịch sử</p><p class="text-[10px] text-gray-400">Tháp Chăm, Bảo tàng, Chùa</p></div>
+                                </button>
+
+                                <div class="mt-1 flex gap-2 w-full">
+                                    <input type="text" id="custom-style" placeholder="Hoặc yêu cầu riêng (vd: Chỗ có khu vui chơi...)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
+                                    <button onclick="handleCustomStep(3, 'custom-style')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>`;
                     break;
@@ -541,6 +564,18 @@
                                     <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fa-solid fa-wallet"></i></div>
                                     <span>Thoải mái (Tiêu chuẩn)</span>
                                 </button>
+                                <button onclick="selectStep(4, 'Sang trọng, ưu tiên dịch vụ cao cấp, resort')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center text-red-400"><i class="fa-solid fa-gem"></i></div>
+                                    <span>Sang chảnh (Dịch vụ cao cấp)</span>
+                                </button>
+
+                                <div class="mt-1 flex gap-2 w-full">
+                                    <input type="text" id="custom-budget" placeholder="Nhập mức cụ thể (vd: Tầm 5 triệu 1 người...)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
+                                    <button onclick="handleCustomStep(4, 'custom-budget')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>`;
                     break;
@@ -596,56 +631,66 @@
             renderStep(step + 1);
         }
 
-        async function fetchSpecialAI(promptText, maxRetries = 3) {
-    const payload = { 
-        contents: [{ parts: [{ text: promptText }] }],
-        generationConfig: { 
-            temperature: 0.7,
-            responseMimeType: "application/json" 
-        } 
-    };
-    
-    // Vòng lặp thử lại tối đa maxRetries lần (mặc định 3 lần)
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-        const currentKey = getNextApiKey();
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-        
-        try {
-            const res = await fetch(API_URL, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(payload) 
-            });
-
-            // Nếu gặp lỗi 503 (Server quá tải) hoặc 429 (Hết rate limit)
-            if (res.status === 503 || res.status === 429) {
-                console.warn(`Lỗi ${res.status}. Đang thử lại lần ${attempt + 1}...`);
-                // Nghỉ 1.5 giây rồi mới vòng lại gọi tiếp để server đỡ ngợp
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                continue; 
+        function handleCustomStep(step, inputId) {
+            const inputElement = document.getElementById(inputId);
+            const value = inputElement.value.trim();
+            
+            if (value) {
+                selectStep(step, value);
+            } else {
+                inputElement.classList.add('border-red-500');
+                inputElement.placeholder = "Nhập yêu cầu dzo trước nhen!";
+                setTimeout(() => {
+                    inputElement.classList.remove('border-red-500');
+                }, 2000);
             }
-
-            const data = await res.json();
-            if (data.candidates && data.candidates.length > 0) {
-                return data.candidates[0].content.parts[0].text;
-            }
-            return null; // Trả về null nếu không có data hợp lệ
-
-        } catch(e) { 
-            console.error("Lỗi mạng hoặc xử lý:", e);
-            // Nếu lỗi mạng bthg mà chưa hết lượt thử thì cũng ráng đợi xíu rồi thử lại
-            if (attempt < maxRetries - 1) {
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                continue;
-            }
-            return null; 
         }
-    }
-    
-    // Đã thử hết 3 lần mà vẫn rớt mạng thì trả về null để UI hiện giao diện dự phòng
-    console.error("Đã thử 3 lần nhưng server Google vẫn bận!");
-    return null;
-}
+
+        async function fetchSpecialAI(promptText, maxRetries = 3) {
+            const payload = { 
+                contents: [{ parts: [{ text: promptText }] }],
+                generationConfig: { 
+                    temperature: 0.7,
+                    responseMimeType: "application/json" 
+                } 
+            };
+            
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                const currentKey = getNextApiKey();
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+                
+                try {
+                    const res = await fetch(API_URL, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(payload) 
+                    });
+
+                    if (res.status === 503 || res.status === 429) {
+                        console.warn(`Lỗi ${res.status}. Đang thử lại lần ${attempt + 1}...`);
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        continue; 
+                    }
+
+                    const data = await res.json();
+                    if (data.candidates && data.candidates.length > 0) {
+                        return data.candidates[0].content.parts[0].text;
+                    }
+                    return null;
+
+                } catch(e) { 
+                    console.error("Lỗi mạng hoặc xử lý:", e);
+                    if (attempt < maxRetries - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        continue;
+                    }
+                    return null; 
+                }
+            }
+            
+            console.error("Đã thử 3 lần nhưng server Google vẫn bận!");
+            return null;
+        }
 
         async function startFinalGeneration() {
             renderStep('loading');
@@ -662,7 +707,7 @@
             Vị trí: ${locationContext}
             
             YÊU CẦU BẮT BUỘC:
-            1. BẮT BUỘC mảng "itinerary" phải có số lượng phần tử bằng đúng với số ngày khách yêu cầu.
+            1. BẮT BUỘC mảng "itinerary" phải cung cấp đủ số ngày tương ứng với yêu cầu.
             2. Mỗi ngày BẮT BUỘC phải cung cấp 3 địa điểm nổi bật cho 3 buổi: "morning_place", "afternoon_place", "evening_place" (Chỉ điền tên 1 địa danh hoặc quán ăn cụ thể để tìm trên bản đồ).
             3. Cấu trúc JSON BẮT BUỘC:
             {
@@ -1606,18 +1651,15 @@ Nếu không cần địa điểm:
             const lowerInput = input.toLowerCase();
             let localMatches = [];
 
-            // 1. Tối ưu Local: Sắp xếp từ dài lên trước (để ưu tiên "ngừ ta" trước khi xét "ngừ")
+            // 1. Tối ưu Local: Sắp xếp từ dài lên trước
             const sortedKeys = Object.keys(nauDictionary).sort((a, b) => b.length - a.length);
             let tempInput = lowerInput;
 
             for (let key of sortedKeys) {
-                // FIX LỖI: Không dùng \b vì \b không nhận diện được chữ có dấu tiếng Việt (ừ, ã, ệ...)
-                // Thay bằng Regex bắt đầu/kết thúc bằng khoảng trắng hoặc dấu câu
                 const regex = new RegExp(`(^|[\\s.,!?])` + key + `([\\s.,!?]|$)`, 'i');
                 
                 if (regex.test(tempInput)) {
                     localMatches.push(`<span class="text-orange-400 font-bold capitalize">${key}</span>: <span class="text-gray-200">${nauDictionary[key]}</span>`);
-                    // Xóa cụm đã match để không bị tìm trùng (VD: đã thấy "ngừ ta" thì bỏ qua "ngừ")
                     tempInput = tempInput.replace(regex, ' ');
                 }
             }
@@ -1632,7 +1674,6 @@ Nếu không cần địa điểm:
             // 2. Gọi AI nếu không có trong Local
             outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Đang nhờ AI dịch...</span>';
 
-            // FIX: Nhắc AI giải nghĩa rõ ràng kể cả khi đó chỉ là biến âm
             const prompt = `Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông: "${input}"
             Nếu là từ phát âm trại đi (biến âm), hãy dịch thẳng nghĩa gốc của nó.
             Vui lòng KHÔNG dùng markdown (không in đậm, không gạch đầu).
@@ -1647,7 +1688,7 @@ Nếu không cần địa điểm:
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: { 
                     temperature: 0.4, 
-                    maxOutputTokens: 500 // Nới lỏng token để AI viết thoải mái hơn
+                    maxOutputTokens: 500 
                 } 
             };
 
