@@ -1795,7 +1795,7 @@ Nếu không cần địa điểm:
 
             for (let attempt = 0; attempt < 3; attempt++) {
                 const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`;
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${currentKey}`;
                 
                 try {
                     const res = await fetch(API_URL, {
