@@ -56,85 +56,21 @@
         .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 
-        /* ==========================================
-           HIỆU ỨNG MẮT THẦN AI (CAMERA)
-           ========================================== */
-        .viewfinder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 320px;
-            aspect-ratio: 3/4;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .viewfinder::before, .viewfinder::after,
-        .viewfinder-inner::before, .viewfinder-inner::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-color: rgba(249, 115, 22, 0.8);
-            border-style: solid;
-            transition: all 0.3s ease;
-        }
-
+        /* CAMERA AI */
+        .viewfinder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 320px; aspect-ratio: 3/4; z-index: 20; pointer-events: none; }
+        .viewfinder::before, .viewfinder::after, .viewfinder-inner::before, .viewfinder-inner::after { content: ''; position: absolute; width: 40px; height: 40px; border-color: rgba(249, 115, 22, 0.8); border-style: solid; transition: all 0.3s ease; }
         .viewfinder::before { top: 0; left: 0; border-width: 3px 0 0 3px; border-top-left-radius: 20px; }
         .viewfinder::after { top: 0; right: 0; border-width: 3px 3px 0 0; border-top-right-radius: 20px; }
         .viewfinder-inner { width: 100%; height: 100%; position: absolute; }
         .viewfinder-inner::before { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-bottom-left-radius: 20px; }
         .viewfinder-inner::after { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-bottom-right-radius: 20px; }
-
-        .viewfinder.hidden-frame {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .scanner-line {
-            position: absolute;
-            left: 10px;
-            right: 10px;
-            height: 2px;
-            background: rgba(249, 115, 22, 0.9);
-            box-shadow: 0 0 20px 4px rgba(249, 115, 22, 0.4);
-            animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 95%; opacity: 0; }
-        }
-
-        .camera-overlay {
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
-            pointer-events: none;
-        }
-
-        .focus-ring {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            transform: translate(-50%, -50%) scale(1.5);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 50;
-        }
-        .focus-ring.active {
-            animation: focusAnim 0.6s ease-out forwards;
-        }
-        @keyframes focusAnim {
-            0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; border-color: white; }
-            30% { transform: translate(-50%, -50%) scale(1); opacity: 1; border-color: white; }
-            80% { opacity: 1; border-color: #4ade80; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; border-color: #4ade80; }
-        }
+        .viewfinder.hidden-frame { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+        .scanner-line { position: absolute; left: 10px; right: 10px; height: 2px; background: rgba(249, 115, 22, 0.9); box-shadow: 0 0 20px 4px rgba(249, 115, 22, 0.4); animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        @keyframes scan { 0% { top: 5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
+        .camera-overlay { background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%); pointer-events: none; }
+        .focus-ring { position: absolute; width: 60px; height: 60px; border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 8px; transform: translate(-50%, -50%) scale(1.5); opacity: 0; pointer-events: none; z-index: 50; }
+        .focus-ring.active { animation: focusAnim 0.6s ease-out forwards; }
+        @keyframes focusAnim { 0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; border-color: white; } 30% { transform: translate(-50%, -50%) scale(1); opacity: 1; border-color: white; } 80% { opacity: 1; border-color: #4ade80; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; border-color: #4ade80; } }
     </style>
 </head>
 <body class="flex flex-col items-center pt-20 pb-24 md:pb-8"> 
@@ -155,7 +91,7 @@
     </nav>
 
     <div class="max-w-5xl w-full text-center text-white px-4 md:mt-8">
-        <header class="mb-6 mt-6">
+        <header class="mb-6 mt-10">
             <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-1 md:mb-3 uppercase drop-shadow-lg">Quy Nhơn</h1>
             <p class="text-gray-300 text-sm md:text-lg max-w-lg mx-auto font-light leading-relaxed mt-3 px-2 drop-shadow-md">Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Có tui lo!</p>
             <button onclick="openItineraryPlanner()" class="mt-6 md:mt-8 w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl md:rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 mx-auto text-base md:text-lg">
@@ -236,6 +172,22 @@
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="review-popup" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-5 transform scale-95 transition-transform duration-300 relative shadow-2xl border border-orange-500/30">
+            <button onclick="closeReviewPopup()" class="absolute top-3 right-3 text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center gap-3 mb-3 border-b border-white/10 pb-3">
+                <div class="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center text-orange-400 text-lg"><i class="fa-solid fa-sparkles"></i></div>
+                <div>
+                    <h3 id="review-place-name" class="font-bold text-white text-lg leading-tight">Tên Địa Điểm</h3>
+                    <p class="text-[10px] text-orange-400">AI Đang Tổng Hợp Review...</p>
+                </div>
+            </div>
+            <div id="review-content" class="text-sm text-gray-200 leading-relaxed min-h-[100px] flex items-center justify-center">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-orange-500"></i>
             </div>
         </div>
     </div>
@@ -433,12 +385,11 @@
         }
         window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
 
-        // Xóa Nhật Ký AI
         function deleteItinerary(index) {
             if(confirm("Bạn có chắc chắn muốn xóa mục này hông?")) {
                 currentUser.itineraries.splice(index, 1);
                 saveUserData();
-                openAuthModal(); // Refresh modal
+                openAuthModal(); 
             }
         }
 
@@ -605,7 +556,6 @@
             document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
             chatArea.classList.add('hidden'); 
             
-            // Reset data
             itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
             currentItinStep = 1;
             renderStep(1); 
@@ -910,8 +860,6 @@
                     return null; 
                 }
             }
-            
-            console.error("Đã thử 3 lần nhưng server Google vẫn bận!");
             return null;
         }
 
@@ -1027,14 +975,14 @@
         }
 
         // ==========================================
-        // 5. CÁC TÍNH NĂNG KHÁC 
+        // 5. CÁC TÍNH NĂNG KHÁC VÀ AI REVIEW TÓM TẮT
         // ==========================================
         const features = {
              'Bản đồ Khám phá': {
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `
                     <div class="space-y-4 pb-4">
-                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!</p>
+                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc xem Review AI tóm tắt nhen!</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                             
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
@@ -1048,7 +996,7 @@
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition shadow-lg active:scale-95 flex justify-center items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI Review</button>
                                     </div>
                                 </div>
                             </div>
@@ -1064,7 +1012,7 @@
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition shadow-lg active:scale-95 flex justify-center items-center gap-1"><i class="fa-solid fa-sparkles"></i> AI Review</button>
                                     </div>
                                 </div>
                             </div>
@@ -1167,6 +1115,67 @@
             }
         };
 
+        // HÀM XỬ LÝ TÓM TẮT AI REVIEW BẰNG GEMINI
+        async function showAIReview(placeName) {
+            const popup = document.getElementById('review-popup');
+            const placeTitle = document.getElementById('review-place-name');
+            const content = document.getElementById('review-content');
+
+            placeTitle.innerText = placeName;
+            content.innerHTML = '<div class="flex flex-col items-center gap-2"><i class="fa-solid fa-spinner fa-spin text-3xl text-orange-500"></i><p class="text-xs text-gray-400">Anh Tư đang đọc hàng ngàn review...</p></div>';
+            
+            popup.classList.remove('hidden');
+            void popup.offsetWidth; 
+            popup.classList.remove('opacity-0');
+            popup.querySelector('.glass-panel').classList.remove('scale-95');
+
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Hãy đọc các đánh giá thực tế trên mạng và tóm tắt ngắn gọn trải nghiệm du lịch tại "${placeName}, Quy Nhơn".
+            Yêu cầu:
+            1. Nêu 2-3 điểm cộng (ưu điểm) lớn nhất.
+            2. Nêu 1 điểm trừ hoặc lưu ý (nhược điểm/kinh nghiệm xương máu).
+            3. Dùng giọng điệu thân thiện, rặt tiếng Nẫu (chu cha, nghen, dẫy...).
+            4. TRẢ VỀ ĐỊNH DẠNG JSON (KHÔNG BỌC TRONG \`\`\`json):
+            {
+               "pros": ["ưu điểm 1", "ưu điểm 2"],
+               "cons": ["lưu ý 1"],
+               "verdict": "Chốt lại 1 câu khuyên có nên đi hay không"
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            try {
+                const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const data = JSON.parse(cleanRes);
+                
+                let prosHtml = data.pros.map(p => `<li class="flex gap-2"><i class="fa-solid fa-circle-check text-green-400 mt-1 text-[10px]"></i><span>${p}</span></li>`).join('');
+                let consHtml = data.cons.map(c => `<li class="flex gap-2"><i class="fa-solid fa-triangle-exclamation text-yellow-400 mt-1 text-[10px]"></i><span>${c}</span></li>`).join('');
+
+                content.innerHTML = `
+                    <div class="space-y-3 animate-fadeIn text-left w-full">
+                        <div>
+                            <h4 class="text-xs font-bold text-green-400 uppercase mb-1">Điểm cộng</h4>
+                            <ul class="text-[13px] space-y-1.5">${prosHtml}</ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-yellow-400 uppercase mb-1">Lưu ý nhỏ</h4>
+                            <ul class="text-[13px] space-y-1.5">${consHtml}</ul>
+                        </div>
+                        <div class="bg-orange-500/10 border border-orange-500/20 p-2 rounded-xl mt-2">
+                            <p class="text-[13px] text-orange-300 italic font-medium text-center">"${data.verdict}"</p>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                content.innerHTML = `<p class="text-sm text-red-400 text-center">Mạng chập chờn quá, Anh Tư đọc review hổng nổi rầu! Thử lại xíu nghen.</p>`;
+            }
+        }
+
+        function closeReviewPopup() {
+            const popup = document.getElementById('review-popup');
+            popup.classList.add('opacity-0');
+            popup.querySelector('.glass-panel').classList.add('scale-95');
+            setTimeout(() => popup.classList.add('hidden'), 300);
+        }
+
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
@@ -1238,10 +1247,7 @@
             }
         }
 
-        // ==========================================
-        // MODULE: GACHA NHIỆM VỤ & TÍCH ĐIỂM
-        // ==========================================
-        let pendingChallengeIndex = null; // Biến theo dõi thử thách chờ xác thực
+        let pendingChallengeIndex = null; 
 
         function renderGachaUI() {
             const area = document.getElementById('gacha-content-area');
@@ -1496,635 +1502,6 @@ Nếu không cần địa điểm:
                 "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, nhưng Anh Tư vẫn nhớ chỗ này siêu ngon nhen!`,
                 "places": [{ "name": "Bánh Xèo Tôm Nhảy Gia Vỹ", "address": "14 Diên Hồng", "price": "Khoảng 40k", "image_keyword": "pancake" }]
             });
-        }
-
-        async function fetchRealWeather() {
-            try {
-                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
-                const res = await fetch(url);
-                const data = await res.json();
-                
-                const current = data.current_weather;
-                const temp = Math.round(current.temperature);
-                const isDay = current.is_day;
-                const weatherCode = current.weathercode;
-                const windSpeed = current.windspeed;
-                
-                document.getElementById('temp-display').innerText = temp + '°C';
-                
-                let icon = '<i class="fa-solid fa-sun"></i>';
-                let desc = 'Nắng đẹp, trời trong';
-                let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
-                
-                let seaState = 'Sóng Êm 🌊';
-                let canoState = 'Hoạt Động 🟢';
-                let advice = '';
-
-                if (weatherCode >= 51 && weatherCode <= 67) {
-                    desc = 'Trời có mưa';
-                    icon = '<i class="fa-solid fa-cloud-rain"></i>';
-                    colorClass = 'text-blue-400';
-                    seaState = 'Biển Động Nhẹ 🌧️';
-                    canoState = 'Hạn Chế 🟡';
-                    advice = 'Trời đang có mưa, đi cano ra đảo sẽ khá ướt và lạnh. Bạn nên ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
-                } else if (weatherCode >= 95 || windSpeed > 30) {
-                    desc = 'Mưa dông / Gió lớn';
-                    icon = '<i class="fa-solid fa-cloud-bolt"></i>';
-                    colorClass = 'text-purple-500';
-                    seaState = 'Biển Động Mạnh ⛈️';
-                    canoState = 'Tạm Dừng 🔴';
-                    advice = 'Chu cha, thời tiết xấu quá! Cano cấm xuất bến rồi. Tốt nhất là kiếm quán bánh xèo tôm nhảy hay bún rạm trú mưa ăn cho ấm bụng nhen!';
-                } else if (!isDay) {
-                    desc = weatherCode > 0 ? 'Tối có mây' : 'Trời quang mây tạnh';
-                    icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
-                    colorClass = 'text-yellow-200';
-                    advice = 'Tối rầu, biển êm nhưng cano không chạy nữa đâu. Lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
-                } else {
-                    if (weatherCode >= 1 && weatherCode <= 3) {
-                        desc = 'Có mây rải rác';
-                        icon = '<i class="fa-solid fa-cloud-sun"></i>';
-                        colorClass = 'text-gray-300';
-                    }
-
-                    if (temp >= 32) {
-                        advice = `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng. Chỉ nên tắm biển, lặn san hô vào sáng sớm hoặc sau 3h chiều thôi nhen!`;
-                    } else if (temp >= 30) {
-                        advice = `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co, Eo Gió nhớ trùm kín mít, bôi kem chống nắng kỹ. Trưa làm dĩa bánh hỏi cháo lòng rồi kiếm ly nước mía lề đường là hết sẩy!`;
-                    } else {
-                        advice = `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co, Hòn Khô lặn ngắm san hô hoặc dạo bước chụp hình ở Eo Gió nhen bạn mình!`;
-                    }
-                }
-
-                const iconDiv = document.getElementById('weather-icon');
-                iconDiv.className = `text-6xl animate-pulse ${colorClass}`;
-                iconDiv.innerHTML = icon;
-                document.getElementById('weather-desc').innerText = desc;
-                document.getElementById('sea-state').innerHTML = seaState;
-                document.getElementById('cano-state').innerHTML = canoState;
-                document.getElementById('weather-advice').innerHTML = advice;
-
-                const forecastContainer = document.getElementById('forecast-container');
-                forecastContainer.innerHTML = '';
-                
-                const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-                
-                for (let i = 1; i <= 5; i++) {
-                    const date = new Date(data.daily.time[i]);
-                    const dayName = days[date.getDay()];
-                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
-                    const code = data.daily.weathercode[i];
-                    
-                    let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                    if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
-                    if (code >= 51) fIcon = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
-
-                    forecastContainer.innerHTML += `
-                        <div class="min-w-[70px] bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center gap-2">
-                            <span class="text-[10px] font-bold text-gray-400">${dayName}</span>
-                            <span class="text-lg">${fIcon}</span>
-                            <span class="text-sm font-black text-white">${maxTemp}°</span>
-                        </div>
-                    `;
-                }
-
-            } catch (error) {
-                console.error("Lỗi lấy thời tiết:", error);
-                document.getElementById('temp-display').innerText = '30°C';
-                document.getElementById('weather-desc').innerText = 'Nắng vàng biển xanh (Dữ liệu offline)';
-                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                document.getElementById('weather-advice').innerText = 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
-                document.getElementById('forecast-container').innerHTML = '<span class="text-xs text-gray-500">Không tải được dự báo.</span>';
-            }
-        }
-
-        // ==========================================
-        // MODULE: CAMERA AI (WebRTC) + TÍCH HỢP GEMINI VISION
-        // ==========================================
-        let cameraStream = null;
-        let isFlashOn = false;
-
-        async function openCamera() {
-            const modal = document.getElementById('camera-modal');
-            const video = document.getElementById('camera-stream');
-            const preview = document.getElementById('camera-preview');
-            const btnCapture = document.getElementById('btn-capture');
-            const btnRetake = document.getElementById('btn-retake');
-            const btnAnalyze = document.getElementById('btn-analyze');
-            const btnCameraUpload = document.getElementById('btn-camera-upload');
-            const cameraSpacer = document.getElementById('camera-spacer');
-
-            preview.classList.add('hidden');
-            video.classList.remove('hidden');
-            
-            btnCapture.classList.remove('hidden');
-            btnCameraUpload.classList.remove('hidden');
-            cameraSpacer.classList.remove('hidden');
-            
-            btnRetake.classList.add('hidden');
-            btnAnalyze.classList.add('hidden');
-            
-            document.getElementById('camera-viewfinder').classList.remove('hidden-frame');
-            document.getElementById('camera-overlay').classList.remove('opacity-0');
-            
-            modal.classList.remove('hidden');
-
-            try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: "environment" },
-                    audio: false
-                });
-                video.srcObject = cameraStream;
-            } catch (err) {
-                console.error("Lỗi Camera:", err);
-                alert("Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh nhen.");
-                closeCamera();
-            }
-        }
-
-        function closeCamera() {
-            document.getElementById('camera-modal').classList.add('hidden');
-            if (isFlashOn) toggleFlash();
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-            }
-        }
-
-        async function toggleFlash() {
-            if (!cameraStream) return;
-            const track = cameraStream.getVideoTracks()[0];
-            
-            try {
-                const capabilities = track.getCapabilities();
-                if (capabilities.torch) {
-                    isFlashOn = !isFlashOn;
-                    await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
-                    
-                    const flashBtn = document.getElementById('btn-flash');
-                    if (isFlashOn) {
-                        flashBtn.classList.add('text-yellow-400');
-                        flashBtn.classList.remove('text-white');
-                    } else {
-                        flashBtn.classList.remove('text-yellow-400');
-                        flashBtn.classList.add('text-white');
-                    }
-                } else {
-                    alert("Trình duyệt hoặc máy của bạn hổng hỗ trợ bật Flash trên web rầu!");
-                }
-            } catch (e) {
-                console.error("Lỗi bật Flash:", e);
-            }
-        }
-
-        function triggerFocus(event) {
-            if(event.target.closest('button')) return;
-
-            const ring = document.getElementById('focus-ring');
-            const container = event.currentTarget;
-            
-            const rect = container.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
-            
-            ring.style.left = `${x}px`;
-            ring.style.top = `${y}px`;
-            
-            ring.classList.remove('active');
-            void ring.offsetWidth; 
-            ring.classList.add('active');
-        }
-
-        function takePhoto() {
-            const video = document.getElementById('camera-stream');
-            const canvas = document.getElementById('camera-canvas');
-            const preview = document.getElementById('camera-preview');
-            const viewfinder = document.getElementById('camera-viewfinder');
-            const overlay = document.getElementById('camera-overlay');
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-            preview.src = imageDataUrl;
-            
-            video.classList.add('hidden');
-            preview.classList.remove('hidden');
-            
-            viewfinder.classList.add('hidden-frame');
-            overlay.classList.add('opacity-0');
-            
-            document.getElementById('btn-capture').classList.add('hidden');
-            document.getElementById('btn-camera-upload').classList.add('hidden');
-            document.getElementById('camera-spacer').classList.add('hidden');
-            
-            document.getElementById('btn-retake').classList.remove('hidden');
-            document.getElementById('btn-analyze').classList.remove('hidden');
-        }
-
-        function retakePhoto() {
-            document.getElementById('camera-preview').classList.add('hidden');
-            document.getElementById('camera-stream').classList.remove('hidden');
-            
-            document.getElementById('camera-viewfinder').classList.remove('hidden-frame');
-            document.getElementById('camera-overlay').classList.remove('opacity-0');
-            
-            document.getElementById('btn-capture').classList.remove('hidden');
-            document.getElementById('btn-camera-upload').classList.remove('hidden');
-            document.getElementById('camera-spacer').classList.remove('hidden');
-            
-            document.getElementById('btn-retake').classList.add('hidden');
-            document.getElementById('btn-analyze').classList.add('hidden');
-        }
-
-        function handleCameraUpload(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageDataUrl = e.target.result;
-                const preview = document.getElementById('camera-preview');
-                const video = document.getElementById('camera-stream');
-                
-                preview.src = imageDataUrl;
-                
-                video.classList.add('hidden');
-                preview.classList.remove('hidden');
-                
-                document.getElementById('camera-viewfinder').classList.add('hidden-frame');
-                document.getElementById('camera-overlay').classList.add('opacity-0');
-                
-                document.getElementById('btn-capture').classList.add('hidden');
-                document.getElementById('btn-camera-upload').classList.add('hidden');
-                document.getElementById('camera-spacer').classList.add('hidden');
-                
-                document.getElementById('btn-retake').classList.remove('hidden');
-                document.getElementById('btn-analyze').classList.remove('hidden');
-
-                if(isFlashOn) toggleFlash();
-                
-                event.target.value = '';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function analyzePhoto() {
-            const rawBase64Image = document.getElementById('camera-preview').src;
-            closeCamera();
-
-            const compressedBase64 = await compressImage(rawBase64Image);
-            const pureBase64 = compressedBase64.split(',')[1];
-
-            // 1. RẼ NHÁNH: XÁC THỰC THỬ THÁCH GACHA
-            if (pendingChallengeIndex !== null) {
-                await verifyChallengeWithAI(pureBase64, pendingChallengeIndex);
-                pendingChallengeIndex = null; // Reset trạng thái
-                return;
-            }
-
-            // 2. RẼ NHÁNH: GỬI ẢNH CHO CHATBOT
-            openFeature('Chatbot Thổ Địa');
-            const chatBox = document.getElementById('chat-box');
-            const typingId = 'typing-' + Date.now();
-
-            const userImgHtml = `
-                <div class="message-row user">
-                    <img src="${currentUser.avatar}" class="avatar">
-                    <div class="chat-bubble bg-white/10 border border-white/10 p-2">
-                        <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
-                    </div>
-                </div>`;
-            chatBox.innerHTML += userImgHtml;
-            
-            chatBox.innerHTML += `
-                <div id="${typingId}" class="message-row">
-                    <img src="${aiAvatar}" class="avatar border border-orange-500/30">
-                    <div class="typing-indicator">
-                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-                    </div>
-                </div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            const aiResponse = await getGeminiVisionResponse(pureBase64);
-
-            document.getElementById(typingId).remove();
-            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
-            chatBox.innerHTML += `
-                <div class="message-row flex flex-col items-start gap-0">
-                    <div class="flex items-end gap-2">
-                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
-                        <div>${finalHtml}</div>
-                    </div>
-                </div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            if (currentUser.isLoggedIn) {
-                currentUser.chatHistory.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
-                currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
-                saveUserData();
-            }
-        }
-
-        async function verifyChallengeWithAI(base64Data, index) {
-            const chal = currentUser.challenges[index];
-            openFeature('Gacha Thử Thách'); // Mở lại modal Gacha để user xem kết quả
-            
-            const area = document.getElementById('gacha-content-area');
-            area.innerHTML = `
-                <div class="py-12 text-center text-orange-400 flex flex-col items-center animate-fadeIn">
-                    <div class="relative w-32 h-32 mb-4">
-                        <img src="data:image/jpeg;base64,${base64Data}" class="w-full h-full object-cover rounded-2xl border-4 border-orange-500 opacity-60">
-                        <i class="fa-solid fa-expand absolute inset-0 flex items-center justify-center text-5xl text-white animate-ping-slow"></i>
-                    </div>
-                    <p class="text-sm font-bold animate-pulse">Anh Tư đang soi hình coi có chuẩn không nhen...</p>
-                </div>
-            `;
-
-            const promptText = `Nhiệm vụ của người dùng là: "${chal.text}".
-            Hãy nhìn vào bức ảnh người dùng vừa chụp. Ảnh này CÓ chứng minh được họ đã làm nhiệm vụ không? (Ví dụ: thử thách bắt ăn bánh xèo thì trong ảnh phải có bánh xèo/đồ ăn tương tự, bắt ra biển thì phải thấy biển...).
-            Trả lời BẮT BUỘC bằng định dạng JSON thuần (KHÔNG dùng markdown \`\`\`json):
-            {
-                "verified": true/false,
-                "message": "Lời nhận xét vui vẻ, ngắn gọn 1-2 câu, dùng từ địa phương Quy Nhơn (chu cha, nghen...)"
-            }`;
-
-            const payload = {
-                contents: [{ parts: [{ text: promptText }, { inlineData: { mimeType: "image/jpeg", data: base64Data } }] }],
-                generationConfig: { temperature: 0.2, responseMimeType: "application/json" }
-            };
-
-            try {
-                let resultJson = null;
-                for (let attempt = 0; attempt < 3; attempt++) {
-                    const currentKey = getNextApiKey();
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-                    });
-                    
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.candidates && data.candidates.length > 0) {
-                            const cleanRes = data.candidates[0].content.parts[0].text.replace(/```json/gi, '').replace(/```/gi, '').trim();
-                            resultJson = JSON.parse(cleanRes);
-                            break;
-                        }
-                    }
-                }
-
-                if (resultJson && resultJson.verified) {
-                    alert("🎉 DUYỆT TRÚNG PHÓC!\n" + resultJson.message);
-                    currentUser.challenges[index].isCompleted = true;
-                    currentUser.points = (currentUser.points || 0) + chal.points; 
-                    await saveUserData();
-                } else {
-                    alert("❌ HỔNG CHỊU NHEN!\n" + (resultJson ? resultJson.message : "Ảnh này hổng ăn nhập gì với nhiệm vụ miếng nào hết trơn!"));
-                }
-            } catch (e) {
-                console.error("Lỗi xác thực ảnh:", e);
-                alert("Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
-            }
-            
-            renderGachaUI(); // Tải lại danh sách Gacha
-        }
-
-        function handleChatImageUpload(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const originalBase64 = e.target.result;
-                const chatBox = document.getElementById('chat-box');
-                
-                const compressedBase64 = await compressImage(originalBase64);
-                const pureBase64 = compressedBase64.split(',')[1];
-                
-                chatBox.innerHTML += `
-                    <div class="message-row user">
-                        <img src="${currentUser.avatar}" class="avatar">
-                        <div class="chat-bubble bg-white/10 border border-white/10 p-2">
-                            <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
-                        </div>
-                    </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                
-                const typingId = 'typing-' + Date.now();
-                chatBox.innerHTML += `
-                    <div id="${typingId}" class="message-row">
-                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-                        </div>
-                    </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                
-                const aiResponse = await getGeminiVisionResponse(pureBase64);
-                
-                document.getElementById(typingId).remove();
-                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
-                chatBox.innerHTML += `
-                    <div class="message-row flex flex-col items-start gap-0">
-                        <div class="flex items-end gap-2">
-                            <img src="${aiAvatar}" class="avatar border border-orange-500/30">
-                            <div>${finalHtml}</div>
-                        </div>
-                    </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                if (currentUser.isLoggedIn) {
-                    currentUser.chatHistory.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
-                    currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
-                    saveUserData();
-                }
-
-                event.target.value = '';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function getGeminiVisionResponse(base64Data) {
-            const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
-            
-            const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi cho bạn một bức ảnh.
-            Hãy phân tích bức ảnh này:
-            1. Nếu ảnh là địa danh, món ăn, hay đặc sản liên quan đến Quy Nhơn - Bình Định: Nhận diện chính xác, giới thiệu ngắn gọn, khen ngợi và cho 1 mẹo nhỏ khi đi chơi/ăn món này.
-            2. Nếu ảnh không liên quan (đồ vật bình thường, selfie, nền đen/trắng...): Nhận xét vui vẻ, hài hước bằng tiếng "Nẫu" (chu cha, nghen, dẫy,...) và khéo léo lái câu chuyện mời họ xách balo lên đi check-in Quy Nhơn.
-            YÊU CẦU: Trả lời bằng văn bản thuần túy, ngắn gọn 3-4 câu, thân thiện.`;
-
-            const payload = {
-                contents: [{
-                    parts: [
-                        { text: promptText },
-                        { 
-                            inlineData: { 
-                                mimeType: "image/jpeg", 
-                                data: base64Data 
-                            } 
-                        }
-                    ]
-                }],
-                generationConfig: { temperature: 0.7 }
-            };
-
-            for (let attempt = 0; attempt < 3; attempt++) {
-                const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
-                
-                try {
-                    const res = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!res.ok) {
-                        const errorData = await res.text();
-                        console.error(`[Lỗi API] Attempt ${attempt + 1} - Status ${res.status}:`, errorData);
-                        
-                        if (res.status === 503 || res.status === 429) {
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-                            continue;
-                        }
-                        throw new Error("Lỗi Request tới Gemini API.");
-                    }
-
-                    const data = await res.json();
-                    if (data.candidates && data.candidates.length > 0) {
-                        return data.candidates[0].content.parts[0].text;
-                    }
-                } catch (e) {
-                    console.error(`Lần thử ${attempt + 1} thất bại:`, e);
-                    if (attempt < 2) {
-                        await new Promise(resolve => setTimeout(resolve, 1500));
-                        continue;
-                    }
-                }
-            }
-            
-            return `Chu cha, nãy giờ Anh Tư căng mắt ra nhìn mà mạng lắc quá tải hổng nổi ${userNameContext} ơi! Gửi lại hình khác hoặc diễn tả bằng chữ cho Anh Tư nghe dzoi nhen.`;
-        }
-
-        // ==========================================
-        // MODULE: TỪ ĐIỂN TIẾNG NẪU (LOCAL + AI)
-        // ==========================================
-        const nauDictionary = {
-            "nẫu": "Người ta, họ, anh ấy/chị ấy. VD: Nẫu đi đâu dẫy? (Họ đi đâu thế?)",
-            "tui": "Tôi.",
-            "mi": "Mày.",
-            "bay": "Tụi mày, các bạn.",
-            "chế": "Chị.",
-            "tía": "Cha, bố.",
-            "má": "Mẹ, má.",
-            "chu cha": "Trời ơi! (Biểu lộ sự ngạc nhiên). VD: Chu cha, ngon ác!",
-            "chu choa": "Trời ơi! (Biểu lộ sự ngạc nhiên).",
-            "chèn ơi": "Trời ơi! (Câu cảm thán).",
-            "gơ": "Ghê, rất (nhấn mạnh mức độ). VD: Đẹp gơ!",
-            "gớm": "Ghê, rất.",
-            "dữ thần": "Rất nhiều, ghê gớm, dữ dằn.",
-            "ác": "Rất (thường đi sau tính từ). VD: Ngon ác, đẹp ác.",
-            "nhức nách": "Cực kỳ ngon, xuất sắc, không chê vào đâu được.",
-            "hết sẩy": "Cực kỳ ngon, tuyệt vời.",
-            "phẻ": "Khỏe.",
-            "quỡn": "Rảnh rỗi. VD: Đang quỡn hả? (Đang rảnh hả?)",
-            "mắc cừ": "Buồn cười.",
-            "trớt quớt": "Sai bét, lãng nhách, không liên quan.",
-            "chà bá": "Siêu to khổng lồ.",
-            "chút ét": "Một chút xíu siêu, rất nhỏ.",
-            "làm nư": "Giận dỗi, vòi vĩnh (thường nói về con nít hoặc con gái).",
-            "chóc ngóc": "Ngồi đợi một mình, lẻ loi.",
-            "rề rề": "Chậm chạp. VD: Đi chậm rề rề.",
-            "ngộ": "Lạ hoặc Đẹp (tùy ngữ cảnh).",
-            "mần": "Làm. VD: Đang mần chi dẫy? (Đang làm gì thế?)",
-            "dìa": "Về. VD: Dìa nhà (Về nhà).",
-            "biểu": "Bảo, nói. VD: Tui biểu mi rồi (Tao bảo mày rồi).",
-            "phỉnh": "Lừa dối, trêu chọc, dụ dỗ.",
-            "càm ràm": "Càu nhàu, nói đi nói lại.",
-            "cự nự": "Cãi cọ, phàn nàn.",
-            "ngầu": "Ngồi.",
-            "nghía": "Nhìn, xem trộm.",
-            "hỗng": "Không. VD: Hỗng chịu (Không chịu).",
-            "miết": "Liên tục, không ngừng. VD: Mưa miết (Mưa mãi).",
-            "hoài": "Mãi, liên tục.",
-            "gộ": "Gạo.",
-            "nứ": "Nước.",
-            "rọt": "Ruột.",
-            "gầu": "Đầu.",
-            "quấn": "Quần.",
-            "xà lách": "Quần đùi, quần sọc.",
-            "mền": "Cái chăn.",
-            "chén": "Cái bát.",
-            "trổng": "Trong đó.",
-            "ngoải": "Ngoài đó.",
-            "trển": "Trên đó.",
-            "dưới": "Dưới đó.",
-            "tấu": "Buổi tối.",
-            "sáng mơi": "Sáng mai.",
-            "hồi nãy": "Vừa nãy.",
-            "hồi tê": "Lúc nãy (xa hơn một chút).",
-            "dẫy": "Vậy, thế. VD: Mần chi dẫy? (Làm gì thế?)",
-            "dị": "Vậy. VD: Dị hả? (Vậy hả?).",
-            "dẫy na": "Vậy hả.",
-            "dẫy nhen": "Vậy nhé.",
-            "nhen": "Nhé.",
-            "chết ngắc": "Chết rồi, hỏng rồi.",
-            "nhột": "Buồn buồn (cảm giác khi bị cù lét), hoặc chột dạ.",
-            "huề": "Hòa (không ai thắng ai).",
-            "lầm": "Sai, nhầm lẫn.",
-        };
-
-        async function translateNau() {
-            const input = document.getElementById('nau-input').value.trim();
-            const outputDiv = document.getElementById('nau-output');
-
-            if (!input) {
-                outputDiv.innerHTML = '<span class="text-red-400 text-base">Nhập chữ dzo rồi mới dịch được chớ!</span>';
-                return;
-            }
-
-            const lowerInput = input.toLowerCase();
-            let localMatches = [];
-
-            const sortedKeys = Object.keys(nauDictionary).sort((a, b) => b.length - a.length);
-            let tempInput = lowerInput;
-
-            for (let key of sortedKeys) {
-                const regex = new RegExp(`(^|[\\s.,!?])` + key + `([\\s.,!?]|$)`, 'i');
-                
-                if (regex.test(tempInput)) {
-                    localMatches.push(`<span class="text-orange-400 font-bold capitalize">${key}</span>: <span class="text-gray-200">${nauDictionary[key]}</span>`);
-                    tempInput = tempInput.replace(regex, ' ');
-                }
-            }
-
-            if (localMatches.length > 0) {
-                let html = `<div class="mb-3 text-[11px] font-bold text-green-400 bg-green-500/10 inline-block px-2 py-1 rounded border border-green-500/20"><i class="fa-solid fa-bolt mr-1"></i> Dữ liệu Local siêu tốc</div><br>`;
-                html += localMatches.join('<br><br>');
-                outputDiv.innerHTML = html;
-                return;
-            }
-
-            outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Đang nhờ AI dịch...</span>';
-
-            const prompt = `Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông: "${input}"
-            Nếu là từ phát âm trại đi (biến âm), hãy dịch thẳng nghĩa gốc của nó.
-            Vui lòng KHÔNG dùng markdown (không in đậm, không gạch đầu).
-            Chỉ trả về đúng 2 dòng theo định dạng sau:
-            Nghĩa: (giải nghĩa ngắn gọn)
-            Ví dụ: (1 câu ngữ cảnh sử dụng thực tế)`;
-
-            const res = await fetchSpecialAI(prompt);
-            
-            if (res) {
-                let html = `<div class="mb-3 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-block px-2 py-1 rounded border border-blue-500/20"><i class="fa-solid fa-robot mr-1"></i> Trí tuệ nhân tạo Gemini</div><br>`;
-                html += res.replace(/\n/g, '<br>');
-                outputDiv.innerHTML = html;
-            } else {
-                outputDiv.innerHTML = `
-                    <span class="text-red-400 text-base font-bold">Lỗi sập nguồn rầu! 🔌</span><br>
-                    <span class="text-sm text-gray-300">Không tìm thấy trong Từ điển và AI cũng đang mất mạng. Bạn thử lại sau nhen!</span>
-                `;
-            }
         }
     </script>
 </body>
