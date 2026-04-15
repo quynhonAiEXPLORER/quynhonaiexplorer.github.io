@@ -26,38 +26,12 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Glassmorphism Nâng Cấp */
-        .glass-nav { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .glass-nav { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-bottom-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: env(safe-area-inset-bottom); }
-        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
-        
-        /* Clean UI Cards */
-        .glass-card { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); 
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .glass-card:active { transform: scale(0.97); }
-        .glass-card:hover { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 100%); 
-            transform: translateY(-4px); 
-            border-color: rgba(249, 115, 22, 0.3); 
-            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15); 
-        }
-
-        /* Skeleton Loading */
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        .skeleton-box {
-            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite linear;
-            border-radius: 8px;
-        }
+        .glass-panel { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }
+        .glass-card:active { transform: scale(0.95); background: rgba(251, 146, 60, 0.3); }
+        .glass-card:hover { background: rgba(251, 146, 60, 0.2); transform: translateY(-5px); border-color: rgba(251, 146, 60, 0.5); }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         #chat-box-content { scroll-behavior: smooth; }
@@ -102,105 +76,74 @@
 <body class="flex flex-col items-center pt-20 pb-24 md:pb-8"> 
 
     <nav class="fixed top-0 left-0 right-0 z-30 glass-nav px-4 md:px-8 py-3 flex justify-center md:justify-between items-center transition-all">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('view-home')">
+        <div class="flex items-center gap-2 cursor-pointer">
             <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png" class="w-8 h-8 rounded-full shadow-lg border border-white/20">
             <span class="font-black text-lg md:text-xl text-white tracking-wide uppercase drop-shadow-md">
                 Quy Nhơn <span class="text-orange-500">AI Explorer</span>
             </span>
         </div>
-        <div class="hidden md:flex items-center gap-2 text-sm font-semibold bg-gray-900/80 p-1.5 rounded-xl border border-white/10">
-            <button data-target="view-home" onclick="switchTab('view-home')" class="nav-btn bg-white/10 text-orange-400 flex items-center gap-2 px-4 py-2 rounded-lg transition-all"><i class="fa-solid fa-house"></i> Khám phá</button>
-            <button data-target="view-diary" onclick="switchTab('view-diary')" class="nav-btn text-gray-400 hover:text-orange-400 flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all"><i class="fa-solid fa-book"></i> Nhật ký AI</button>
-            <button data-target="view-gacha" onclick="switchTab('view-gacha')" class="nav-btn text-gray-400 hover:text-orange-400 flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all"><i class="fa-solid fa-dice"></i> Thử Thách</button>
-            <button data-target="view-profile" onclick="switchTab('view-profile')" class="nav-btn text-gray-400 hover:text-orange-400 flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all"><i class="fa-regular fa-circle-user"></i> Cá nhân</button>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-300">
+            <a href="#" class="text-orange-400 flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10"><i class="fa-solid fa-house"></i> Khám phá</a>
+            <a href="#" onclick="openFeature('Nhật ký AI')" class="hover:text-orange-400 flex items-center gap-2 transition-colors px-3 py-2 rounded-lg hover:bg-white/5"><i class="fa-solid fa-book"></i> Nhật ký AI</a>
+            <a href="#" onclick="openFeature('Gacha Thử Thách')" class="hover:text-orange-400 flex items-center gap-2 transition-colors px-3 py-2 rounded-lg hover:bg-white/5"><i class="fa-solid fa-dice"></i> Thử Thách</a>
+            <a href="#" onclick="openAuthModal()" class="hover:text-orange-400 flex items-center gap-2 transition-colors px-3 py-2 rounded-lg hover:bg-white/5"><i class="fa-regular fa-circle-user"></i> Cá nhân</a>
         </div>
     </nav>
 
-    <main class="w-full max-w-5xl text-center text-white px-4 md:mt-4 relative pb-10">
+    <div class="max-w-5xl w-full text-center text-white px-4 md:mt-8">
+        <header class="mb-6 mt-6">
+            <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-1 md:mb-3 uppercase drop-shadow-lg">Quy Nhơn</h1>
+            <p class="text-gray-300 text-sm md:text-lg max-w-lg mx-auto font-light leading-relaxed mt-3 px-2 drop-shadow-md">Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Có tui lo!</p>
+            <button onclick="openItineraryPlanner()" class="mt-6 md:mt-8 w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl md:rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 mx-auto text-base md:text-lg">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Lên lịch trình AI (10s)
+            </button>
+        </header>
 
-        <section id="view-home" class="app-view block animate-fadeIn">
-            <header class="mb-6 mt-6">
-                <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-1 md:mb-3 uppercase drop-shadow-lg">Quy Nhơn</h1>
-                <p class="text-gray-300 text-sm md:text-lg max-w-lg mx-auto font-light leading-relaxed mt-3 px-2 drop-shadow-md">Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Có tui lo!</p>
-                <button onclick="openItineraryPlanner()" class="mt-6 md:mt-8 w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl md:rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 mx-auto text-base md:text-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Lên lịch trình AI (10s)
-                </button>
-            </header>
+        <div class="max-w-2xl mx-auto mb-6 md:mb-10 bg-black/50 md:bg-black/40 backdrop-blur-md border border-orange-500/40 rounded-2xl md:rounded-full py-2.5 md:py-3 px-4 md:px-6 flex items-center gap-3 shadow-lg">
+            <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png" class="w-8 h-8 rounded-full border border-orange-400">
+            <p id="dynamic-greeting" class="text-orange-100 text-sm md:text-base font-medium text-left flex-1 line-clamp-2 md:line-clamp-none leading-snug">Đang tải...</p>
+        </div>
 
-            <div class="max-w-2xl mx-auto mb-6 md:mb-10 bg-black/50 md:bg-black/40 backdrop-blur-md border border-orange-500/40 rounded-2xl md:rounded-full py-2.5 md:py-3 px-4 md:px-6 flex items-center gap-3 shadow-lg">
-                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png" class="w-8 h-8 rounded-full border border-orange-400">
-                <p id="dynamic-greeting" class="text-orange-100 text-sm md:text-base font-medium text-left flex-1 line-clamp-2 md:line-clamp-none leading-snug">Đang tải...</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 relative z-10">
+            <div onclick="openFeature('Chatbot Thổ Địa')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-blue-500/20 flex items-center justify-center text-blue-400 text-2xl md:text-3xl"><i class="fa-regular fa-comments"></i></div>
+                <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tư Nẫu</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Hỏi đáp 24/7</p></div>
+            </div>
+            
+            <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-green-500/20 flex items-center justify-center text-green-400 text-2xl md:text-3xl"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Check-in</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Tọa độ HOT</p></div>
+            </div>
+            
+            <div onclick="openFeature('Thời Tiết & Đi Đảo')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl md:text-3xl"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Thời Tiết</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Biển & Đi đảo</p></div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 relative z-10 mt-2">
-                <div onclick="openFeature('Chatbot Thổ Địa')" class="glass-card rounded-2xl md:rounded-3xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer min-h-[130px] group">
-                    <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 text-2xl group-hover:scale-110 group-hover:bg-blue-500/10 transition-all duration-300"><i class="fa-regular fa-comments"></i></div>
-                    <div class="text-center"><h3 class="font-bold text-sm md:text-base text-gray-100 group-hover:text-orange-400 transition-colors">Tư Nẫu</h3><p class="text-[10px] md:text-xs text-gray-500 mt-0.5">Hỏi đáp 24/7</p></div>
-                </div>
-                
-                <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-2xl md:rounded-3xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer min-h-[130px] group">
-                    <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-green-400 text-2xl group-hover:scale-110 group-hover:bg-green-500/10 transition-all duration-300"><i class="fa-solid fa-location-dot"></i></div>
-                    <div class="text-center"><h3 class="font-bold text-sm md:text-base text-gray-100 group-hover:text-orange-400 transition-colors">Check-in</h3><p class="text-[10px] md:text-xs text-gray-500 mt-0.5">Tọa độ HOT</p></div>
-                </div>
-                
-                <div onclick="openFeature('Thời Tiết & Đi Đảo')" class="glass-card rounded-2xl md:rounded-3xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer min-h-[130px] group">
-                    <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 group-hover:bg-cyan-500/10 transition-all duration-300"><i class="fa-solid fa-cloud-sun-rain"></i></div>
-                    <div class="text-center"><h3 class="font-bold text-sm md:text-base text-gray-100 group-hover:text-orange-400 transition-colors">Thời Tiết</h3><p class="text-[10px] md:text-xs text-gray-500 mt-0.5">Biển & Đi đảo</p></div>
-                </div>
-
-                <div onclick="openFeature('Từ Điển Tiếng Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer min-h-[130px] group">
-                    <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-orange-400 text-2xl group-hover:scale-110 group-hover:bg-orange-500/10 transition-all duration-300"><i class="fa-solid fa-language"></i></div>
-                    <div class="text-center"><h3 class="font-bold text-sm md:text-base text-gray-100 group-hover:text-orange-400 transition-colors">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-500 mt-0.5">Dịch phương ngữ</p></div>
-                </div>
+            <div onclick="openFeature('Từ Điển Tiếng Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer min-h-[120px]">
+                <div class="w-12 h-12 md:w-16 h-16 rounded-2xl md:rounded-[20px] bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl"><i class="fa-solid fa-language"></i></div>
+                <div class="text-center"><h3 class="font-bold text-sm md:text-lg text-white">Tiếng "Nẫu"</h3><p class="text-[10px] md:text-xs text-gray-400 mt-1 md:mt-2">Giao tiếp bản địa</p></div>
             </div>
+        </div>
 
-            <footer class="mt-12 md:mt-20 text-gray-400 text-xs md:text-sm pb-8 md:pb-4 flex flex-col items-center gap-4">
-                <p>© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
-                <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
-            </footer>
-        </section>
-
-        <section id="view-diary" class="app-view hidden animate-fadeIn max-w-2xl mx-auto md:mt-8">
-            <div class="glass-panel p-5 md:p-8 rounded-3xl border border-white/10 text-left shadow-2xl">
-                <h2 class="text-xl md:text-2xl font-black text-orange-400 mb-6 uppercase tracking-wide flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center"><i class="fa-solid fa-book"></i></div>
-                    Tạo Nhật Ký AI
-                </h2>
-                <div id="diary-page-content"></div>
-            </div>
-        </section>
-
-        <section id="view-gacha" class="app-view hidden animate-fadeIn max-w-2xl mx-auto md:mt-8">
-            <div class="glass-panel p-5 md:p-8 rounded-3xl border border-white/10 text-left shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-bl-full blur-2xl pointer-events-none"></div>
-                <h2 class="text-xl md:text-2xl font-black text-orange-400 mb-2 uppercase tracking-wide flex items-center gap-3 relative z-10">
-                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center"><i class="fa-solid fa-dice"></i></div>
-                    Gacha Thử Thách
-                </h2>
-                <div id="gacha-page-content" class="relative z-10"></div>
-            </div>
-        </section>
-
-        <section id="view-profile" class="app-view hidden animate-fadeIn max-w-2xl mx-auto md:mt-8">
-            <div class="glass-panel p-5 md:p-8 rounded-3xl border border-white/10 text-left shadow-2xl">
-                <div id="profile-page-content"></div>
-            </div>
-        </section>
-
-    </main>
+        <footer class="mt-12 md:mt-20 text-gray-400 text-xs md:text-sm pb-8 md:pb-4 flex flex-col items-center gap-4">
+            <p>© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân</p>
+            <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
+        </footer>
+    </div>
 
     <div class="fixed bottom-[85px] right-4 md:bottom-10 md:right-10 z-40">
-        <button onclick="openCamera()" class="relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-[0_4px_20px_rgba(249,115,22,0.5)] active:scale-90 transition-transform hover:shadow-[0_4px_25px_rgba(249,115,22,0.7)]">
+        <button onclick="openCamera()" class="relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-[0_4px_20px_rgba(249,115,22,0.5)] active:scale-90 transition-transform">
             <i class="fa-solid fa-camera"></i>
             <span class="absolute inset-0 rounded-full border-2 border-orange-400 animate-ping-slow pointer-events-none"></span>
         </button>
     </div>
 
     <div class="fixed bottom-0 left-0 right-0 glass-bottom-nav z-30 flex justify-around items-center py-2 md:hidden">
-        <button data-target="view-home" onclick="switchTab('view-home')" class="nav-btn text-orange-400 flex flex-col items-center p-2 transition-colors"><i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] font-semibold">Khám phá</span></button>
-        <button data-target="view-diary" onclick="switchTab('view-diary')" class="nav-btn text-gray-400 flex flex-col items-center p-2 transition-colors"><i class="fa-solid fa-book text-xl mb-1"></i><span class="text-[10px] font-medium">Nhật ký AI</span></button>
-        <button data-target="view-gacha" onclick="switchTab('view-gacha')" class="nav-btn text-gray-400 flex flex-col items-center p-2 transition-colors"><i class="fa-solid fa-dice text-xl mb-1"></i><span class="text-[10px] font-medium">Thử Thách</span></button>
-        <button data-target="view-profile" onclick="switchTab('view-profile')" class="nav-btn text-gray-400 flex flex-col items-center p-2 transition-colors"><i class="fa-regular fa-circle-user text-xl mb-1"></i><span class="text-[10px] font-medium">Cá nhân</span></button>
+        <a href="#" class="flex flex-col items-center text-orange-400 p-2"><i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] font-semibold">Khám phá</span></a>
+        <a href="#" onclick="openFeature('Nhật ký AI')" class="flex flex-col items-center text-gray-400 hover:text-orange-400 transition-colors p-2"><i class="fa-solid fa-book text-xl mb-1"></i><span class="text-[10px] font-medium">Nhật ký AI</span></a>
+        <a href="#" onclick="openFeature('Gacha Thử Thách')" class="flex flex-col items-center text-gray-400 hover:text-orange-400 transition-colors p-2"><i class="fa-solid fa-dice text-xl mb-1"></i><span class="text-[10px] font-medium">Thử Thách</span></a>
+        <a href="#" onclick="openAuthModal()" class="flex flex-col items-center text-gray-400 hover:text-orange-400 transition-colors p-2"><i class="fa-regular fa-circle-user text-xl mb-1"></i><span class="text-[10px] font-medium">Cá nhân</span></a>
     </div>
 
     <div id="modal" class="fixed inset-0 z-50 hidden flex flex-col justify-end md:justify-center items-center p-0 md:p-4">
@@ -235,10 +178,15 @@
 
     <div id="camera-modal" class="fixed inset-0 z-[60] hidden bg-black flex flex-col modal-slide-up">
         <div class="flex justify-between items-center p-4 bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 right-0 z-40">
-            <button id="btn-flash" onclick="toggleFlash()" class="text-white bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors shadow-lg"><i class="fa-solid fa-bolt"></i></button>
+            <button id="btn-flash" onclick="toggleFlash()" class="text-white bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors shadow-lg">
+                <i class="fa-solid fa-bolt"></i>
+            </button>
             <h3 class="text-white font-bold text-lg drop-shadow-md tracking-wider">Mắt Thần AI</h3>
-            <button onclick="closeCamera()" class="text-white bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors shadow-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="closeCamera()" class="text-white bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-colors shadow-lg">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
         </div>
+
         <div class="flex-1 relative flex items-center justify-center bg-black overflow-hidden" onclick="triggerFocus(event)">
             <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover"></video>
             <img id="camera-preview" class="w-full h-full object-cover hidden">
@@ -248,14 +196,21 @@
             <div id="camera-viewfinder" class="viewfinder transition-all duration-300">
                 <div class="viewfinder-inner"></div>
                 <div class="scanner-line"></div>
-                <div class="absolute inset-x-0 bottom-[-35px] text-center text-orange-400 text-xs font-semibold tracking-wide drop-shadow-md animate-pulse">[ Chạm để lấy nét ]</div>
+                <div class="absolute inset-x-0 bottom-[-35px] text-center text-orange-400 text-xs font-semibold tracking-wide drop-shadow-md animate-pulse">
+                    [ Chạm để lấy nét ]
+                </div>
             </div>
         </div>
+
         <div class="p-6 bg-gradient-to-t from-black via-black/90 to-transparent flex justify-center items-center gap-8 absolute bottom-0 left-0 right-0 pb-safe h-36 z-40">
             <input type="file" id="camera-upload-input" accept="image/*" class="hidden" onchange="handleCameraUpload(event)">
-            <button id="btn-camera-upload" onclick="document.getElementById('camera-upload-input').click()" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors shadow-lg"><i class="fa-regular fa-image text-xl"></i></button>
+            <button id="btn-camera-upload" onclick="document.getElementById('camera-upload-input').click()" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors shadow-lg">
+                <i class="fa-regular fa-image text-xl"></i>
+            </button>
             <button id="btn-retake" onclick="retakePhoto()" class="hidden text-white font-semibold py-2.5 px-5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition shadow-lg">Chụp lại</button>
-            <button id="btn-capture" onclick="takePhoto()" class="w-16 h-16 rounded-full bg-white/20 border-4 border-white flex items-center justify-center active:scale-90 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]"><div class="w-12 h-12 bg-white rounded-full"></div></button>
+            <button id="btn-capture" onclick="takePhoto()" class="w-16 h-16 rounded-full bg-white/20 border-4 border-white flex items-center justify-center active:scale-90 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                <div class="w-12 h-12 bg-white rounded-full"></div>
+            </button>
             <button id="btn-analyze" onclick="analyzePhoto()" class="hidden bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 px-6 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition">Gửi Tư Nẫu</button>
             <div id="camera-spacer" class="w-12 h-12"></div>
         </div>
@@ -263,7 +218,7 @@
 
     <script>
         // ==========================================
-        // 1. CẤU HÌNH FIREBASE
+        // 1. CẤU HÌNH FIREBASE AUTHENTICATION & FIRESTORE
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDqGxQYtmt3fH3RmIalBzW-7lH9O6W5cjk",
@@ -280,7 +235,9 @@
             auth = firebase.auth();
             db = firebase.firestore(); 
             googleProvider = new firebase.auth.GoogleAuthProvider();
-        } catch(e) { console.error("Firebase Init Error:", e); }
+        } catch(e) {
+            console.error("Firebase Init Error:", e);
+        }
 
         function compressImage(base64Str, maxWidth = 800) {
             return new Promise((resolve) => {
@@ -289,9 +246,16 @@
                 img.onload = () => {
                     let canvas = document.createElement('canvas');
                     let ctx = canvas.getContext('2d');
-                    let width = img.width, height = img.height;
-                    if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; }
-                    canvas.width = width; canvas.height = height;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
                     resolve(canvas.toDataURL('image/jpeg', 0.7));
                 };
@@ -300,16 +264,27 @@
         }
 
         // ==========================================
-        // 2. STATE & USER DATA
+        // 2. DỮ LIỆU NGƯỜI DÙNG & ĐỒNG BỘ FIRESTORE
         // ==========================================
         let currentChatSessionId = null;
         let currentChatMessages = [];
-        let currentUser = { isLoggedIn: false, uid: null, name: 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [] };
+
+        let currentUser = {
+            isLoggedIn: false,
+            uid: null,
+            name: 'Khách Phương Xa',
+            avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true',
+            chatSessions: [],
+            itineraries: [],
+            points: 0,
+            challenges: []
+        };
 
         function getShortName(fullName) {
             if (!fullName || !currentUser.isLoggedIn || fullName === 'Khách Phương Xa') return 'bạn';
             let cleanName = fullName.replace(/\s*\(.*?\)\s*/g, '').trim();
-            return cleanName.split(' ')[0] || 'bạn'; 
+            let parts = cleanName.split(' ');
+            return parts[0] || 'bạn'; 
         }
 
         if (auth) {
@@ -317,10 +292,16 @@
                 if (user) {
                     const displayName = user.displayName || user.email.split('@')[0];
                     currentUser = {
-                        isLoggedIn: true, uid: user.uid, name: displayName,
+                        isLoggedIn: true,
+                        uid: user.uid,
+                        name: displayName,
                         avatar: user.photoURL || `https://ui-avatars.com/api/?name=${displayName.charAt(0)}&background=f97316&color=fff&rounded=true`,
-                        chatSessions: [], itineraries: [], points: 0, challenges: []
+                        chatSessions: [],
+                        itineraries: [],
+                        points: 0,
+                        challenges: []
                     };
+
                     if (db) {
                         try {
                             const doc = await db.collection('users').doc(user.uid).get();
@@ -331,19 +312,17 @@
                                 currentUser.points = data.points || 0;
                                 currentUser.challenges = data.challenges || [];
                             }
-                        } catch (error) { console.error("Lỗi Cloud:", error); }
+                        } catch (error) {
+                            console.error("Lỗi tải dữ liệu từ Cloud:", error);
+                        }
                     }
                 } else {
                     currentUser = { isLoggedIn: false, uid: null, name: 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [] };
                 }
                 
                 updateDynamicGreeting();
-                
-                // Cập nhật lại view Profile nếu đang mở tab đó
-                const profileView = document.getElementById('view-profile');
-                if (profileView && !profileView.classList.contains('hidden')) {
-                    renderProfileView();
-                }
+                const modalTitle = document.getElementById('modal-title');
+                if (modalTitle && (modalTitle.innerText === 'TÀI KHOẢN' || modalTitle.innerText === 'HỒ SƠ CỦA BẠN')) openAuthModal(); 
             });
         }
 
@@ -351,78 +330,228 @@
             if (currentUser.isLoggedIn && currentUser.uid && db) {
                 try {
                     await db.collection('users').doc(currentUser.uid).set({
-                        chatSessions: currentUser.chatSessions, itineraries: currentUser.itineraries,
-                        points: currentUser.points, challenges: currentUser.challenges,
+                        chatSessions: currentUser.chatSessions,
+                        itineraries: currentUser.itineraries,
+                        points: currentUser.points,
+                        challenges: currentUser.challenges,
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
-                } catch (error) { console.error("Lỗi lưu DB:", error); }
+                } catch (error) {
+                    console.error("Lỗi đồng bộ dữ liệu:", error);
+                }
             }
         }
 
-        // ==========================================
-        // 3. LOGIC APP ĐA TRANG (ROUTING / TABS)
-        // ==========================================
-        function switchTab(targetViewId) {
-            // 1. Ẩn tất cả các view, tắt modal
-            document.querySelectorAll('.app-view').forEach(view => {
-                view.classList.add('hidden');
-                view.classList.remove('block');
-            });
-            closeModal();
-
-            // 2. Bật view mục tiêu
-            const targetView = document.getElementById(targetViewId);
-            if (targetView) {
-                targetView.classList.remove('hidden');
-                targetView.classList.add('block');
-                // Cuộn lên đầu trang nhẹ nhàng
-                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        async function updateChatTitleIfNeeded(sessionId) {
+            let session = currentUser.chatSessions.find(s => s.id === sessionId);
+            if (!session || session.title !== "Đoạn chat mới" || session.messages.filter(m => m.role === 'user').length < 1) return;
+            
+            const chatLog = session.messages.map(m => `${m.role}: ${m.text || ''}`).join('\n').substring(0, 300);
+            
+            const prompt = `Đóng vai hệ thống đặt tên, hãy tóm tắt nội dung cuộc trò chuyện sau thành một tiêu đề cực kỳ ngắn gọn (Tối đa 3 đến 5 từ).
+            VÍ DỤ TIÊU ĐỀ CHUẨN: Hỏi quán ốc, Đường đi Kỳ Co, Thời tiết hôm nay.
+            YÊU CẦU NGHIÊM NGẶT: KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON, KHÔNG giải thích. CHỈ TRẢ VỀ TEXT THUẦN.
+            Cuộc trò chuyện: ${chatLog}`;
+            
+            const titleRes = await fetchSpecialAI(prompt);
+            
+            if (titleRes) {
+                const cleanTitle = titleRes.replace(/[\"\'\[\]\{\}]/g, '').replace(/^(Tiêu đề:|Title:)\s*/i, '').trim();
+                session.title = cleanTitle;
+                saveUserData();
+                
+                if (currentChatSessionId === sessionId) {
+                    updateChatHeaderTitle();
+                    const sidebar = document.getElementById('chat-history-sidebar');
+                    if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                        renderChatHistorySidebar();
+                    }
+                }
             }
+        }
 
-            // 3. Cập nhật state thanh Navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-white/10', 'text-orange-400');
-                btn.classList.add('text-gray-400');
-                if (btn.dataset.target === targetViewId) {
-                    btn.classList.add('bg-white/10', 'text-orange-400');
-                    btn.classList.remove('text-gray-400');
+        function saveCurrentChatSession() {
+            if (!currentUser.isLoggedIn || currentChatMessages.length === 0) return;
+            
+            let sessionIndex = currentUser.chatSessions.findIndex(s => s.id === currentChatSessionId);
+            let currentTitle = sessionIndex >= 0 ? currentUser.chatSessions[sessionIndex].title : "Đoạn chat mới";
+
+            const sessionData = {
+                id: currentChatSessionId,
+                title: currentTitle,
+                timestamp: currentChatSessionId, 
+                messages: currentChatMessages
+            };
+
+            if (sessionIndex >= 0) {
+                currentUser.chatSessions[sessionIndex] = sessionData;
+            } else {
+                currentUser.chatSessions.push(sessionData);
+            }
+            saveUserData();
+
+            if (currentTitle === "Đoạn chat mới") {
+                updateChatTitleIfNeeded(currentChatSessionId);
+            }
+        }
+
+        function toggleChatSidebar() {
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                renderChatHistorySidebar();
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        function renderChatHistorySidebar() {
+            const list = document.getElementById('sidebar-list');
+            if (!list) return;
+            list.innerHTML = '';
+            
+            list.innerHTML += `
+                <button onclick="startNewChat()" class="w-full text-left text-sm p-3 mb-4 rounded-xl border border-white/10 bg-white/10 hover:bg-white/20 text-white transition-all flex items-center gap-3 shadow-md cursor-pointer">
+                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs"><i class="fa-solid fa-plus"></i></div>
+                    <span class="font-bold">Đoạn chat mới</span>
+                </button>
+                <div class="text-[10px] font-bold text-gray-500 mb-2 px-1">LỊCH SỬ GẦN ĐÂY</div>
+            `;
+
+            if (!currentUser.isLoggedIn || currentUser.chatSessions.length === 0) {
+                list.innerHTML += '<p class="text-xs text-gray-500 italic px-1 py-2">Chưa có lịch sử trò chuyện.</p>';
+            } else {
+                const sorted = [...currentUser.chatSessions].sort((a, b) => b.timestamp - a.timestamp);
+                sorted.forEach(session => {
+                    const isActive = session.id === currentChatSessionId;
+                    const bgClass = isActive ? 'bg-orange-500/20 border-orange-500/50 text-orange-300' : 'bg-transparent border-transparent text-gray-300 hover:bg-white/5';
+                    
+                    list.innerHTML += `
+                        <div class="flex items-center group w-full text-left text-sm px-2 py-1 rounded-xl border transition-all mb-1 ${bgClass}">
+                            <div onclick="loadChatSession('${session.id}')" class="flex-1 flex items-center gap-3 truncate py-2 cursor-pointer">
+                                <i class="fa-regular fa-message ${isActive ? 'text-orange-400' : 'text-gray-500'} shrink-0"></i> 
+                                <span class="truncate">${session.title}</span>
+                            </div>
+                            <button onclick="deleteChatSession('${session.id}')" class="text-gray-500 hover:text-red-400 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 cursor-pointer shrink-0" title="Xóa đoạn chat">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function deleteChatSession(id) {
+            if(!confirm("Bạn có chắc chắn muốn xóa đoạn trò chuyện này không?")) return;
+            currentUser.chatSessions = currentUser.chatSessions.filter(s => s.id !== id);
+            saveUserData();
+            
+            if (currentChatSessionId === id) {
+                startNewChat();
+            } else {
+                renderChatHistorySidebar(); 
+            }
+        }
+
+        function updateChatHeaderTitle() {
+            const titleEl = document.getElementById('current-chat-title');
+            if (!titleEl) return;
+            const session = currentUser.chatSessions.find(s => s.id === currentChatSessionId);
+            titleEl.innerText = session && session.title !== "Đoạn chat mới" ? session.title : "Tư Nẫu";
+        }
+
+        function loadChatSession(id) {
+            const session = currentUser.chatSessions.find(s => s.id === id);
+            if (!session) return;
+            currentChatSessionId = session.id;
+            currentChatMessages = session.messages || [];
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar) sidebar.classList.add('-translate-x-full'); 
+            updateChatHeaderTitle();
+            renderCurrentChat();
+        }
+
+        function startNewChat() {
+            currentChatSessionId = Date.now().toString(); 
+            currentChatMessages = [];
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+            updateChatHeaderTitle();
+            renderCurrentChat();
+        }
+
+        function renderCurrentChat() {
+            const chatBoxContent = document.getElementById('chat-box-content');
+            if (!chatBoxContent) return;
+
+            const greetName = getShortName(currentUser.name);
+            let historyHtml = `<div class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">Chu cha! Chào ${greetName}. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, ${greetName} muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!</div></div>`;
+
+            currentChatMessages.forEach(msg => {
+                if (msg.role === 'user') {
+                    historyHtml += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10 ${msg.text && msg.text.includes('[Đã') ? 'italic text-xs text-gray-400' : ''}">${msg.text}</div></div>`;
+                } else if (msg.role === 'ai') {
+                    historyHtml += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${msg.html}</div></div></div>`;
                 }
             });
+            
+            chatBoxContent.innerHTML = historyHtml;
+            setTimeout(() => { chatBoxContent.scrollTop = chatBoxContent.scrollHeight; }, 50);
+        }
 
-            // 4. Render nội dung tương ứng
-            if (targetViewId === 'view-profile') {
-                renderProfileView();
-            } else if (targetViewId === 'view-gacha') {
-                renderGachaUIView();
-            } else if (targetViewId === 'view-diary') {
-                renderDiaryView();
+        const keyPoolNguoc = [
+            'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
+            'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
+            'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
+            'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
+            'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
+        ];
+        
+        let currentKeyIndex = 0;
+        function getNextApiKey() {
+            const keyThat = keyPoolNguoc[currentKeyIndex].split('').reverse().join('');
+            currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length;
+            return keyThat;
+        }
+
+        const aiAvatar = "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png";
+        const fallbackImg = "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg";
+
+        function updateDynamicGreeting() {
+            const hour = new Date().getHours();
+            const nameToGreet = getShortName(currentUser.name); 
+            let text = "";
+            if (hour >= 5 && hour < 11) text = `Sáng rầu! Lên đồ đi check-in Eo Gió là bao hình đẹp nhen ${nameToGreet}!`;
+            else if (hour >= 11 && hour < 14) text = `Trưa nắng gắt! ${nameToGreet} ghé làm dĩa Bánh xèo tôm nhảy cho mát dạ nhen.`;
+            else if (hour >= 14 && hour < 18) text = `Chiều mát, ${nameToGreet} ra biển dạo hay làm ly nước mía lề đường hông?`;
+            else text = `Tối rầu nhen ${nameToGreet}! Chợ đêm Quy Nhơn đang xôm, ra ăn ốc mỡ xào me xíu hông?`;
+            document.getElementById('dynamic-greeting').innerText = text;
+        }
+        window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
+
+        function deleteItinerary(index) {
+            if(confirm("Bạn có chắc chắn muốn xóa mục này hông?")) {
+                currentUser.itineraries.splice(index, 1);
+                saveUserData();
+                openAuthModal(); 
             }
         }
 
+        // ==========================================
+        // 3. UI ĐĂNG NHẬP, ĐĂNG KÝ VÀ HỒ SƠ
+        // ==========================================
         function openAuthModal() {
-            // Hàm tương thích ngược: Bất cứ nút nào gọi openAuthModal giờ sẽ chuyển tab
-            switchTab('view-profile');
-        }
-
-        // ==========================================
-        // 4. RENDER GIAO DIỆN TỪNG TAB
-        // ==========================================
-        
-        // --- TAB NHẬT KÝ ---
-        function renderDiaryView() {
-            document.getElementById('diary-page-content').innerHTML = features['Nhật ký AI'].content;
-        }
-
-        // --- TAB GACHA ---
-        function renderGachaUIView() {
-            document.getElementById('gacha-page-content').innerHTML = features['Gacha Thử Thách'].content;
-            renderGachaUI(); // Hàm lấy logic data Gacha (định nghĩa ở dưới)
-        }
-
-        // --- TAB PROFILE / AUTH ---
-        function renderProfileView() {
-            const content = document.getElementById('profile-page-content');
+            const modal = document.getElementById('modal');
+            const chatArea = document.getElementById('chat-input-area');
+            if(chatArea) chatArea.classList.add('hidden');
+            
             if (currentUser.isLoggedIn) {
+                document.getElementById('modal-title').innerText = 'Hồ Sơ Của Bạn';
+                document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-circle-user"></i>';
+                const content = document.getElementById('modal-content');
+                
                 let savedItemsHtml = '';
                 if (currentUser.itineraries && currentUser.itineraries.length > 0) {
                     currentUser.itineraries.forEach((item, index) => {
@@ -431,12 +560,15 @@
                         let contentText = isObj ? item.content : item;
                         let title = isObj ? item.title : contentText.substring(0, 35) + "...";
                         let date = isObj ? item.date : "";
+
                         let icon = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot text-blue-400"></i>' : '<i class="fa-solid fa-book-open text-orange-400"></i>';
                         let typeName = type === 'itinerary' ? 'Lịch trình AI' : 'Nhật ký AI';
 
                         savedItemsHtml += `
                         <div class="bg-black/30 p-3 rounded-2xl mb-3 text-left border border-white/10 hover:border-orange-500/50 hover:bg-white/5 transition-all relative group flex items-center cursor-pointer shadow-md" onclick="viewSavedItem(${index})">
-                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 shrink-0 shadow-inner">${icon}</div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 shrink-0 shadow-inner">
+                                ${icon}
+                            </div>
                             <div class="flex-1 overflow-hidden pr-8">
                                 <div class="flex justify-between items-center mb-0.5">
                                     <p class="font-bold text-white text-sm truncate">${typeName}</p>
@@ -458,7 +590,7 @@
                 }
 
                 content.innerHTML = `
-                    <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-col items-center gap-4 py-4 md:py-6">
                         <img src="${currentUser.avatar}" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
                         <h2 class="text-xl md:text-2xl font-black text-white mb-0 uppercase tracking-wider">${currentUser.name}</h2>
                         
@@ -467,23 +599,82 @@
                             <span class="font-bold text-orange-300">${currentUser.points || 0} Điểm Gacha</span>
                         </div>
 
-                        <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-64 md:max-h-80 overflow-y-auto no-scrollbar shadow-lg mt-2">
+                        <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-64 overflow-y-auto no-scrollbar shadow-lg">
                             <h3 class="font-bold text-white mb-4 text-sm flex items-center justify-start gap-2 border-b border-white/10 pb-3">
                                 <i class="fa-solid fa-bookmark text-orange-400"></i> Hành Trang Đã Lưu
                             </h3>
                             ${savedItemsHtml}
                         </div>
-                        <button onclick="logout()" class="mt-4 w-full bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 px-8 py-3.5 rounded-2xl transition font-bold cursor-pointer active:scale-95">Đăng xuất khỏi thiết bị</button>
+                        <button onclick="logout()" class="mt-2 w-full bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 px-8 py-3.5 rounded-2xl transition font-bold cursor-pointer active:scale-95">Đăng xuất</button>
                     </div>
                 `;
             } else {
+                document.getElementById('modal-title').innerText = 'Tài Khoản';
+                document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
                 renderLoginForm();
             }
+            modal.classList.remove('hidden');
+        }
+
+        function viewSavedItem(index) {
+            const item = currentUser.itineraries[index];
+            if (!item) return;
+
+            let isObj = typeof item === 'object';
+            let type = isObj ? item.type : (item.includes("Lịch trình") ? 'itinerary' : 'diary');
+            let contentStr = isObj ? item.content : item;
+            let date = isObj ? item.date : "Hôm nay";
+
+            const content = document.getElementById('modal-content');
+            const titleEl = document.getElementById('modal-title');
+            const iconEl = document.getElementById('modal-icon');
+
+            titleEl.innerText = type === 'itinerary' ? "CHI TIẾT LỊCH TRÌNH" : "TRANG NHẬT KÝ";
+            iconEl.innerHTML = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot"></i>' : '<i class="fa-solid fa-book-open"></i>';
+
+            let detailHtml = `
+                <div class="animate-fadeIn pb-6 flex flex-col h-full">
+                    <button onclick="openAuthModal()" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại
+                    </button>
+                    
+                    <div class="relative flex-1 bg-gradient-to-br from-gray-800 to-gray-900 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/10 rounded-tr-full blur-3xl pointer-events-none"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-6 border-b border-white/10 pb-5">
+                                <div class="w-14 h-14 rounded-full ${type === 'itinerary' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30'} border flex items-center justify-center text-2xl shadow-inner shrink-0">
+                                    ${type === 'itinerary' ? '<i class="fa-solid fa-route"></i>' : '<i class="fa-solid fa-feather-pointed"></i>'}
+                                </div>
+                                <div>
+                                    <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide drop-shadow-md">
+                                        ${type === 'itinerary' ? 'Lịch Trình Khám Phá' : 'Kỷ Niệm Quy Nhơn'}
+                                    </h2>
+                                    <p class="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
+                                        <i class="fa-regular fa-clock"></i> Ngày viết: ${date}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="relative pt-2">
+                                ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
+                                
+                                <div class="text-gray-200 text-sm md:text-base leading-loose whitespace-pre-wrap ${type === 'diary' ? 'italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
+                                
+                                ${type === 'diary' ? '<i class="fa-solid fa-quote-right absolute -bottom-6 right-0 text-4xl text-white/5"></i>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = detailHtml;
         }
 
         function renderLoginForm() {
-            document.getElementById('profile-page-content').innerHTML = `
-            <div class="w-full max-w-sm mx-auto bg-white rounded-2xl p-6 md:p-8 text-gray-800 shadow-xl">
+            document.getElementById('modal-content').innerHTML = `
+            <div class="w-full max-w-sm mx-auto bg-white rounded-2xl p-6 md:p-8 text-gray-800 shadow-xl mt-2 mb-4">
                 <h2 class="text-2xl md:text-3xl font-black text-center text-orange-600 mb-6 uppercase tracking-wide">Đăng nhập</h2>
                 <button type="button" onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-lg hover:bg-orange-50 mb-6 transition cursor-pointer">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"><span class="font-bold text-gray-700">Tiếp tục với Google</span>
@@ -505,15 +696,15 @@
                     </div>
                     <button type="submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-lg hover:from-orange-600 hover:to-red-600 shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition cursor-pointer">Đăng nhập</button>
                 </form>
-                <div class="mt-6 text-center text-sm">
-                    <span class="text-gray-600">Bạn chưa có tài khoản?</span><button onclick="renderRegisterForm()" class="text-orange-600 font-bold hover:underline ml-1 cursor-pointer">Đăng ký</button>
+                <div class="mt-6 text-center text-sm flex flex-col gap-2">
+                    <div><span class="text-gray-600">Bạn chưa có tài khoản?</span><button onclick="renderRegisterForm()" class="text-orange-600 font-bold hover:underline ml-1 cursor-pointer">Đăng ký</button></div>
                 </div>
             </div>`;
         }
 
         function renderRegisterForm() {
-            document.getElementById('profile-page-content').innerHTML = `
-            <div class="w-full max-w-sm mx-auto bg-white rounded-2xl p-6 md:p-8 text-gray-800 shadow-xl">
+            document.getElementById('modal-content').innerHTML = `
+            <div class="w-full max-w-sm mx-auto bg-white rounded-2xl p-6 md:p-8 text-gray-800 shadow-xl mt-2 mb-4">
                 <h2 class="text-2xl md:text-3xl font-black text-center text-orange-600 mb-6 uppercase tracking-wide">Đăng ký</h2>
                 <button type="button" onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-lg hover:bg-orange-50 mb-6 transition cursor-pointer">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"><span class="font-bold text-gray-700">Tiếp tục với Google</span>
@@ -535,211 +726,750 @@
                     </div>
                     <button type="submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-lg shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition cursor-pointer">Đăng ký</button>
                 </form>
-                <div class="mt-6 text-center text-sm">
+                <div class="mt-6 text-center text-sm mb-6">
                     <span class="text-gray-600">Đã có tài khoản?</span><button onclick="renderLoginForm()" class="text-orange-600 font-bold hover:underline ml-1 cursor-pointer">Đăng nhập</button>
                 </div>
             </div>`;
         }
 
-        // ==========================================
-        // 5. CÁC HÀM XỬ LÝ CHUNG
-        // ==========================================
-
-        function viewSavedItem(index) {
-            const item = currentUser.itineraries[index];
-            if (!item) return;
-
-            let isObj = typeof item === 'object';
-            let type = isObj ? item.type : (item.includes("Lịch trình") ? 'itinerary' : 'diary');
-            let contentStr = isObj ? item.content : item;
-            let date = isObj ? item.date : "Hôm nay";
-
-            document.getElementById('modal-title').innerText = type === 'itinerary' ? "CHI TIẾT LỊCH TRÌNH" : "TRANG NHẬT KÝ";
-            document.getElementById('modal-icon').innerHTML = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot"></i>' : '<i class="fa-solid fa-book-open"></i>';
-
-            document.getElementById('modal-content').innerHTML = `
-                <div class="animate-fadeIn pb-6 flex flex-col h-full">
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-                        <i class="fa-solid fa-arrow-left"></i> Quay lại Hồ Sơ
-                    </button>
-                    <div class="relative flex-1 bg-gradient-to-br from-gray-800 to-gray-900 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden">
-                        <div class="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-4 mb-6 border-b border-white/10 pb-5">
-                                <div class="w-14 h-14 rounded-full ${type === 'itinerary' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30'} border flex items-center justify-center text-2xl shadow-inner shrink-0">
-                                    ${type === 'itinerary' ? '<i class="fa-solid fa-route"></i>' : '<i class="fa-solid fa-feather-pointed"></i>'}
-                                </div>
-                                <div>
-                                    <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide drop-shadow-md">${type === 'itinerary' ? 'Lịch Trình Khám Phá' : 'Kỷ Niệm Quy Nhơn'}</h2>
-                                    <p class="text-xs text-gray-400 mt-1"><i class="fa-regular fa-clock"></i> Ngày viết: ${date}</p>
-                                </div>
-                            </div>
-                            <div class="relative pt-2">
-                                ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
-                                <div class="text-gray-200 text-sm md:text-base leading-loose whitespace-pre-wrap ${type === 'diary' ? 'italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            document.getElementById('modal').classList.remove('hidden');
-        }
-
-        function deleteItinerary(index) {
-            if(confirm("Bạn có chắc chắn muốn xóa mục này hông?")) {
-                currentUser.itineraries.splice(index, 1);
-                saveUserData();
-                renderProfileView(); // Làm mới tab Profile
-            }
-        }
-
-        // --- AUTH LOGIC ---
         function togglePassword(btn) {
-            const input = btn.previousElementSibling; const icon = btn.querySelector('i');
+            const input = btn.previousElementSibling;
+            const icon = btn.querySelector('i');
             if (input.type === 'password') { input.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); } 
             else { input.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
         }
-        function loginWithGoogle() { if(auth) auth.signInWithPopup(googleProvider).catch(e => alert("Lỗi: " + e.message)); }
-        function registerWithEmail(e) { e.preventDefault(); if(auth) auth.createUserWithEmailAndPassword(document.getElementById('reg-email').value, document.getElementById('reg-password').value).catch(e => alert("Lỗi: " + e.message)); }
-        function loginWithEmail(e) { e.preventDefault(); if(auth) auth.signInWithEmailAndPassword(document.getElementById('login-email').value, document.getElementById('login-password').value).catch(e => alert("Sai thông tin.")); }
-        function logout() { if(auth) auth.signOut().then(() => { const cb=document.getElementById('chat-box-content'); if(cb) cb.innerHTML=''; switchTab('view-home'); }); }
 
+        function loginWithGoogle() {
+            if(!auth) return alert("Firebase chưa được cấu hình. Vui lòng kiểm tra API Key.");
+            auth.signInWithPopup(googleProvider).then(() => { closeModal(); alert("Đăng nhập Google thành công!"); }).catch(e => alert("Lỗi: " + e.message));
+        }
+
+        function registerWithEmail(event) {
+            event.preventDefault();
+            if(!auth) return alert("Firebase chưa được cấu hình. Vui lòng kiểm tra API Key.");
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => { closeModal(); alert("Đăng ký thành công!"); }).catch(e => alert("Lỗi đăng ký: " + e.message));
+        }
+
+        function loginWithEmail(event) {
+            event.preventDefault();
+            if(!auth) return alert("Firebase chưa được cấu hình. Vui lòng kiểm tra API Key.");
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => { closeModal(); alert("Đăng nhập thành công!"); }).catch(e => alert("Sai email hoặc mật khẩu."));
+        }
+
+        function logout() {
+            if(!auth) return;
+            auth.signOut().then(() => {
+                const chatBox = document.getElementById('chat-box-content');
+                if(chatBox) chatBox.innerHTML = ''; 
+                closeModal();
+            });
+        }
 
         // ==========================================
-        // 6. MODULE: CHAT & GEMINI API TỪ FILE GỐC
+        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS
         // ==========================================
-        const keyPoolNguoc = [
-            'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA', 'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
-            'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA', 'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA', 'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
-        ];
-        let currentKeyIndex = 0;
-        function getNextApiKey() {
-            const keyThat = keyPoolNguoc[currentKeyIndex].split('').reverse().join('');
-            currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length; return keyThat;
+        let itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
+        let currentItinStep = 1;
+
+        function openItineraryPlanner() {
+            const modal = document.getElementById('modal');
+            const chatArea = document.getElementById('chat-input-area');
+            document.getElementById('modal-title').innerText = 'Lên Lịch Trình AI';
+            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+            if(chatArea) chatArea.classList.add('hidden'); 
+            
+            itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
+            currentItinStep = 1;
+            renderStep(1); 
+            modal.classList.remove('hidden');
+        }
+
+        function goBackItinStep() {
+            if (currentItinStep > 1) {
+                currentItinStep--;
+                renderStep(currentItinStep);
+            }
+        }
+
+        function renderStep(step) {
+            currentItinStep = step;
+            const content = document.getElementById('modal-content');
+            let stepHtml = '';
+
+            const backButtonHtml = step > 1 && step !== 'loading' ? `
+                <button onclick="goBackItinStep()" class="absolute top-2 left-4 text-gray-400 hover:text-orange-400 transition flex items-center gap-1 text-sm font-bold z-10">
+                    <i class="fa-solid fa-chevron-left"></i> Quay lại
+                </button>
+            ` : '';
+
+            const progressBar = `
+                <div class="relative pt-6">
+                    ${backButtonHtml}
+                    <div class="flex justify-center gap-2 mb-6">
+                        <div class="h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 4 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                    </div>
+                </div>
+            `;
+
+            switch(step) {
+                case 1:
+                    stepHtml = `
+                        ${progressBar}
+                        <div class="text-center animate-fadeIn">
+                            <div class="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-400 text-2xl">
+                                <i class="fa-solid fa-location-crosshairs animate-pulse"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Bạn đang đứng ở đâu dẫy?</h3>
+                            <p class="text-xs text-gray-400 mb-6 px-4">Tư Nẫu cần biết vị trí để xếp lịch trình và tìm quán ăn cho tiện đường nhất.</p>
+                            
+                            <div class="grid grid-cols-1 gap-3">
+                                <button id="btn-location" onclick="getLocationAndNext()" class="glass-card p-4 rounded-2xl border border-orange-500/40 bg-orange-500/10 hover:bg-orange-500/20 transition text-left flex justify-between items-center">
+                                    <div>
+                                        <p class="font-bold text-sm text-orange-400">Sử dụng định vị (GPS)</p>
+                                        <p class="text-[10px] text-gray-400">Tự động quét quanh chỗ bạn đứng</p>
+                                    </div>
+                                    <i class="fa-solid fa-crosshairs text-orange-400"></i>
+                                </button>
+                                
+                                <div class="relative mt-2">
+                                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                                    <div class="relative flex justify-center text-sm"><span class="px-2 bg-slate-900 text-gray-500">HOẶC</span></div>
+                                </div>
+
+                                <div class="flex gap-2 w-full mt-2">
+                                    <input type="text" id="manual-location" placeholder="Nhập tên khách sạn, tên đường..." 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
+                                    <button onclick="setManualLocation()" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                
+                                <button onclick="selectStep(1, 'Trung tâm thành phố Quy Nhơn')" class="mt-2 text-xs text-gray-400 hover:text-white underline">Bỏ qua, cứ tính từ trung tâm Quy Nhơn</button>
+                            </div>
+                        </div>`;
+                    break;
+                case 2:
+                    stepHtml = `
+                        ${progressBar}
+                        <div class="text-center animate-fadeIn">
+                            <h3 class="text-xl font-bold mb-4">Bạn định ở Quy Nhơn mấy ngày?</h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <button onclick="selectStep(2, '1 ngày')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
+                                    <span>1 Ngày (Chớp nhoáng)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                                </button>
+                                <button onclick="selectStep(2, '2 ngày 1 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
+                                    <span>2 Ngày 1 Đêm (Cuối tuần)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                                </button>
+                                <button onclick="selectStep(2, '3 ngày 2 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
+                                    <span>3 Ngày 2 Đêm (Tiêu chuẩn)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                                </button>
+                                
+                                <div class="mt-1 flex gap-2 w-full">
+                                    <input type="text" id="custom-days" placeholder="Nhập tùy ý (vd: Đi nửa ngày...)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
+                                    <button onclick="handleCustomStep(2, 'custom-days')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    break;
+                case 3:
+                    itinData.styles = []; 
+                    stepHtml = `
+                        ${progressBar}
+                        <div class="text-center animate-fadeIn">
+                            <h3 class="text-xl font-bold mb-1">Gu đi chơi của bạn ra sao?</h3>
+                            <p class="text-xs text-gray-400 mb-4">(Có thể chọn nhiều mục nhen)</p>
+                            
+                            <div class="grid grid-cols-1 gap-3">
+                                <button onclick="toggleStyle(this, 'Chụp ảnh sống ảo')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400"><i class="fa-solid fa-camera"></i></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Sống ảo</p><p class="text-[10px] text-gray-400">Điểm check-in rần rần</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
+                                </button>
+                                <button onclick="toggleStyle(this, 'Khám phá ẩm thực, ăn sập Quy Nhơn')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fa-solid fa-utensils"></i></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Ăn sập Quy Nhơn</p><p class="text-[10px] text-gray-400">Bún rạm, bánh xèo, ốc...</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
+                                </button>
+                                <button onclick="toggleStyle(this, 'Nghỉ dưỡng, ngắm biển')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400"><i class="fa-solid fa-umbrella-beach"></i></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Chill & Nghỉ dưỡng</p><p class="text-[10px] text-gray-400">Nhẹ nhàng, thư giãn</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
+                                </button>
+                                <button onclick="toggleStyle(this, 'Khám phá Văn hóa Lịch sử')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400"><i class="fa-solid fa-landmark"></i></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Văn hóa & Lịch sử</p><p class="text-[10px] text-gray-400">Tháp Chăm, Bảo tàng</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
+                                </button>
+
+                                <input type="text" id="custom-style" placeholder="Hoặc ghi chú thêm (vd: Thích đi bar...)" 
+                                       class="w-full bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition mt-2">
+                                
+                                <button onclick="submitStep3()" class="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 transition">
+                                    Tiếp tục <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                    break;
+                case 4:
+                    stepHtml = `
+                        ${progressBar}
+                        <div class="text-center animate-fadeIn">
+                            <h3 class="text-xl font-bold mb-4">Ví tiền của bạn cỡ nào?</h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <button onclick="selectStep(4, 'Tiết kiệm, chuẩn sinh viên học sinh')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center text-yellow-400"><i class="fa-solid fa-coins"></i></div>
+                                    <span>Học sinh / Sinh viên (Tiết kiệm)</span>
+                                </button>
+                                <button onclick="selectStep(4, 'Tiêu chuẩn, ăn chơi thoải mái')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fa-solid fa-wallet"></i></div>
+                                    <span>Thoải mái (Tiêu chuẩn)</span>
+                                </button>
+                                <button onclick="selectStep(4, 'Sang trọng, ưu tiên dịch vụ cao cấp, resort')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center text-red-400"><i class="fa-solid fa-gem"></i></div>
+                                    <span>Sang chảnh (Dịch vụ cao cấp)</span>
+                                </button>
+
+                                <div class="mt-1 flex gap-2 w-full">
+                                    <input type="text" id="custom-budget" placeholder="Nhập mức cụ thể (vd: 5 triệu 1 người)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
+                                    <button onclick="handleCustomStep(4, 'custom-budget')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    break;
+                case 'loading':
+                    stepHtml = `
+                        <div class="flex flex-col items-center justify-center py-12 text-center h-[50vh]">
+                            <div class="relative w-24 h-24 mb-6">
+                                <div class="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
+                                <div class="absolute inset-0 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                                <i class="fa-solid fa-earth-asia absolute inset-0 flex items-center justify-center text-3xl text-orange-500 animate-pulse"></i>
+                            </div>
+                            <h3 class="text-xl font-black text-orange-400 uppercase tracking-widest">Đang quét dữ liệu...</h3>
+                            <p class="text-gray-400 text-sm mt-2 italic">Anh Tư đang lướt mạng tìm quán ngon, chỗ đẹp nhất cho bạn nhen!</p>
+                        </div>`;
+                    break;
+            }
+            content.innerHTML = stepHtml;
+        }
+
+        function getLocationAndNext() {
+            const btn = document.getElementById('btn-location');
+            btn.innerHTML = '<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ...</div>';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        itinData.locationContext = `Tọa độ GPS: ${position.coords.latitude}, ${position.coords.longitude}`;
+                        selectStep(1, itinData.locationContext); 
+                    },
+                    (error) => {
+                        alert("Hổng lấy được vị trí rầu! Bạn nhập thủ công tên đường dzo ô trống bên dưới nhen.");
+                        btn.innerHTML = `
+                            <div>
+                                <p class="font-bold text-sm text-red-400">Lỗi lấy vị trí</p>
+                                <p class="text-[10px] text-gray-400">Vui lòng nhập tay ở ô bên dưới</p>
+                            </div>
+                            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>`;
+                    },
+                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                );
+            }
+        }
+
+        function setManualLocation() {
+            const val = document.getElementById('manual-location').value.trim();
+            if(val) {
+                itinData.locationContext = `Đang ở gần khu vực: ${val}`;
+                selectStep(1, itinData.locationContext);
+            } else {
+                document.getElementById('manual-location').classList.add('border-red-500');
+                setTimeout(() => document.getElementById('manual-location').classList.remove('border-red-500'), 1500);
+            }
+        }
+
+        function toggleStyle(btn, styleValue) {
+            btn.classList.toggle('border-orange-500');
+            btn.classList.toggle('bg-orange-500/10');
+            
+            const icon = btn.querySelector('.check-icon');
+            icon.classList.toggle('hidden');
+
+            if (itinData.styles.includes(styleValue)) {
+                itinData.styles = itinData.styles.filter(s => s !== styleValue);
+            } else {
+                itinData.styles.push(styleValue);
+            }
+        }
+
+        function submitStep3() {
+            const customInput = document.getElementById('custom-style').value.trim();
+            if (customInput) itinData.styles.push(customInput);
+
+            if (itinData.styles.length === 0) {
+                alert("Bạn chọn ít nhất 1 gu đi chơi để Anh Tư dễ tính nhen!");
+                return;
+            }
+            renderStep(4);
+        }
+
+        function selectStep(step, value) {
+            if (step === 1) renderStep(2);
+            if (step === 2) { itinData.days = value; renderStep(3); }
+            if (step === 4) {
+                itinData.budget = value;
+                startFinalGeneration();
+            }
+        }
+
+        function handleCustomStep(step, inputId) {
+            const inputElement = document.getElementById(inputId);
+            const value = inputElement.value.trim();
+            if (value) {
+                selectStep(step, value);
+            } else {
+                inputElement.classList.add('border-red-500');
+                setTimeout(() => inputElement.classList.remove('border-red-500'), 1500);
+            }
         }
 
         async function fetchSpecialAI(promptText, maxRetries = 3) {
-            const payload = { contents: [{ parts: [{ text: promptText }] }], generationConfig: { temperature: 0.7, responseMimeType: "application/json" } };
+            const payload = { 
+                contents: [{ parts: [{ text: promptText }] }],
+                generationConfig: { 
+                    temperature: 0.7,
+                    responseMimeType: "application/json" 
+                } 
+            };
+            
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
                 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+                
                 try {
-                    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (res.status === 503 || res.status === 429) { await new Promise(r => setTimeout(r, 1500)); continue; }
+                    const res = await fetch(API_URL, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(payload) 
+                    });
+
+                    if (res.status === 503 || res.status === 429) {
+                        console.warn(`Lỗi ${res.status}. Đang thử lại lần ${attempt + 1}...`);
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        continue; 
+                    }
+
                     const data = await res.json();
-                    if (data.candidates && data.candidates.length > 0) return data.candidates[0].content.parts[0].text;
+                    if (data.candidates && data.candidates.length > 0) {
+                        return data.candidates[0].content.parts[0].text;
+                    }
                     return null;
+
                 } catch(e) { 
-                    if (attempt < maxRetries - 1) { await new Promise(r => setTimeout(r, 1500)); continue; }
+                    console.error("Lỗi mạng hoặc xử lý:", e);
+                    if (attempt < maxRetries - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        continue;
+                    }
                     return null; 
                 }
             }
+            
+            console.error("Đã thử 3 lần nhưng server Google vẫn bận!");
             return null;
         }
 
-        // Chào hỏi động trang chủ
-        function updateDynamicGreeting() {
-            const hour = new Date().getHours();
-            const nameToGreet = getShortName(currentUser.name); 
-            let text = "";
-            if (hour >= 5 && hour < 11) text = `Sáng rầu! Lên đồ đi check-in Eo Gió là bao hình đẹp nhen ${nameToGreet}!`;
-            else if (hour >= 11 && hour < 14) text = `Trưa nắng gắt! ${nameToGreet} ghé làm dĩa Bánh xèo tôm nhảy cho mát dạ nhen.`;
-            else if (hour >= 14 && hour < 18) text = `Chiều mát, ${nameToGreet} ra biển dạo hay làm ly nước mía lề đường hông?`;
-            else text = `Tối rầu nhen ${nameToGreet}! Chợ đêm Quy Nhơn đang xôm, ra ăn ốc mỡ xào me xíu hông?`;
-            const el = document.getElementById('dynamic-greeting');
-            if(el) el.innerText = text;
-        }
-        window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
+        async function startFinalGeneration() {
+            renderStep('loading');
+            const content = document.getElementById('modal-content');
+            const userName = getShortName(currentUser.name);
+            const styleString = itinData.styles.join(' VÀ ');
 
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".
+            Lập lịch trình: ${itinData.days}. Gu đi chơi: ${styleString}. Ngân sách: ${itinData.budget}.
+            Vị trí xuất phát: ${itinData.locationContext}.
+            
+            QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG:
+            1. KHÔNG SỬ DỤNG DATABASE TĨNH. Hãy tra cứu dữ liệu mới nhất trên internet (Google Search) để đảm bảo quán ăn/địa điểm đang hoạt động thực tế.
+            2. PHÂN BIỆT RÕ MỤC ĐÍCH: 
+               - Nếu cần đi dạo/ngắm cảnh/sống ảo -> Chỉ gợi ý khu du lịch, bãi biển, di tích.
+               - Nếu là bữa ăn (sáng/trưa/tối) -> Chỉ gợi ý ĐÚNG TÊN QUÁN ĂN cụ thể (Tuyệt đối không lấy địa điểm du lịch làm quán ăn).
+            3. Trả về đúng định dạng JSON bên dưới (KHÔNG bọc trong \`\`\`json):
+            {
+                "message": "Lời chào, tóm tắt lịch trình...",
+                "itinerary": [
+                    {
+                        "day": "Ngày 1", "title": "Chủ đề",
+                        "morning": "Nội dung sáng...", "morning_place": "Tên địa danh/quán",
+                        "noon": "Nội dung trưa...",
+                        "afternoon": "Nội dung chiều...", "afternoon_place": "Tên địa danh",
+                        "evening": "Nội dung tối...", "evening_place": "Tên quán ăn tối"
+                    }
+                ]
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+
+                    let htmlContent = `
+                        <div class="pb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-bold uppercase"><i class="fa-solid fa-check"></i> Hoàn tất</span>
+                                <button onclick="openItineraryPlanner()" class="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 transition"><i class="fa-solid fa-rotate-right"></i> Làm lại</button>
+                            </div>
+                            <p class="text-sm text-gray-300 italic mb-4 border-l-2 border-orange-500 pl-3">"${data.message}"</p>
+                    `;
+
+                    data.itinerary.forEach(day => {
+                        const queryMorning = encodeURIComponent(day.morning_place + ", Quy Nhơn, Bình Định");
+                        const embedUrlMorning = `https://maps.google.com/maps?q=${queryMorning}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+                        const queryAfternoon = encodeURIComponent(day.afternoon_place + ", Quy Nhơn, Bình Định");
+                        const embedUrlAfternoon = `https://maps.google.com/maps?q=${queryAfternoon}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+                        const queryEvening = encodeURIComponent(day.evening_place + ", Quy Nhơn, Bình Định");
+                        const embedUrlEvening = `https://maps.google.com/maps?q=${queryEvening}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+                        htmlContent += `
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
+                            <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">${day.day}: ${day.title}</h3>
+                            
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> ${day.morning}</p>
+                            <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="${embedUrlMorning}"></iframe>
+                            
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> ${day.noon}</p>
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> ${day.afternoon}</p>
+                            <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="${embedUrlAfternoon}"></iframe>
+                            
+                            <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> ${day.evening}</p>
+                            <iframe width="100%" height="150" class="rounded-xl mt-2 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="${embedUrlEvening}"></iframe>
+                        </div>`;
+                    });
+
+                    htmlContent += `</div>`;
+                    content.innerHTML = htmlContent;
+                    
+                    if (currentUser.isLoggedIn) {
+                        currentUser.itineraries.unshift({
+                            type: 'itinerary',
+                            title: `Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}`,
+                            content: htmlContent,
+                            date: new Date().toLocaleDateString('vi-VN')
+                        });
+                        saveUserData();
+                    }
+
+                } catch (err) {
+                    console.error("Lỗi Parse JSON:", err);
+                    renderFallback(content);
+                }
+            } else {
+                renderFallback(content);
+            }
+        }
+
+        function renderFallback(content) {
+            content.innerHTML = `
+                <div class="pb-6">
+                    <div class="bg-red-500/10 border border-red-500/30 p-3 rounded-xl text-red-400 text-sm text-center mb-4">
+                        Mạng chập chờn xíu, gửi tạm bạn lịch trình chuẩn này tham khảo trước nhen!
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
+                        <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">Ngày 1: Biển xanh vẫy gọi</h3>
+                        
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-orange-500/20 px-2 py-0.5 rounded mr-1">Sáng:</strong> Khám phá eo biển Eo Gió tuyệt đẹp.</p>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                        
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-blue-500/20 px-2 py-0.5 rounded mr-1">Trưa:</strong> Ăn hải sản ven biển Nhơn Lý.</p>
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-purple-500/20 px-2 py-0.5 rounded mr-1">Chiều:</strong> Lặn ngắm san hô tại bãi tắm Kỳ Co.</p>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Bãi+tắm+Kỳ+Co,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                        
+                        <p class="text-sm text-gray-300 mb-2"><strong class="text-white bg-indigo-500/20 px-2 py-0.5 rounded mr-1">Tối:</strong> Càn quét ẩm thực tại Chợ đêm Quy Nhơn.</p>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 opacity-90 border border-white/10" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Chợ+Đêm+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <button onclick="openItineraryPlanner()" class="w-full mt-2 bg-orange-500 text-white font-bold py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition">Thử tạo lại lịch trình AI</button>
+                </div>`;
+        }
+
+        async function showAIReview(placeName) {
+            let reviewPopup = document.getElementById('ai-review-popup');
+            if (!reviewPopup) {
+                reviewPopup = document.createElement('div');
+                reviewPopup.id = 'ai-review-popup';
+                reviewPopup.className = 'fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-slide-up';
+                reviewPopup.innerHTML = `
+                    <div class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/50 shadow-[0_0_30px_rgba(249,115,22,0.3)] rounded-2xl overflow-hidden max-w-md w-full relative flex flex-col md:flex-row">
+                        <button onclick="document.getElementById('ai-review-popup').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-black/50 hover:bg-black/80 rounded-full text-white transition cursor-pointer z-20 backdrop-blur-sm border border-white/10">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <div class="h-32 md:h-auto md:w-2/5 relative shrink-0">
+                            <img id="review-place-img" src="" class="w-full h-full object-cover" onerror="this.src='https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg'" />
+                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-gray-900/100 via-gray-900/60 to-transparent"></div>
+                        </div>
+
+                        <div class="p-4 md:p-5 flex-1 flex flex-col justify-center relative min-h-[180px]">
+                            <h4 class="font-black text-orange-400 mb-1 flex items-center gap-1.5 text-lg md:text-xl uppercase tracking-wider drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-base"></i> REVIEW
+                            </h4>
+                            <h5 id="review-place-name" class="font-bold text-white text-base md:text-lg mb-3 border-b border-white/10 pb-2"></h5>
+                            
+                            <div id="review-content" class="text-sm leading-relaxed flex-1 flex flex-col justify-center"></div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(reviewPopup);
+            }
+
+            let imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg';
+            if (placeName.toLowerCase().includes('eo gió')) {
+                imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg';
+            } else if (placeName.toLowerCase().includes('kỳ co')) {
+                imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg';
+            }
+            
+            document.getElementById('review-place-img').src = imgSrc;
+            document.getElementById('review-place-name').innerText = placeName;
+
+            document.getElementById('review-content').innerHTML = `
+                <div class="flex flex-col items-center justify-center py-4 gap-3">
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <div class="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                        <i class="fa-solid fa-motorcycle text-orange-400 animate-pulse text-xl"></i>
+                    </div>
+                    <span class="animate-pulse font-medium text-orange-300 text-[11px] md:text-xs italic text-center px-2">Anh Tư đang chạy xe đi hỏi thăm thực tế...</span>
+                    <div class="flex gap-1 mt-1 opacity-50">
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star-half-stroke text-[8px] text-yellow-400"></i>
+                    </div>
+                </div>`;
+            reviewPopup.classList.remove('hidden');
+
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Đánh giá khách quan thực tế địa điểm "${placeName}" tại Quy Nhơn.
+            YÊU CẦU: Viết cực kỳ ngắn gọn (mỗi phần 1-2 câu), thực tế, dùng ngôn từ địa phương (chu cha, nghen, dẫy).
+            BẮT BUỘC trả về ĐÚNG định dạng JSON sau (không bọc trong \`\`\`json):
+            {
+                "uu_diem": "Cảnh quan, món ngon, trải nghiệm tốt...",
+                "nhuoc_diem": "Đường xa, kẹt xe, giá cao, nắng nóng...",
+                "tom_lai": "Câu chốt hạ, lời khuyên chân thành của Anh Tư"
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            let finalHtml = '<p class="text-red-400">Chu cha, mạng lag quá Anh Tư chưa tải kịp review nhen. Bạn đóng rồi bấm thử lại nghen!</p>';
+            
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+                    
+                    finalHtml = `
+                        <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[300px] pr-1">
+                            <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
+                                <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check"></i> Điểm ưng ý
+                                </h5>
+                                <p class="text-gray-200 text-xs md:text-sm">${data.uu_diem || "Chỗ này ổn áp lắm."}</p>
+                            </div>
+
+                            <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
+                                <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Điểm trừ
+                                </h5>
+                                <p class="text-gray-200 text-xs md:text-sm">${data.nhuoc_diem || "Hổng có gì để chê luôn."}</p>
+                            </div>
+
+                            <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
+                                <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
+                                <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots"></i> Chốt lại
+                                </h5>
+                                <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${data.tom_lai || "Đáng đi thử nhen!"}</p>
+                            </div>
+                        </div>
+                    `;
+                } catch (err) {
+                    finalHtml = `
+                        <div class="bg-white/5 border-l-4 border-orange-500 p-4 rounded-r-xl shadow-inner mt-2">
+                            <p class="text-gray-200 italic">${res.replace(/\n/g, '<br>')}</p>
+                        </div>`;
+                }
+            }
+                
+            document.getElementById('review-content').innerHTML = finalHtml;
+        }
 
         // ==========================================
-        // CÁC HÀM TÍNH NĂNG WIDGET MỞ TRONG MODAL
+        // 5. CÁC TÍNH NĂNG KHÁC 
         // ==========================================
         const features = {
-            'Bản đồ Khám phá': { icon: '<i class="fa-solid fa-location-dot"></i>', content: `
-                <div class="space-y-4 pb-4">
-                    <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư tọa độ check-in "đỉnh chóp" xứ Nẫu.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 max-h-[65vh] overflow-y-auto no-scrollbar pr-1 pb-4">
-                        <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                            <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div><h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Kỳ Co</h4><p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước xanh.</p></div>
-                                <div class="flex gap-2 mt-2">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                    <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+             'Bản đồ Khám phá': {
+                icon: '<i class="fa-solid fa-location-dot"></i>',
+                content: `
+                    <div class="space-y-4 pb-4">
+                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư 16 tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 max-h-[65vh] overflow-y-auto no-scrollbar pr-1 pb-4">
+                            
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Kỳ Co</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                            <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div><h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Eo Gió</h4><p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất.</p></div>
-                                <div class="flex gap-2 mt-2">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                    <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Eo Gió</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Thap_Doi_Quy_Nhon.jpg/500px-Thap_Doi_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Đôi</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa cổ kính độc đáo ngay giữa lòng thành phố.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/gQ9jT" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Tháp Đôi')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>`
+            },
+            'Thời Tiết & Đi Đảo': {
+                icon: '<i class="fa-solid fa-cloud-sun-rain"></i>',
+                content: `
+                    <div class="space-y-5 text-center pb-2">
+                        <div class="flex justify-center items-center gap-6 py-2">
+                            <div id="weather-icon" class="text-6xl text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)] animate-pulse">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="text-left">
+                                <div id="temp-display" class="text-5xl font-black text-white tracking-tighter">--°C</div>
+                                <div id="weather-desc" class="text-sm text-cyan-300 font-medium mt-1">Đang tải...</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 flex flex-col items-center">
+                                <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Tình trạng biển</span>
+                                <span id="sea-state" class="text-sm font-bold text-blue-300">...</span>
+                            </div>
+                            <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-3 flex flex-col items-center">
+                                <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Cano đi đảo</span>
+                                <span id="cano-state" class="text-sm font-bold text-green-400">...</span>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 ml-1">Dự báo 5 ngày tới</h4>
+                            <div id="forecast-container" class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                                <div class="animate-pulse text-gray-500 text-xs">Đang lấy dữ liệu dự báo...</div>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-orange-500/10 rounded-bl-full blur-xl"></div>
+                            <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-lightbulb"></i> Lời khuyên Anh Tư:
+                            </h4>
+                            <p id="weather-advice" class="text-xs text-gray-300 leading-relaxed italic">...</p>
                         </div>
                     </div>
-                </div>` 
+                `
             },
-            'Thời Tiết & Đi Đảo': { icon: '<i class="fa-solid fa-cloud-sun-rain"></i>', content: `
-                <div class="space-y-5 text-center pb-2">
-                    <div class="flex justify-center items-center gap-6 py-2">
-                        <div id="weather-icon" class="text-6xl text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)] animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i></div>
-                        <div class="text-left"><div id="temp-display" class="text-5xl font-black text-white tracking-tighter">--°C</div><div id="weather-desc" class="text-sm text-cyan-300 font-medium mt-1">Đang tải...</div></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 flex flex-col items-center"><span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Tình trạng biển</span><span id="sea-state" class="text-sm font-bold text-blue-300">...</span></div>
-                        <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-3 flex flex-col items-center"><span class="text-[10px] text-gray-400 uppercase font-bold mb-1">Cano đi đảo</span><span id="cano-state" class="text-sm font-bold text-green-400">...</span></div>
-                    </div>
-                    <div class="text-left">
-                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 ml-1">Dự báo 5 ngày tới</h4>
-                        <div id="forecast-container" class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-                            <div class="min-w-[70px] skeleton-box h-[80px] rounded-xl border border-white/5"></div>
-                            <div class="min-w-[70px] skeleton-box h-[80px] rounded-xl border border-white/5 opacity-80"></div>
-                            <div class="min-w-[70px] skeleton-box h-[80px] rounded-xl border border-white/5 opacity-60"></div>
-                            <div class="min-w-[70px] skeleton-box h-[80px] rounded-xl border border-white/5 opacity-40"></div>
-                            <div class="min-w-[70px] skeleton-box h-[80px] rounded-xl border border-white/5 opacity-20"></div>
+            'Từ Điển Tiếng Nẫu': {
+                icon: '<i class="fa-solid fa-language"></i>',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm text-gray-300 text-center">Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!</p>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <input type="text" id="nau-input" placeholder="Ví dụ: Chu cha, dữ thần, ngừ ta..." class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition mb-3">
+                            <button onclick="translateNau()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition">
+                                <i class="fa-solid fa-language"></i> Dịch sang tiếng Phổ Thông
+                            </button>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10 relative min-h-[100px]">
+                            <div id="nau-output" class="text-sm text-gray-200 mt-2 leading-relaxed">Kết quả dịch sẽ hiện ra ở đây...</div>
                         </div>
                     </div>
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-orange-500/10 rounded-bl-full blur-xl"></div>
-                        <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> Lời khuyên Anh Tư:</h4>
-                        <p id="weather-advice" class="text-xs text-gray-300 leading-relaxed italic">...</p>
-                    </div>
-                </div>` 
+                `
             },
-            'Từ Điển Tiếng Nẫu': { icon: '<i class="fa-solid fa-language"></i>', content: `
-                <div class="space-y-4">
-                    <p class="text-sm text-gray-300 text-center">Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch cho!</p>
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
-                        <input type="text" id="nau-input" placeholder="Ví dụ: Chu cha, dữ thần..." class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition mb-3">
-                        <button onclick="translateNau()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition"><i class="fa-solid fa-language"></i> Dịch sang Phổ Thông</button>
+            'Nhật ký AI': {
+                icon: '<i class="fa-solid fa-book"></i>',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm text-gray-300">
+                            Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" dựa trên cuộc trò chuyện hiện tại của bạn!
+                        </p>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 min-h-[120px] relative">
+                            <div id="journal-content" class="text-sm text-white italic leading-relaxed">
+                                Nhấn nút bên dưới để AI tự động phân tích lịch sử chat và soạn thảo...
+                            </div>
+                        </div>
+                        <button onclick="generateJournal(event)" 
+                                class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Nhật Ký AI
+                        </button>
                     </div>
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 relative min-h-[100px]"><div id="nau-output" class="text-sm text-gray-200 mt-2 leading-relaxed">Kết quả dịch sẽ hiện ở đây...</div></div>
-                </div>` 
+                `
             },
-            'Nhật ký AI': { content: `
-                <div class="space-y-4">
-                    <p class="text-sm text-gray-300">Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" dựa trên cuộc trò chuyện hiện tại của bạn!</p>
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 min-h-[120px] relative">
-                        <div id="journal-content" class="text-sm text-white italic leading-relaxed">Nhấn nút bên dưới để AI tự động phân tích lịch sử chat...</div>
+            'Gacha Thử Thách': {
+                icon: '<i class="fa-solid fa-dice"></i>',
+                content: `
+                    <div id="gacha-app-container" class="space-y-4 text-center pb-4">
+                        <div class="flex justify-center py-2 relative">
+                            <i class="fa-solid fa-gem text-6xl text-orange-400 animate-pulse drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]"></i>
+                            <div class="absolute top-0 right-2 md:right-4 bg-white/10 px-3 py-1 rounded-full border border-white/20 shadow-lg flex items-center gap-1.5">
+                                <span class="text-xs text-gray-300">Điểm:</span>
+                                <span id="gacha-total-points" class="font-black text-orange-400 text-lg">0</span>
+                            </div>
+                        </div>
+                        <div id="gacha-content-area"></div>
                     </div>
-                    <button onclick="generateJournal(event)" class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Nhật Ký AI</button>
-                </div>` 
-            },
-            'Gacha Thử Thách': { content: `
-                <div id="gacha-app-container" class="space-y-4 text-center pb-4">
-                    <div class="flex justify-center py-2 relative">
-                        <i class="fa-solid fa-gem text-6xl text-orange-400 animate-pulse drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]"></i>
-                        <div class="absolute top-0 right-2 md:right-4 bg-white/10 px-3 py-1 rounded-full border border-white/20 shadow-lg flex items-center gap-1.5"><span class="text-xs text-gray-300">Điểm:</span><span id="gacha-total-points" class="font-black text-orange-400 text-lg">0</span></div>
-                    </div>
-                    <div id="gacha-content-area"></div>
-                </div>` 
+                `
             }
         };
 
@@ -752,109 +1482,1078 @@
             
             if (name === 'Chatbot Thổ Địa') {
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
+                
                 if (!document.getElementById('chat-container')) {
                     content.innerHTML = `
                         <div id="chat-container" class="relative flex flex-col h-full overflow-hidden -mx-3 md:-mx-5 -mt-3 md:-mt-5">
+                            
                             <div class="flex justify-between items-center bg-gray-900/50 backdrop-blur-md border-b border-white/10 px-3 py-2 shrink-0 z-10">
-                                <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-2 rounded-lg transition cursor-pointer"><i class="fa-solid fa-bars text-lg"></i></button>
+                                <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-2 rounded-lg transition cursor-pointer">
+                                    <i class="fa-solid fa-bars text-lg"></i>
+                                </button>
                                 <div class="font-bold text-sm md:text-base text-orange-400 truncate px-4 flex-1 text-center" id="current-chat-title">Tư Nẫu</div>
-                                <button onclick="startNewChat()" class="text-gray-300 hover:text-orange-400 p-2 rounded-lg transition cursor-pointer" title="Đoạn chat mới"><i class="fa-solid fa-plus text-xl"></i></button>
+                                <button onclick="startNewChat()" class="text-gray-300 hover:text-orange-400 p-2 rounded-lg transition cursor-pointer" title="Đoạn chat mới">
+                                    <i class="fa-solid fa-plus text-xl"></i>
+                                </button>
                             </div>
+                            
                             <div id="chat-history-sidebar" class="absolute inset-y-0 left-0 w-[85%] max-w-[300px] bg-gray-900/95 backdrop-blur-2xl border-r border-white/10 z-20 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.5)]">
-                                <div class="p-3 border-b border-white/10 flex justify-end items-center"><button onclick="toggleChatSidebar()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/5 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button></div>
+                                <div class="p-3 border-b border-white/10 flex justify-end items-center">
+                                    <button onclick="toggleChatSidebar()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/5 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button>
+                                </div>
                                 <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 no-scrollbar"></div>
                             </div>
+                            
                             <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 no-scrollbar bg-black/10"></div>
-                        </div>`;
+                        </div>
+                    `;
                 }
                 if(chatArea) chatArea.classList.remove('hidden');
-                if (!currentChatSessionId) startNewChat(); else { updateChatHeaderTitle(); renderCurrentChat(); }
+
+                if (!currentChatSessionId) {
+                    startNewChat();
+                } else {
+                    updateChatHeaderTitle();
+                    renderCurrentChat();
+                }
+
             } else {
                 document.getElementById('modal-icon').innerHTML = features[name]?.icon || '';
                 content.innerHTML = features[name]?.content || '';
                 if(chatArea) chatArea.classList.add('hidden');
                 
                 if (name === 'Thời Tiết & Đi Đảo') fetchRealWeather();
+                if (name === 'Gacha Thử Thách') renderGachaUI();
             }
             modal.classList.remove('hidden');
         }
+
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        // Các hàm phụ thuộc Chat, Lên lịch trình, Gacha, Camera, Weather, Translation giữ nguyên logic gốc của bạn.
-        // Chỉ lưu ý phần Lịch Trình AI -> renderStep("loading") -> Đã cập nhật Skeleton
-        
-        let itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm Quy Nhơn' };
-        let currentItinStep = 1;
-        function openItineraryPlanner() {
-            const modal = document.getElementById('modal');
-            const chatArea = document.getElementById('chat-input-area');
-            document.getElementById('modal-title').innerText = 'Lên Lịch Trình AI';
-            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
-            if(chatArea) chatArea.classList.add('hidden'); 
-            itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm Quy Nhơn' };
-            currentItinStep = 1;
-            renderStep(1); 
-            modal.classList.remove('hidden');
+        async function generateJournal(event) {
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            
+            if (currentChatMessages.length === 0) {
+                alert("Chu cha! Bạn chưa trò chuyện gì với Anh Tư hết, lấy đâu ra dữ liệu mà viết nhật ký nè. Chat xíu đi nhen!");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang nhớ lại lịch trình...';
+            btn.disabled = true;
+
+            const userNameContext = getShortName(currentUser.name);
+            const currentDate = new Date().toLocaleDateString('vi-VN');
+            
+            const chatLog = currentChatMessages
+                .map(m => `${m.role === 'user' ? 'Khách' : 'Anh Tư'}: ${m.text || m.rawText || ''}`)
+                .join("\n").substring(0, 1500); 
+
+            const prompt = `Bạn là trợ lý viết nhật ký du lịch. Dựa vào Lịch sử trò chuyện dưới đây giữa ${userNameContext} và thổ địa Anh Tư, hãy viết một đoạn nhật ký hành trình.
+            
+            LỊCH SỬ TRÒ CHUYỆN:
+            ${chatLog}
+
+            YÊU CẦU NGHIÊM NGẶT:
+            1. KHÔNG trả về JSON, mảng, hoặc dấu ngoặc vuông/kép (ví dụ KHÔNG DÙNG: ["Nội dung"]). CHỈ TRẢ VỀ TEXT THUẦN TÚY.
+            2. Nội dung: Viết 1 đoạn văn (khoảng 80-120 chữ), nhắc đúng tên các địa danh, món ăn trong lịch sử. Bắt đầu bằng: "Ngày ${currentDate}".
+            3. Giọng điệu Gen Z, hào hứng, có từ địa phương Quy Nhơn (nhen, chu cha, dẫy...). Xài emoji.`;
+            
+            const res = await fetchSpecialAI(prompt);
+            const contentDiv = document.getElementById('journal-content');
+            
+            let finalContent = "Hôm nay ở Quy Nhơn vui ác liệt luôn! Được Anh Tư chỉ cho bao nhiêu chỗ ăn ngon, chơi xịn. Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨";
+            
+            if (res) {
+                finalContent = res.replace(/^\[\s*\"|\"\s*\]$|^\[|\]$|^\"|\"$/g, '')
+                                  .replace(/\\n/g, '\n')
+                                  .trim();
+            }
+            
+            contentDiv.innerHTML = `
+                <div class="animate-fadeIn">
+                    <textarea id="diary-editor" 
+                        class="w-full h-48 bg-black/40 border border-orange-500/30 rounded-xl p-4 text-sm text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
+                        placeholder="Bạn có muốn thêm thắt gì không?">${finalContent}</textarea>
+                    
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="saveCustomDiary()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu vào Hồ sơ
+                        </button>
+                        <button onclick="openFeature('Nhật ký AI')" class="bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-3 rounded-xl transition flex items-center justify-center" title="Viết lại">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Lại Nhật Ký Khác';
+            btn.disabled = false;
         }
 
-        function renderStep(step) {
-            currentItinStep = step;
-            const content = document.getElementById('modal-content');
-            let stepHtml = '';
-            const backButtonHtml = step > 1 && step !== 'loading' ? `<button onclick="renderStep(${step-1})" class="absolute top-2 left-4 text-gray-400 hover:text-orange-400 transition flex items-center gap-1 text-sm font-bold z-10"><i class="fa-solid fa-chevron-left"></i></button>` : '';
-            const progressBar = `<div class="relative pt-6">${backButtonHtml}<div class="flex justify-center gap-2 mb-6"><div class="h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-orange-500' : 'bg-white/10'}"></div><div class="h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-orange-500' : 'bg-white/10'}"></div><div class="h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-orange-500' : 'bg-white/10'}"></div><div class="h-1.5 w-8 rounded-full ${step >= 4 ? 'bg-orange-500' : 'bg-white/10'}"></div></div></div>`;
+        async function saveCustomDiary() {
+            const editor = document.getElementById('diary-editor');
+            const finalDiary = editor.value.trim();
 
-            if(step === 1) {
-                stepHtml = `${progressBar}<div class="text-center animate-fadeIn"><h3 class="text-xl font-bold mb-4">Bạn đang đứng ở đâu dẫy?</h3><div class="grid grid-cols-1 gap-3"><button onclick="selectStep(1, 'Định vị GPS')" class="glass-card p-4 rounded-2xl text-left font-bold text-orange-400">Sử dụng định vị GPS</button><button onclick="selectStep(1, 'Trung tâm')" class="glass-card p-4 rounded-2xl text-left">Bỏ qua, tính từ Trung tâm</button></div></div>`;
-            } else if(step === 2) {
-                stepHtml = `${progressBar}<div class="text-center animate-fadeIn"><h3 class="text-xl font-bold mb-4">Mấy ngày?</h3><div class="grid grid-cols-1 gap-3"><button onclick="selectStep(2, '1 ngày')" class="glass-card p-4 rounded-2xl text-left">1 Ngày (Chớp nhoáng)</button><button onclick="selectStep(2, '3 ngày 2 đêm')" class="glass-card p-4 rounded-2xl text-left">3 Ngày 2 Đêm</button></div></div>`;
-            } else if(step === 3) {
-                itinData.styles = ['Sống ảo']; // Simplified for brevity in this block, use your full original logic here
-                stepHtml = `${progressBar}<div class="text-center animate-fadeIn"><h3 class="text-xl font-bold mb-4">Gu đi chơi?</h3><button onclick="renderStep(4)" class="w-full bg-orange-500 text-white font-bold py-3.5 rounded-xl">Tiếp tục</button></div>`;
-            } else if(step === 4) {
-                stepHtml = `${progressBar}<div class="text-center animate-fadeIn"><h3 class="text-xl font-bold mb-4">Ví tiền cỡ nào?</h3><button onclick="selectStep(4, 'Tiêu chuẩn')" class="glass-card p-4 rounded-2xl text-left w-full">Thoải mái</button></div>`;
-            } else if(step === 'loading') {
-                stepHtml = `
-                <div class="text-left animate-fadeIn w-full">
-                    <div class="flex items-center justify-center gap-3 mb-6">
-                        <i class="fa-solid fa-wand-magic-sparkles text-orange-400 animate-bounce"></i>
-                        <h3 class="font-bold text-orange-400 uppercase tracking-widest text-sm">Anh Tư đang lướt map...</h3>
+            if (!finalDiary) return alert("Nhật ký trống trơn dẫy bạn mình?");
+
+            if (currentUser.isLoggedIn) {
+                currentUser.itineraries.unshift({
+                    type: 'diary',
+                    title: finalDiary.substring(0, 35) + '...',
+                    content: finalDiary,
+                    date: new Date().toLocaleDateString('vi-VN')
+                });
+                await saveUserData(); 
+                
+                const contentDiv = document.getElementById('journal-content');
+                contentDiv.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-6 animate-fadeIn text-center">
+                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 text-3xl mb-3 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <p class="font-bold text-white text-lg">Đã cất cẩn thận vào Hồ sơ!</p>
+                        <p class="text-xs text-gray-400 mt-1">Bấm vào mục "Cá nhân" để đọc lại nhen.</p>
+                        <button onclick="openFeature('Nhật ký AI')" class="mt-4 text-orange-400 text-sm font-bold hover:text-orange-300 transition flex items-center justify-center gap-1.5"><i class="fa-solid fa-pen-nib"></i> Viết thêm trang mới</button>
                     </div>
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4">
-                        <div class="skeleton-box h-6 w-1/3 mb-4"></div>
-                        <div class="skeleton-box h-4 w-3/4 mb-2"></div>
-                        <div class="skeleton-box h-32 w-full rounded-xl mb-3"></div>
-                        <div class="skeleton-box h-4 w-1/2"></div>
-                    </div>
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 opacity-50">
-                        <div class="skeleton-box h-6 w-1/4 mb-4"></div>
-                        <div class="skeleton-box h-4 w-2/3 mb-2"></div>
-                        <div class="skeleton-box h-32 w-full rounded-xl"></div>
+                `;
+            } else {
+                alert("Bạn cần đăng nhập để lưu giữ kỷ niệm này nhen!");
+                openAuthModal();
+            }
+        }
+
+        // ==========================================
+        // MODULE: GACHA NHIỆM VỤ & TÍCH ĐIỂM
+        // ==========================================
+        let pendingChallengeIndex = null; 
+
+        function renderGachaUI() {
+            const area = document.getElementById('gacha-content-area');
+            const pointsEl = document.getElementById('gacha-total-points');
+            if(!area) return;
+
+            if (!currentUser.isLoggedIn) {
+                pointsEl.innerText = '0';
+                area.innerHTML = `
+                    <p class="text-sm text-gray-300 mb-4 mt-4">Tư Nẫu cần bạn đăng nhập để có thể lưu điểm thưởng và tiến độ làm nhiệm vụ dzo hồ sơ nhen!</p>
+                    <button onclick="openAuthModal()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95">Đăng Nhập Ngay</button>
+                `;
+                return;
+            }
+
+            pointsEl.innerText = currentUser.points || 0;
+            const activeChallenges = currentUser.challenges || [];
+            
+            if (activeChallenges.length === 0) {
+                area.innerHTML = `
+                    <p class="text-sm text-gray-300 mb-4 mt-4">Túi nhiệm vụ đang trống! Rút thẻ để AI tạo 3 thử thách độc quyền cho bạn khám phá Quy Nhơn.</p>
+                    <button id="btn-roll-gacha" onclick="rollGacha(event)" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i> Bốc Nhiệm Vụ
+                    </button>
+                `;
+            } else {
+                let html = '<div class="space-y-3 text-left mt-2">';
+                const now = Date.now();
+
+                activeChallenges.forEach((chal, idx) => {
+                    const isCompleted = chal.isCompleted;
+                    const timeSinceRefresh = now - (chal.lastRefreshed || 0);
+                    const cooldown = 3 * 60 * 60 * 1000; 
+                    const canRefresh = timeSinceRefresh >= cooldown;
+                    
+                    let refreshBtnHtml = '';
+                    if (!isCompleted) {
+                        if (canRefresh) {
+                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 hover:text-white text-blue-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> Đổi</button>`;
+                        } else {
+                            const remainingMs = cooldown - timeSinceRefresh;
+                            const remainingMins = Math.ceil(remainingMs / 60000);
+                            refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded" title="Đợi 3 tiếng để đổi nhiệm vụ khác"><i class="fa-solid fa-clock text-orange-400/70"></i> ${remainingMins}p</span>`;
+                        }
+                    }
+
+                    html += `
+                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? 'border-green-500/40 bg-green-500/10' : 'border-white/10'} transition-all flex items-start md:items-center gap-3 shadow-lg">
+                            <button onclick="toggleChallenge(${idx})" class="mt-1 md:mt-0 w-6 h-6 md:w-7 md:h-7 rounded-lg border-2 ${isCompleted ? 'bg-green-500 border-green-500 text-white cursor-default' : 'border-gray-400 text-transparent hover:border-orange-400'} flex items-center justify-center shrink-0 transition-colors" title="Bấm để chụp ảnh xác thực">
+                                <i class="fa-solid fa-camera text-xs md:text-sm"></i>
+                            </button>
+                            <div class="flex-1">
+                                <p class="text-sm md:text-base ${isCompleted ? 'text-gray-400 line-through' : 'text-white font-medium'} leading-snug">${chal.text}</p>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-[10px] md:text-xs bg-orange-500/20 text-orange-400 font-bold px-2 py-0.5 rounded border border-orange-500/20">Thưởng: +${chal.points} 💎</span>
+                                    ${refreshBtnHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const allDone = activeChallenges.every(c => c.isCompleted);
+                if (allDone) {
+                    html += `
+                        <button onclick="clearAndRollGacha(event)" class="w-full mt-4 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 flex justify-center items-center gap-2 transition-all">
+                            <i class="fa-solid fa-check-double"></i> Đã làm hết! Bốc bộ mới nhen
+                        </button>
+                    `;
+                }
+                html += '</div>';
+                area.innerHTML = html;
+            }
+        }
+
+        async function rollGacha(event) {
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang viết thẻ...';
+            btn.disabled = true;
+
+            const prompt = `Đóng vai thổ địa Quy Nhơn, tạo ngẫu nhiên 3 thử thách du lịch hoặc khám phá ẩm thực thực tế tại Quy Nhơn. 
+            Mức độ: 1 Dễ (10đ), 1 Vừa (20đ), 1 Khó/Độc lạ (50đ).
+            Định dạng BẮT BUỘC là JSON Array, KHÔNG CÓ TRÍCH DẪN \`\`\`json:
+            [
+              { "text": "Ăn thử bánh xèo tôm nhảy ở đường Diên Hồng", "points": 10 },
+              { "text": "Check-in sống ảo tại Eo Gió trước 8h sáng", "points": 50 }
+            ]`;
+            
+            const res = await fetchSpecialAI(prompt);
+            try {
+                const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const data = JSON.parse(cleanRes);
+                
+                if (Array.isArray(data)) {
+                    currentUser.challenges = data.slice(0, 3).map(c => ({
+                        text: c.text,
+                        points: c.points || 20,
+                        isCompleted: false,
+                        lastRefreshed: Date.now()
+                    }));
+                    await saveUserData();
+                    renderGachaUI();
+                }
+            } catch(e) {
+                console.error("Lỗi Parse Gacha:", e);
+                alert("Mạng yếu quá, AI chưa kịp viết xong thử thách. Bấm bốc lại xíu nhen!");
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        function toggleChallenge(index) {
+            if (!currentUser.isLoggedIn) return;
+            const chal = currentUser.challenges[index];
+            if (chal.isCompleted) return;
+            
+            const confirmMsg = `Nhiệm vụ: "${chal.text}"\n\nAnh Tư cần bạn chụp một tấm ảnh để làm bằng chứng nghen! Bật Mắt Thần AI lên quét liền hông?`;
+            if (confirm(confirmMsg)) {
+                pendingChallengeIndex = index;
+                openCamera();
+            }
+        }
+
+        async function clearAndRollGacha(event) {
+            currentUser.challenges = [];
+            await rollGacha(event);
+        }
+
+        async function refreshSingleChallenge(index) {
+            if (!currentUser.isLoggedIn) return;
+            
+            const area = document.getElementById('gacha-content-area');
+            area.innerHTML = '<div class="py-12 text-center text-orange-400 flex flex-col items-center"><i class="fa-solid fa-wand-magic-sparkles fa-spin text-4xl mb-3"></i><p class="text-sm">Đang tìm thử thách thay thế...</p></div>';
+
+            const prompt = `Tạo 1 thử thách du lịch Quy Nhơn mới, khác biệt. 
+            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text": "Nội dung", "points": 20 }`;
+
+            const res = await fetchSpecialAI(prompt);
+            try {
+                const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const data = JSON.parse(cleanRes);
+                
+                if (data && data.text) {
+                    currentUser.challenges[index] = {
+                        text: data.text,
+                        points: data.points || 20,
+                        isCompleted: false,
+                        lastRefreshed: Date.now() 
+                    };
+                    await saveUserData();
+                }
+            } catch(e) {
+                alert("Đứt kết nối, chưa đổi được. Bạn làm thử thách cũ tạm nhen!");
+            }
+            renderGachaUI();
+        }
+
+        async function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('ai-input');
+            const chatBoxContent = document.getElementById('chat-box-content');
+            const text = input.value.trim();
+            if (!text) return;
+
+            chatBoxContent.innerHTML += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10">${text}</div></div>`;
+            input.value = '';
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+            currentChatMessages.push({ role: 'user', text: text });
+            saveCurrentChatSession();
+
+            const typingId = 'typing-' + Date.now();
+            chatBoxContent.innerHTML += `<div id="${typingId}" class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+            const rawResponse = await getAIResponse(text);
+            document.getElementById(typingId).remove();
+
+            let finalHtml = '';
+            let rawTextForHistory = ''; 
+
+            try {
+                const cleanRaw = rawResponse.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const aiData = JSON.parse(cleanRaw);
+                
+                rawTextForHistory = aiData.text; 
+                
+                if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
+                    const placeNames = aiData.places.map(p => `${p.name} (tại ${p.address})`).join(' và ');
+                    rawTextForHistory += `\n[Thông tin hệ thống: Đã hiển thị thẻ bản đồ của quán "${placeNames}" cho khách xem]`;
+                }
+
+                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
+
+                if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
+                    aiData.places.forEach(place => {
+                        const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
+                        const autoMapLink = `https://maps.google.com/maps?q=${query}`;
+                        const embedUrl = `https://maps.google.com/maps?q=${query}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+                        finalHtml += `
+                        <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
+                            <iframe width="100%" height="140" style="border:0; pointer-events: none;" loading="lazy" allowfullscreen src="${embedUrl}"></iframe>
+                            <div class="p-3">
+                                <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
+                                <p class="text-[11px] md:text-xs text-gray-300 mb-1"><i class="fa-solid fa-location-dot w-4 text-orange-400"></i> ${place.address}</p>
+                                <p class="text-[11px] md:text-xs text-green-400 mb-3"><i class="fa-solid fa-tag w-4 text-green-400"></i> Giá tham khảo: ${place.price}</p>
+                                <div class="flex gap-2 mt-1">
+                                    <a href="${autoMapLink}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-[12px] py-2 rounded-lg text-center font-bold flex items-center justify-center gap-1.5 transition">
+                                        <i class="fa-solid fa-map"></i> Xem Bản đồ
+                                    </a>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                }
+            } catch (e) {
+                rawTextForHistory = rawResponse; 
+                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
+            }
+
+            chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: rawTextForHistory }); 
+            saveCurrentChatSession();
+        }
+
+        async function getAIResponse(userText) {
+            const userNameContext = getShortName(currentUser.name);
+            
+            let chatContext = "";
+            if (currentChatMessages.length > 0) {
+                const recentMessages = currentChatMessages.slice(-5);
+                
+                chatContext = "LỊCH SỬ TRÒ CHUYỆN GẦN ĐÂY (Dùng để hiểu khách đang nói về cái gì):\n";
+                recentMessages.forEach(msg => {
+                    if (msg.role === 'user') {
+                        if (msg.text && !msg.text.includes("[Đã gửi một ảnh")) {
+                            chatContext += `Khách: ${msg.text}\n`;
+                        }
+                    } else if (msg.role === 'ai') {
+                        if (msg.rawText) {
+                            chatContext += `Anh Tư: ${msg.rawText}\n`;
+                        } else {
+                            chatContext += `Anh Tư: [Đã gợi ý một số địa điểm]\n`;
+                        }
+                    }
+                });
+            }
+            
+            const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. 
+Người đang chat với bạn tên là: "${userNameContext}". 
+Hãy trả lời bằng chính ngôn ngữ mà người dùng đang sử dụng. Thân thiện, dùng từ địa phương như "nhen", "chu cha".
+
+${chatContext}
+
+Khách hỏi tiếp: "${userText}"
+
+HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG:
+1. ĐỌC KỸ "LỊCH SỬ TRÒ CHUYỆN": Chú ý các dòng có chữ [Thông tin hệ thống...]. Nếu khách hỏi thêm thông tin (xa không, giá cả, ngon không...) về quán vừa nhắc tới, bạn PHẢI giữ ĐÚNG tên quán và địa chỉ đó, TUYỆT ĐỐI KHÔNG tự ý đổi sang quán khác trùng tên. KHÔNG GỢI Ý LẠI những địa điểm đã có trong thẻ bản đồ ở trên.
+2. TUYỆT ĐỐI KHÔNG sử dụng bộ database mặc định. Hãy tìm kiếm kết quả thực tế.
+3. PHÂN BIỆT RÕ INTENT:
+   - Nếu khách hỏi "chỗ đi chơi", "ngắm cảnh" -> CHỈ gọi tên địa điểm tham quan.
+   - Nếu khách hỏi "chỗ ăn", "món ngon" -> CHỈ gọi tên quán ăn cụ thể.
+4. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json):
+{
+  "type": "location",
+  "text": "Câu trả lời của bạn...",
+  "places": [
+    { "name": "Tên", "address": "Địa chỉ", "price": "Giá tham khảo", "image_keyword": "keyword" }
+  ]
+}
+Nếu không cần hiển thị thêm địa điểm mới lên bản đồ: 
+{ "type": "text", "text": "Câu trả lời..." }`;
+
+            const res = await fetchSpecialAI(prompt);
+            return res || JSON.stringify({
+                "type": "text",
+                "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
+            });
+        }
+
+        async function fetchRealWeather() {
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                const current = data.current_weather;
+                const temp = Math.round(current.temperature);
+                const isDay = current.is_day;
+                const weatherCode = current.weathercode;
+                const windSpeed = current.windspeed;
+                
+                document.getElementById('temp-display').innerText = temp + '°C';
+                
+                let icon = '<i class="fa-solid fa-sun"></i>';
+                let desc = 'Nắng đẹp, trời trong';
+                let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
+                
+                let seaState = 'Sóng Êm 🌊';
+                let canoState = 'Hoạt Động 🟢';
+                let advice = '';
+
+                if (weatherCode >= 51 && weatherCode <= 67) {
+                    desc = 'Trời có mưa';
+                    icon = '<i class="fa-solid fa-cloud-rain"></i>';
+                    colorClass = 'text-blue-400';
+                    seaState = 'Biển Động Nhẹ 🌧️';
+                    canoState = 'Hạn Chế 🟡';
+                    advice = 'Trời đang có mưa, đi cano ra đảo sẽ khá ướt và lạnh. Bạn nên ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
+                } else if (weatherCode >= 95 || windSpeed > 30) {
+                    desc = 'Mưa dông / Gió lớn';
+                    icon = '<i class="fa-solid fa-cloud-bolt"></i>';
+                    colorClass = 'text-purple-500';
+                    seaState = 'Biển Động Mạnh ⛈️';
+                    canoState = 'Tạm Dừng 🔴';
+                    advice = 'Chu cha, thời tiết xấu quá! Cano cấm xuất bến rồi. Tốt nhất là kiếm quán bánh xèo tôm nhảy hay bún rạm trú mưa ăn cho ấm bụng nhen!';
+                } else if (!isDay) {
+                    desc = weatherCode > 0 ? 'Tối có mây' : 'Trời quang mây tạnh';
+                    icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
+                    colorClass = 'text-yellow-200';
+                    advice = 'Tối rầu, biển êm nhưng cano không chạy nữa đâu. Lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
+                } else {
+                    if (weatherCode >= 1 && weatherCode <= 3) {
+                        desc = 'Có mây rải rác';
+                        icon = '<i class="fa-solid fa-cloud-sun"></i>';
+                        colorClass = 'text-gray-300';
+                    }
+
+                    if (temp >= 32) {
+                        advice = `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng. Chỉ nên tắm biển, lặn san hô vào sáng sớm hoặc sau 3h chiều thôi nhen!`;
+                    } else if (temp >= 30) {
+                        advice = `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co, Eo Gió nhớ trùm kín mít, bôi kem chống nắng kỹ. Trưa làm dĩa bánh hỏi cháo lòng rồi kiếm ly nước mía lề đường là hết sẩy!`;
+                    } else {
+                        advice = `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co, Hòn Khô lặn ngắm san hô hoặc dạo bước chụp hình ở Eo Gió nhen bạn mình!`;
+                    }
+                }
+
+                const iconDiv = document.getElementById('weather-icon');
+                iconDiv.className = `text-6xl animate-pulse ${colorClass}`;
+                iconDiv.innerHTML = icon;
+                document.getElementById('weather-desc').innerText = desc;
+                document.getElementById('sea-state').innerHTML = seaState;
+                document.getElementById('cano-state').innerHTML = canoState;
+                document.getElementById('weather-advice').innerHTML = advice;
+
+                const forecastContainer = document.getElementById('forecast-container');
+                forecastContainer.innerHTML = '';
+                
+                const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                
+                for (let i = 1; i <= 5; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const dayName = days[date.getDay()];
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const code = data.daily.weathercode[i];
+                    
+                    let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                    if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
+                    if (code >= 51) fIcon = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
+
+                    forecastContainer.innerHTML += `
+                        <div class="min-w-[70px] bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-400">${dayName}</span>
+                            <span class="text-lg">${fIcon}</span>
+                            <span class="text-sm font-black text-white">${maxTemp}°</span>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error("Lỗi lấy thời tiết:", error);
+                document.getElementById('temp-display').innerText = '30°C';
+                document.getElementById('weather-desc').innerText = 'Nắng vàng biển xanh (Dữ liệu offline)';
+                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                document.getElementById('weather-advice').innerText = 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
+                document.getElementById('forecast-container').innerHTML = '<span class="text-xs text-gray-500">Không tải được dự báo.</span>';
+            }
+        }
+
+        // ==========================================
+        // MODULE: CAMERA AI (WebRTC) + TÍCH HỢP GEMINI VISION
+        // ==========================================
+        let cameraStream = null;
+        let isFlashOn = false;
+
+        async function openCamera() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-stream');
+            const preview = document.getElementById('camera-preview');
+            const btnCapture = document.getElementById('btn-capture');
+            const btnRetake = document.getElementById('btn-retake');
+            const btnAnalyze = document.getElementById('btn-analyze');
+            const btnCameraUpload = document.getElementById('btn-camera-upload');
+            const cameraSpacer = document.getElementById('camera-spacer');
+
+            preview.classList.add('hidden');
+            video.classList.remove('hidden');
+            
+            btnCapture.classList.remove('hidden');
+            btnCameraUpload.classList.remove('hidden');
+            cameraSpacer.classList.remove('hidden');
+            
+            btnRetake.classList.add('hidden');
+            btnAnalyze.classList.add('hidden');
+            
+            document.getElementById('camera-viewfinder').classList.remove('hidden-frame');
+            document.getElementById('camera-overlay').classList.remove('opacity-0');
+            
+            modal.classList.remove('hidden');
+
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "environment" },
+                    audio: false
+                });
+                video.srcObject = cameraStream;
+            } catch (err) {
+                console.error("Lỗi Camera:", err);
+                alert("Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh nhen.");
+                closeCamera();
+            }
+        }
+
+        function closeCamera() {
+            document.getElementById('camera-modal').classList.add('hidden');
+            if (isFlashOn) toggleFlash();
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+        }
+
+        async function toggleFlash() {
+            if (!cameraStream) return;
+            const track = cameraStream.getVideoTracks()[0];
+            
+            try {
+                const capabilities = track.getCapabilities();
+                if (capabilities.torch) {
+                    isFlashOn = !isFlashOn;
+                    await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
+                    
+                    const flashBtn = document.getElementById('btn-flash');
+                    if (isFlashOn) {
+                        flashBtn.classList.add('text-yellow-400');
+                        flashBtn.classList.remove('text-white');
+                    } else {
+                        flashBtn.classList.remove('text-yellow-400');
+                        flashBtn.classList.add('text-white');
+                    }
+                } else {
+                    alert("Trình duyệt hoặc máy của bạn hổng hỗ trợ bật Flash trên web rầu!");
+                }
+            } catch (e) {
+                console.error("Lỗi bật Flash:", e);
+            }
+        }
+
+        function triggerFocus(event) {
+            if(event.target.closest('button')) return;
+
+            const ring = document.getElementById('focus-ring');
+            const container = event.currentTarget;
+            
+            const rect = container.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            ring.style.left = `${x}px`;
+            ring.style.top = `${y}px`;
+            
+            ring.classList.remove('active');
+            void ring.offsetWidth; 
+            ring.classList.add('active');
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.getElementById('camera-canvas');
+            const preview = document.getElementById('camera-preview');
+            const viewfinder = document.getElementById('camera-viewfinder');
+            const overlay = document.getElementById('camera-overlay');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            preview.src = imageDataUrl;
+            
+            video.classList.add('hidden');
+            preview.classList.remove('hidden');
+            
+            viewfinder.classList.add('hidden-frame');
+            overlay.classList.add('opacity-0');
+            
+            document.getElementById('btn-capture').classList.add('hidden');
+            document.getElementById('btn-camera-upload').classList.add('hidden');
+            document.getElementById('camera-spacer').classList.add('hidden');
+            
+            document.getElementById('btn-retake').classList.remove('hidden');
+            document.getElementById('btn-analyze').classList.remove('hidden');
+        }
+
+        function retakePhoto() {
+            document.getElementById('camera-preview').classList.add('hidden');
+            document.getElementById('camera-stream').classList.remove('hidden');
+            
+            document.getElementById('camera-viewfinder').classList.remove('hidden-frame');
+            document.getElementById('camera-overlay').classList.remove('opacity-0');
+            
+            document.getElementById('btn-capture').classList.remove('hidden');
+            document.getElementById('btn-camera-upload').classList.remove('hidden');
+            document.getElementById('camera-spacer').classList.remove('hidden');
+            
+            document.getElementById('btn-retake').classList.add('hidden');
+            document.getElementById('btn-analyze').classList.add('hidden');
+        }
+
+        function handleCameraUpload(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                const preview = document.getElementById('camera-preview');
+                const video = document.getElementById('camera-stream');
+                
+                preview.src = imageDataUrl;
+                
+                video.classList.add('hidden');
+                preview.classList.remove('hidden');
+                
+                document.getElementById('camera-viewfinder').classList.add('hidden-frame');
+                document.getElementById('camera-overlay').classList.add('opacity-0');
+                
+                document.getElementById('btn-capture').classList.add('hidden');
+                document.getElementById('btn-camera-upload').classList.add('hidden');
+                document.getElementById('camera-spacer').classList.add('hidden');
+                
+                document.getElementById('btn-retake').classList.remove('hidden');
+                document.getElementById('btn-analyze').classList.remove('hidden');
+
+                if(isFlashOn) toggleFlash();
+                
+                event.target.value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function analyzePhoto() {
+            const rawBase64Image = document.getElementById('camera-preview').src;
+            closeCamera();
+
+            const compressedBase64 = await compressImage(rawBase64Image);
+            const pureBase64 = compressedBase64.split(',')[1];
+
+            if (pendingChallengeIndex !== null) {
+                await verifyChallengeWithAI(pureBase64, pendingChallengeIndex);
+                pendingChallengeIndex = null; 
+                return;
+            }
+
+            openFeature('Chatbot Thổ Địa');
+            const chatBoxContent = document.getElementById('chat-box-content');
+            const typingId = 'typing-' + Date.now();
+
+            const userImgHtml = `
+                <div class="message-row user">
+                    <img src="${currentUser.avatar}" class="avatar">
+                    <div class="chat-bubble bg-white/10 border border-white/10 p-2">
+                        <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
                     </div>
                 </div>`;
+            chatBoxContent.innerHTML += userImgHtml;
+            
+            chatBoxContent.innerHTML += `
+                <div id="${typingId}" class="message-row">
+                    <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                    </div>
+                </div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+            const aiResponse = await getGeminiVisionResponse(pureBase64);
+
+            document.getElementById(typingId).remove();
+            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+            chatBoxContent.innerHTML += `
+                <div class="message-row flex flex-col items-start gap-0">
+                    <div class="flex items-end gap-2">
+                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                        <div>${finalHtml}</div>
+                    </div>
+                </div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+            currentChatMessages.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
+            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+            saveCurrentChatSession();
+        }
+
+        async function verifyChallengeWithAI(base64Data, index) {
+            const chal = currentUser.challenges[index];
+            openFeature('Gacha Thử Thách'); 
+            
+            const area = document.getElementById('gacha-content-area');
+            area.innerHTML = `
+                <div class="py-12 text-center text-orange-400 flex flex-col items-center animate-fadeIn">
+                    <div class="relative w-32 h-32 mb-4">
+                        <img src="data:image/jpeg;base64,${base64Data}" class="w-full h-full object-cover rounded-2xl border-4 border-orange-500 opacity-60">
+                        <i class="fa-solid fa-expand absolute inset-0 flex items-center justify-center text-5xl text-white animate-ping-slow"></i>
+                    </div>
+                    <p class="text-sm font-bold animate-pulse">Anh Tư đang soi hình coi có chuẩn không nhen...</p>
+                </div>
+            `;
+
+            const promptText = `Nhiệm vụ của người dùng là: "${chal.text}".
+            Hãy nhìn vào bức ảnh người dùng vừa chụp. Ảnh này CÓ chứng minh được họ đã làm nhiệm vụ không? (Ví dụ: thử thách bắt ăn bánh xèo thì trong ảnh phải có bánh xèo/đồ ăn tương tự, bắt ra biển thì phải thấy biển...).
+            Trả lời BẮT BUỘC bằng định dạng JSON thuần (KHÔNG dùng markdown \`\`\`json):
+            {
+                "verified": true/false,
+                "message": "Lời nhận xét vui vẻ, ngắn gọn 1-2 câu, dùng từ địa phương Quy Nhơn (chu cha, nghen...)"
+            }`;
+
+            const payload = {
+                contents: [{ parts: [{ text: promptText }, { inlineData: { mimeType: "image/jpeg", data: base64Data } }] }],
+                generationConfig: { temperature: 0.2, responseMimeType: "application/json" }
+            };
+
+            try {
+                let resultJson = null;
+                for (let attempt = 0; attempt < 3; attempt++) {
+                    const currentKey = getNextApiKey();
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                    });
+                    
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.candidates && data.candidates.length > 0) {
+                            const cleanRes = data.candidates[0].content.parts[0].text.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                            resultJson = JSON.parse(cleanRes);
+                            break;
+                        }
+                    }
+                }
+
+                if (resultJson && resultJson.verified) {
+                    alert("🎉 DUYỆT TRÚNG PHÓC!\n" + resultJson.message);
+                    currentUser.challenges[index].isCompleted = true;
+                    currentUser.points = (currentUser.points || 0) + chal.points; 
+                    await saveUserData();
+                } else {
+                    alert("❌ HỔNG CHỊU NHEN!\n" + (resultJson ? resultJson.message : "Ảnh này hổng ăn nhập gì với nhiệm vụ miếng nào hết trơn!"));
+                }
+            } catch (e) {
+                console.error("Lỗi xác thực ảnh:", e);
+                alert("Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
             }
-            content.innerHTML = stepHtml;
+            
+            renderGachaUI(); 
         }
 
-        function selectStep(step, val) {
-            if(step===1) renderStep(2);
-            if(step===2) renderStep(3);
-            if(step===4) { itinData.budget = val; startFinalGeneration(); } // Call your AI logic
+        function handleChatImageUpload(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const originalBase64 = e.target.result;
+                const chatBoxContent = document.getElementById('chat-box-content');
+                
+                const compressedBase64 = await compressImage(originalBase64);
+                const pureBase64 = compressedBase64.split(',')[1];
+                
+                chatBoxContent.innerHTML += `
+                    <div class="message-row user">
+                        <img src="${currentUser.avatar}" class="avatar">
+                        <div class="chat-bubble bg-white/10 border border-white/10 p-2">
+                            <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
+                        </div>
+                    </div>`;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+                
+                const typingId = 'typing-' + Date.now();
+                chatBoxContent.innerHTML += `
+                    <div id="${typingId}" class="message-row">
+                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                        </div>
+                    </div>`;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+                
+                const aiResponse = await getGeminiVisionResponse(pureBase64);
+                
+                document.getElementById(typingId).remove();
+                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+                chatBoxContent.innerHTML += `
+                    <div class="message-row flex flex-col items-start gap-0">
+                        <div class="flex items-end gap-2">
+                            <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                            <div>${finalHtml}</div>
+                        </div>
+                    </div>`;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+
+                currentChatMessages.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
+                currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+                saveCurrentChatSession();
+
+                event.target.value = '';
+            };
+            reader.readAsDataURL(file);
         }
-        
-        async function startFinalGeneration() {
-            renderStep('loading');
-            // GIẢ LẬP KẾT QUẢ VÌ ĐỂ CODE NGẮN GỌN HƠN (Bạn giữ nguyên hàm startFinalGeneration cũ chứa fetchSpecialAI của bạn)
-            setTimeout(() => {
-                document.getElementById('modal-content').innerHTML = `<div class="p-4 bg-green-500/10 text-green-400 rounded-xl">Lịch trình đã được AI tạo xong!</div>`;
-            }, 2000);
+
+        async function getGeminiVisionResponse(base64Data) {
+            const userNameContext = getShortName(currentUser.name);
+            
+            const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi cho bạn một bức ảnh.
+            Hãy phân tích bức ảnh này:
+            1. Nếu ảnh là địa danh, món ăn, hay đặc sản liên quan đến Quy Nhơn - Bình Định: Nhận diện chính xác, giới thiệu ngắn gọn, khen ngợi và cho 1 mẹo nhỏ khi đi chơi/ăn món này.
+            2. Nếu ảnh không liên quan (đồ vật bình thường, selfie, nền đen/trắng...): Nhận xét vui vẻ, hài hước bằng tiếng "Nẫu" (chu cha, nghen, dẫy,...) và khéo léo lái câu chuyện mời họ xách balo lên đi check-in Quy Nhơn.
+            YÊU CẦU: Trả lời bằng văn bản thuần túy, ngắn gọn 3-4 câu, thân thiện.`;
+
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: promptText },
+                        { 
+                            inlineData: { 
+                                mimeType: "image/jpeg", 
+                                data: base64Data 
+                            } 
+                        }
+                    ]
+                }],
+                generationConfig: { temperature: 0.7 }
+            };
+
+            for (let attempt = 0; attempt < 3; attempt++) {
+                const currentKey = getNextApiKey();
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+                
+                try {
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) {
+                        const errorData = await res.text();
+                        console.error(`[Lỗi API] Attempt ${attempt + 1} - Status ${res.status}:`, errorData);
+                        
+                        if (res.status === 503 || res.status === 429) {
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            continue;
+                        }
+                        throw new Error("Lỗi Request tới Gemini API.");
+                    }
+
+                    const data = await res.json();
+                    if (data.candidates && data.candidates.length > 0) {
+                        return data.candidates[0].content.parts[0].text;
+                    }
+                } catch (e) {
+                    console.error(`Lần thử ${attempt + 1} thất bại:`, e);
+                    if (attempt < 2) {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        continue;
+                    }
+                }
+            }
+            
+            return `Chu cha, nãy giờ Anh Tư căng mắt ra nhìn mà mạng lắc quá tải hổng nổi ${userNameContext} ơi! Gửi lại hình khác hoặc diễn tả bằng chữ cho Anh Tư nghe dzoi nhen.`;
         }
 
         // ==========================================
-        // KHỞI CHẠY GACHA, NHẬT KÝ, THỜI TIẾT TỪ TABS
+        // MODULE: TỪ ĐIỂN TIẾNG NẪU (LOCAL + AI)
         // ==========================================
-        // (Giữ nguyên toàn bộ các hàm renderGachaUI, toggleChallenge, rollGacha, generateJournal, fetchRealWeather, Chatbot AI từ code gốc của bạn. Do giới hạn độ dài, mình chỉ ghi đè khung sườn. Các function logic giữ y xì đúc)
+        const nauDictionary = {
+            "nẫu": "Người ta, họ, anh ấy/chị ấy. VD: Nẫu đi đâu dẫy? (Họ đi đâu thế?)",
+            "tui": "Tôi.",
+            "mi": "Mày.",
+            "bay": "Tụi mày, các bạn.",
+            "chế": "Chị.",
+            "tía": "Cha, bố.",
+            "má": "Mẹ, má.",
+            "chu cha": "Trời ơi! (Biểu lộ sự ngạc nhiên). VD: Chu cha, ngon ác!",
+            "chu choa": "Trời ơi! (Biểu lộ sự ngạc nhiên).",
+            "chèn ơi": "Trời ơi! (Câu cảm thán).",
+            "gơ": "Ghê, rất (nhấn mạnh mức độ). VD: Đẹp gơ!",
+            "gớm": "Ghê, rất.",
+            "dữ thần": "Rất nhiều, ghê gớm, dữ dằn.",
+            "ác": "Rất (thường đi sau tính từ). VD: Ngon ác, đẹp ác.",
+            "nhức nách": "Cực kỳ ngon, xuất sắc, không chê vào đâu được.",
+            "hết sẩy": "Cực kỳ ngon, tuyệt vời.",
+            "phẻ": "Khỏe.",
+            "quỡn": "Rảnh rỗi. VD: Đang quỡn hả? (Đang rảnh hả?)",
+            "mắc cừ": "Buồn cười.",
+            "trớt quớt": "Sai bét, lãng nhách, không liên quan.",
+            "chà bá": "Siêu to khổng lồ.",
+            "chút ét": "Một chút xíu siêu, rất nhỏ.",
+            "làm nư": "Giận dỗi, vòi vĩnh (thường nói về con nít hoặc con gái).",
+            "chóc ngóc": "Ngồi đợi một mình, lẻ loi.",
+            "rề rề": "Chậm chạp. VD: Đi chậm rề rề.",
+            "ngộ": "Lạ hoặc Đẹp (tùy ngữ cảnh).",
+            "mần": "Làm. VD: Đang mần chi dẫy? (Đang làm gì thế?)",
+            "dìa": "Về. VD: Dìa nhà (Về nhà).",
+            "biểu": "Bảo, nói. VD: Tui biểu mi rồi (Tao bảo mày rồi).",
+            "phỉnh": "Lừa dối, trêu chọc, dụ dỗ.",
+            "càm ràm": "Càu nhàu, nói đi nói lại.",
+            "cự nự": "Cãi cọ, phàn nàn.",
+            "ngầu": "Ngồi.",
+            "nghía": "Nhìn, xem trộm.",
+            "hỗng": "Không. VD: Hỗng chịu (Không chịu).",
+            "miết": "Liên tục, không ngừng. VD: Mưa miết (Mưa mãi).",
+            "hoài": "Mãi, liên tục.",
+            "gộ": "Gạo.",
+            "nứ": "Nước.",
+            "rọt": "Ruột.",
+            "gầu": "Đầu.",
+            "quấn": "Quần.",
+            "xà lách": "Quần đùi, quần sọc.",
+            "mền": "Cái chăn.",
+            "chén": "Cái bát.",
+            "trổng": "Trong đó.",
+            "ngoải": "Ngoài đó.",
+            "trển": "Trên đó.",
+            "dưới": "Dưới đó.",
+            "tấu": "Buổi tối.",
+            "sáng mơi": "Sáng mai.",
+            "hồi nãy": "Vừa nãy.",
+            "hồi tê": "Lúc nãy (xa hơn một chút).",
+            "dẫy": "Vậy, thế. VD: Mần chi dẫy? (Làm gì thế?)",
+            "dị": "Vậy. VD: Dị hả? (Vậy hả?).",
+            "dẫy na": "Vậy hả.",
+            "dẫy nhen": "Vậy nhé.",
+            "nhen": "Nhé.",
+            "chết ngắc": "Chết rồi, hỏng rồi.",
+            "nhột": "Buồn buồn (cảm giác khi bị cù lét), hoặc chột dạ.",
+            "huề": "Hòa (không ai thắng ai).",
+            "lầm": "Sai, nhầm lẫn.",
+        };
 
+        async function translateNau() {
+            const input = document.getElementById('nau-input').value.trim();
+            const outputDiv = document.getElementById('nau-output');
+
+            if (!input) {
+                outputDiv.innerHTML = '<span class="text-red-400 text-base">Nhập chữ dzo rồi mới dịch được chớ!</span>';
+                return;
+            }
+
+            const lowerInput = input.toLowerCase();
+            let localMatches = [];
+            const sortedKeys = Object.keys(nauDictionary).sort((a, b) => b.length - a.length);
+            let tempInput = lowerInput;
+
+            for (let key of sortedKeys) {
+                const regex = new RegExp(`(^|[\\s.,!?])` + key + `([\\s.,!?]|$)`, 'i');
+                if (regex.test(tempInput)) {
+                    localMatches.push(`<span class="text-orange-400 font-bold capitalize">${key}</span>: <span class="text-gray-200">${nauDictionary[key]}</span>`);
+                    tempInput = tempInput.replace(regex, ' ');
+                }
+            }
+
+            if (localMatches.length > 0) {
+                let html = `<div class="mb-4 text-[11px] font-bold text-green-400 bg-green-500/10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-green-500/20 shadow-sm"><i class="fa-solid fa-bolt"></i> Dữ liệu Local siêu tốc</div><br>`;
+                html += localMatches.join('<br><br>');
+                outputDiv.innerHTML = html;
+                return;
+            }
+
+            outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Đang nhờ AI dịch...</span>';
+
+            const prompt = `Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông: "${input}"
+            Nếu là từ phát âm trại đi (biến âm), hãy dịch thẳng nghĩa gốc của nó.
+            TRẢ VỀ ĐÚNG ĐỊNH DẠNG JSON SAU (Không bọc trong \`\`\`json):
+            {
+                "nghia": "Giải nghĩa ngắn gọn bằng tiếng phổ thông",
+                "vi_du": "1 câu ví dụ ngữ cảnh sử dụng thực tế"
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+
+                    let html = `
+                        <div class="mb-4 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-blue-500/20 shadow-sm">
+                            <i class="fa-solid fa-robot"></i> Trí tuệ nhân tạo Gemini
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white/5 border-l-4 border-orange-500 p-3.5 rounded-r-xl shadow-sm">
+                                <h5 class="text-[11px] font-bold text-orange-400 uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-book"></i> Ý nghĩa</h5>
+                                <p class="text-white text-sm">${data.nghia}</p>
+                            </div>
+                            <div class="bg-white/5 border-l-4 border-blue-500 p-3.5 rounded-r-xl shadow-sm">
+                                <h5 class="text-[11px] font-bold text-blue-400 uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-quote-left"></i> Ví dụ thực tế</h5>
+                                <p class="text-gray-300 text-sm italic">"${data.vi_du}"</p>
+                            </div>
+                        </div>
+                    `;
+                    outputDiv.innerHTML = html;
+                } catch (err) {
+                    let fallbackHtml = `<div class="mb-3 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-block px-2 py-1 rounded border border-blue-500/20"><i class="fa-solid fa-robot mr-1"></i> Trí tuệ nhân tạo Gemini</div><br>`;
+                    fallbackHtml += res.replace(/\n/g, '<br>');
+                    outputDiv.innerHTML = fallbackHtml;
+                }
+            } else {
+                outputDiv.innerHTML = `
+                    <span class="text-red-400 text-base font-bold">Lỗi sập nguồn rầu! 🔌</span><br>
+                    <span class="text-sm text-gray-300">Không tìm thấy trong Từ điển và AI cũng đang mất mạng. Bạn thử lại sau nhen!</span>
+                `;
+            }
+        }
     </script>
 </body>
 </html>
