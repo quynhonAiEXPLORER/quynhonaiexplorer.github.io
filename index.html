@@ -155,8 +155,7 @@
     </nav>
 
     <div class="max-w-5xl w-full text-center text-white px-4 md:mt-8">
-        <header class="mb-6 mt-2">
-            <div class="inline-block px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs md:text-sm font-semibold mb-3 border border-orange-500/30">AI First – BTSX</div>
+        <header class="mb-6 mt-6">
             <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-1 md:mb-3 uppercase drop-shadow-lg">Quy Nhơn</h1>
             <p class="text-gray-300 text-sm md:text-lg max-w-lg mx-auto font-light leading-relaxed mt-3 px-2 drop-shadow-md">Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Có tui lo!</p>
             <button onclick="openItineraryPlanner()" class="mt-6 md:mt-8 w-full sm:w-auto px-6 py-3.5 md:px-8 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl md:rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 mx-auto text-base md:text-lg">
@@ -311,7 +310,6 @@
             console.error("Firebase Init Error:", e);
         }
 
-        // Hàm nén ảnh giảm dung lượng trước khi gửi cho AI
         function compressImage(base64Str, maxWidth = 800) {
             return new Promise((resolve) => {
                 let img = new Image();
@@ -582,9 +580,10 @@
         }
 
         // ==========================================
-        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS
+        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS (ĐÃ FIX ĐA CHỌN & CHỈNH SỬA)
         // ==========================================
-        let itinData = { days: '', style: '', budget: '', lat: null, lng: null, useLocation: false };
+        let itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
+        let currentItinStep = 1;
 
         function openItineraryPlanner() {
             const modal = document.getElementById('modal');
@@ -593,21 +592,40 @@
             document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
             chatArea.classList.add('hidden'); 
             
-            itinData = { days: '', style: '', budget: '', lat: null, lng: null, useLocation: false };
+            // Reset data
+            itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
+            currentItinStep = 1;
             renderStep(1); 
             modal.classList.remove('hidden');
         }
 
+        function goBackItinStep() {
+            if (currentItinStep > 1) {
+                currentItinStep--;
+                renderStep(currentItinStep);
+            }
+        }
+
         function renderStep(step) {
+            currentItinStep = step;
             const content = document.getElementById('modal-content');
             let stepHtml = '';
 
+            const backButtonHtml = step > 1 && step !== 'loading' ? `
+                <button onclick="goBackItinStep()" class="absolute top-2 left-4 text-gray-400 hover:text-orange-400 transition flex items-center gap-1 text-sm font-bold z-10">
+                    <i class="fa-solid fa-chevron-left"></i> Quay lại
+                </button>
+            ` : '';
+
             const progressBar = `
-                <div class="flex justify-center gap-2 mb-6">
-                    <div class="h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-orange-500' : 'bg-white/10'}"></div>
-                    <div class="h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-orange-500' : 'bg-white/10'}"></div>
-                    <div class="h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-orange-500' : 'bg-white/10'}"></div>
-                    <div class="h-1.5 w-8 rounded-full ${step >= 4 ? 'bg-orange-500' : 'bg-white/10'}"></div>
+                <div class="relative pt-6">
+                    ${backButtonHtml}
+                    <div class="flex justify-center gap-2 mb-6">
+                        <div class="h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                        <div class="h-1.5 w-8 rounded-full ${step >= 4 ? 'bg-orange-500' : 'bg-white/10'} transition-colors"></div>
+                    </div>
                 </div>
             `;
 
@@ -619,23 +637,32 @@
                             <div class="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-400 text-2xl">
                                 <i class="fa-solid fa-location-crosshairs animate-pulse"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">Bật định vị cho xịn nhen?</h3>
-                            <p class="text-xs text-gray-400 mb-6 px-4">Tư Nẫu sẽ xem bạn đang đứng đâu để xếp lịch trình, tìm quán ăn gần nhất cho tiện đường đi lại.</p>
+                            <h3 class="text-xl font-bold mb-2">Bạn đang đứng ở đâu dẫy?</h3>
+                            <p class="text-xs text-gray-400 mb-6 px-4">Tư Nẫu cần biết vị trí để xếp lịch trình và tìm quán ăn cho tiện đường nhất.</p>
+                            
                             <div class="grid grid-cols-1 gap-3">
                                 <button id="btn-location" onclick="getLocationAndNext()" class="glass-card p-4 rounded-2xl border border-orange-500/40 bg-orange-500/10 hover:bg-orange-500/20 transition text-left flex justify-between items-center">
                                     <div>
-                                        <p class="font-bold text-sm text-orange-400">Sử dụng vị trí hiện tại</p>
-                                        <p class="text-[10px] text-gray-400">Gợi ý quanh chỗ bạn đứng</p>
+                                        <p class="font-bold text-sm text-orange-400">Sử dụng định vị (GPS)</p>
+                                        <p class="text-[10px] text-gray-400">Tự động quét quanh chỗ bạn đứng</p>
                                     </div>
                                     <i class="fa-solid fa-crosshairs text-orange-400"></i>
                                 </button>
-                                <button onclick="selectStep(1, false)" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-white/30 transition text-left flex justify-between items-center">
-                                    <div>
-                                        <p class="font-bold text-sm text-white">Bỏ qua</p>
-                                        <p class="text-[10px] text-gray-400">Tự động tính từ trung tâm TP. Quy Nhơn</p>
-                                    </div>
-                                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
-                                </button>
+                                
+                                <div class="relative mt-2">
+                                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                                    <div class="relative flex justify-center text-sm"><span class="px-2 bg-slate-900 text-gray-500">HOẶC</span></div>
+                                </div>
+
+                                <div class="flex gap-2 w-full mt-2">
+                                    <input type="text" id="manual-location" placeholder="Nhập tên khách sạn, tên đường..." 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
+                                    <button onclick="setManualLocation()" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                
+                                <button onclick="selectStep(1, 'Trung tâm thành phố Quy Nhơn')" class="mt-2 text-xs text-gray-400 hover:text-white underline">Bỏ qua, cứ tính từ trung tâm Quy Nhơn</button>
                             </div>
                         </div>`;
                     break;
@@ -654,13 +681,10 @@
                                 <button onclick="selectStep(2, '3 ngày 2 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
                                     <span>3 Ngày 2 Đêm (Tiêu chuẩn)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
                                 </button>
-                                <button onclick="selectStep(2, '4 ngày 3 đêm')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex justify-between items-center">
-                                    <span>4 Ngày 3 Đêm (Khám phá sâu)</span> <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
-                                </button>
                                 
                                 <div class="mt-1 flex gap-2 w-full">
-                                    <input type="text" id="custom-days" placeholder="Hoặc nhập tùy ý (vd: Đi nửa ngày, 1 tuần...)" 
-                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
+                                    <input type="text" id="custom-days" placeholder="Nhập tùy ý (vd: Đi nửa ngày...)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
                                     <button onclick="handleCustomStep(2, 'custom-days')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </button>
@@ -669,35 +693,41 @@
                         </div>`;
                     break;
                 case 3:
+                    itinData.styles = []; 
                     stepHtml = `
                         ${progressBar}
                         <div class="text-center animate-fadeIn">
-                            <h3 class="text-xl font-bold mb-4">Gu đi chơi của bạn ra sao?</h3>
+                            <h3 class="text-xl font-bold mb-1">Gu đi chơi của bạn ra sao?</h3>
+                            <p class="text-xs text-gray-400 mb-4">(Có thể chọn nhiều mục nhen)</p>
+                            
                             <div class="grid grid-cols-1 gap-3">
-                                <button onclick="selectStep(3, 'Chụp ảnh sống ảo, đi các điểm check-in hot')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                <button onclick="toggleStyle(this, 'Chụp ảnh sống ảo')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400"><i class="fa-solid fa-camera"></i></div>
-                                    <div><p class="font-bold text-sm">Sống ảo</p><p class="text-[10px] text-gray-400">Điểm check-in rần rần</p></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Sống ảo</p><p class="text-[10px] text-gray-400">Điểm check-in rần rần</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="selectStep(3, 'Khám phá ẩm thực địa phương, ăn vặt')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                <button onclick="toggleStyle(this, 'Khám phá ẩm thực, ăn sập Quy Nhơn')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fa-solid fa-utensils"></i></div>
-                                    <div><p class="font-bold text-sm">Ăn sập Quy Nhơn</p><p class="text-[10px] text-gray-400">Bún rạm, bánh xèo, ốc...</p></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Ăn sập Quy Nhơn</p><p class="text-[10px] text-gray-400">Bún rạm, bánh xèo, ốc...</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="selectStep(3, 'Nghỉ dưỡng, ngắm biển, cafe nhẹ nhàng')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                <button onclick="toggleStyle(this, 'Nghỉ dưỡng, ngắm biển')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400"><i class="fa-solid fa-umbrella-beach"></i></div>
-                                    <div><p class="font-bold text-sm">Chill & Nghỉ dưỡng</p><p class="text-[10px] text-gray-400">Nhẹ nhàng, thư giãn</p></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Chill & Nghỉ dưỡng</p><p class="text-[10px] text-gray-400">Nhẹ nhàng, thư giãn</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="selectStep(3, 'Khám phá Văn hóa & Lịch sử')" class="glass-card p-4 rounded-2xl border border-white/10 hover:border-orange-500 transition text-left flex items-center gap-4">
+                                <button onclick="toggleStyle(this, 'Khám phá Văn hóa Lịch sử')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400"><i class="fa-solid fa-landmark"></i></div>
-                                    <div><p class="font-bold text-sm">Văn hóa & Lịch sử</p><p class="text-[10px] text-gray-400">Tháp Chăm, Bảo tàng, Chùa</p></div>
+                                    <div class="flex-1"><p class="font-bold text-sm">Văn hóa & Lịch sử</p><p class="text-[10px] text-gray-400">Tháp Chăm, Bảo tàng</p></div>
+                                    <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
 
-                                <div class="mt-1 flex gap-2 w-full">
-                                    <input type="text" id="custom-style" placeholder="Hoặc yêu cầu riêng (vd: Chỗ có khu vui chơi...)" 
-                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
-                                    <button onclick="handleCustomStep(3, 'custom-style')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                    </button>
-                                </div>
+                                <input type="text" id="custom-style" placeholder="Hoặc ghi chú thêm (vd: Thích đi bar...)" 
+                                       class="w-full bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition mt-2">
+                                
+                                <button onclick="submitStep3()" class="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 transition">
+                                    Tiếp tục <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
                             </div>
                         </div>`;
                     break;
@@ -721,8 +751,8 @@
                                 </button>
 
                                 <div class="mt-1 flex gap-2 w-full">
-                                    <input type="text" id="custom-budget" placeholder="Nhập mức cụ thể (vd: Tầm 5 triệu 1 người...)" 
-                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition placeholder-gray-500">
+                                    <input type="text" id="custom-budget" placeholder="Nhập mức cụ thể (vd: 5 triệu 1 người)" 
+                                           class="flex-1 bg-black/30 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition">
                                     <button onclick="handleCustomStep(4, 'custom-budget')" class="bg-orange-500 hover:bg-orange-600 text-white w-12 rounded-2xl flex items-center justify-center transition shadow-lg active:scale-95">
                                         <i class="fa-solid fa-check"></i>
                                     </button>
@@ -732,68 +762,100 @@
                     break;
                 case 'loading':
                     stepHtml = `
-                        <div class="flex flex-col items-center justify-center py-12 text-center">
-                            <div class="relative w-20 h-20 mb-6">
+                        <div class="flex flex-col items-center justify-center py-12 text-center h-[50vh]">
+                            <div class="relative w-24 h-24 mb-6">
                                 <div class="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
                                 <div class="absolute inset-0 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                                <i class="fa-solid fa-wand-magic-sparkles absolute inset-0 flex items-center justify-center text-2xl text-orange-500 animate-pulse"></i>
+                                <i class="fa-solid fa-earth-asia absolute inset-0 flex items-center justify-center text-3xl text-orange-500 animate-pulse"></i>
                             </div>
-                            <h3 class="text-xl font-black text-orange-400 uppercase tracking-widest">Đang tính toán...</h3>
-                            <p class="text-gray-400 text-sm mt-2 italic">Anh Tư đang quét vệ tinh tìm chỗ ngon cho bạn nhen!</p>
+                            <h3 class="text-xl font-black text-orange-400 uppercase tracking-widest">Đang quét dữ liệu...</h3>
+                            <p class="text-gray-400 text-sm mt-2 italic">Anh Tư đang lướt mạng tìm quán ngon, chỗ đẹp nhất cho bạn nhen!</p>
                         </div>`;
                     break;
             }
             content.innerHTML = stepHtml;
         }
 
+        // Xử lý GPS
         function getLocationAndNext() {
             const btn = document.getElementById('btn-location');
-            btn.innerHTML = '<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> Đang lấy vị trí...</div>';
+            btn.innerHTML = '<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> Đang lấy tọa độ...</div>';
             
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        itinData.lat = position.coords.latitude;
-                        itinData.lng = position.coords.longitude;
-                        itinData.useLocation = true;
-                        selectStep(1, true); 
+                        itinData.locationContext = `Tọa độ GPS: ${position.coords.latitude}, ${position.coords.longitude}`;
+                        selectStep(1, itinData.locationContext); 
                     },
                     (error) => {
-                        alert("Hổng lấy được vị trí rầu! Anh Tư sẽ tự tính từ trung tâm nghen.");
-                        itinData.useLocation = false;
-                        selectStep(1, false);
+                        alert("Hổng lấy được vị trí rầu! Bạn nhập thủ công tên đường dzo ô trống bên dưới nhen.");
+                        btn.innerHTML = `
+                            <div>
+                                <p class="font-bold text-sm text-red-400">Lỗi lấy vị trí</p>
+                                <p class="text-[10px] text-gray-400">Vui lòng nhập tay ở ô bên dưới</p>
+                            </div>
+                            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>`;
                     },
                     { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
                 );
-            } else {
-                itinData.useLocation = false;
-                selectStep(1, false);
             }
         }
 
+        // Xử lý nhập vị trí thủ công
+        function setManualLocation() {
+            const val = document.getElementById('manual-location').value.trim();
+            if(val) {
+                itinData.locationContext = `Đang ở gần khu vực: ${val}`;
+                selectStep(1, itinData.locationContext);
+            } else {
+                document.getElementById('manual-location').classList.add('border-red-500');
+                setTimeout(() => document.getElementById('manual-location').classList.remove('border-red-500'), 1500);
+            }
+        }
+
+        // Logic chọn Button (Toggle Multi-select)
+        function toggleStyle(btn, styleValue) {
+            btn.classList.toggle('border-orange-500');
+            btn.classList.toggle('bg-orange-500/10');
+            
+            const icon = btn.querySelector('.check-icon');
+            icon.classList.toggle('hidden');
+
+            if (itinData.styles.includes(styleValue)) {
+                itinData.styles = itinData.styles.filter(s => s !== styleValue);
+            } else {
+                itinData.styles.push(styleValue);
+            }
+        }
+
+        function submitStep3() {
+            const customInput = document.getElementById('custom-style').value.trim();
+            if (customInput) itinData.styles.push(customInput);
+
+            if (itinData.styles.length === 0) {
+                alert("Bạn chọn ít nhất 1 gu đi chơi để Anh Tư dễ tính nhen!");
+                return;
+            }
+            renderStep(4);
+        }
+
         function selectStep(step, value) {
-            if (step === 2) itinData.days = value;
-            if (step === 3) itinData.style = value;
+            if (step === 1) renderStep(2);
+            if (step === 2) { itinData.days = value; renderStep(3); }
             if (step === 4) {
                 itinData.budget = value;
                 startFinalGeneration();
-                return;
             }
-            renderStep(step + 1);
         }
 
         function handleCustomStep(step, inputId) {
             const inputElement = document.getElementById(inputId);
             const value = inputElement.value.trim();
-            
             if (value) {
                 selectStep(step, value);
             } else {
                 inputElement.classList.add('border-red-500');
-                inputElement.placeholder = "Nhập yêu cầu dzo trước nhen!";
-                setTimeout(() => {
-                    inputElement.classList.remove('border-red-500');
-                }, 2000);
+                setTimeout(() => inputElement.classList.remove('border-red-500'), 1500);
             }
         }
 
@@ -847,33 +909,27 @@
             renderStep('loading');
             const content = document.getElementById('modal-content');
             const userName = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
-
-            let locationContext = "Tính từ trung tâm thành phố Quy Nhơn.";
-            if (itinData.useLocation && itinData.lat && itinData.lng) {
-                locationContext = `Tọa độ GPS hiện tại: ${itinData.lat}, ${itinData.lng}. Gợi ý điểm gần nhất.`;
-            }
+            const styleString = itinData.styles.join(' VÀ ');
 
             const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".
-            Lập lịch trình du lịch: ${itinData.days}, Gu: ${itinData.style}, Ngân sách: ${itinData.budget}.
-            Vị trí: ${locationContext}
+            Lập lịch trình: ${itinData.days}. Gu đi chơi: ${styleString}. Ngân sách: ${itinData.budget}.
+            Vị trí xuất phát: ${itinData.locationContext}.
             
-            YÊU CẦU BẮT BUỘC:
-            1. BẮT BUỘC mảng "itinerary" phải cung cấp đủ số ngày tương ứng với yêu cầu.
-            2. Mỗi ngày BẮT BUỘC phải cung cấp 3 địa điểm nổi bật cho 3 buổi: "morning_place", "afternoon_place", "evening_place" (Chỉ điền tên 1 địa danh hoặc quán ăn cụ thể để tìm trên bản đồ).
-            3. Cấu trúc JSON BẮT BUỘC:
+            QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG:
+            1. KHÔNG SỬ DỤNG DATABASE TĨNH. Hãy tra cứu dữ liệu mới nhất trên internet (Google Search) để đảm bảo quán ăn/địa điểm đang hoạt động thực tế.
+            2. PHÂN BIỆT RÕ MỤC ĐÍCH: 
+               - Nếu cần đi dạo/ngắm cảnh/sống ảo -> Chỉ gợi ý khu du lịch, bãi biển, di tích.
+               - Nếu là bữa ăn (sáng/trưa/tối) -> Chỉ gợi ý ĐÚNG TÊN QUÁN ĂN cụ thể (Tuyệt đối không lấy địa điểm du lịch làm quán ăn).
+            3. Trả về đúng định dạng JSON bên dưới (KHÔNG bọc trong \`\`\`json):
             {
-                "message": "Lời chào và tóm tắt ngắn gọn lịch trình...",
+                "message": "Lời chào, tóm tắt lịch trình...",
                 "itinerary": [
                     {
-                        "day": "Ngày 1",
-                        "title": "Chủ đề ngày",
-                        "morning": "Nội dung sáng...",
-                        "morning_place": "Tên địa danh sáng (VD: Kỳ Co)",
+                        "day": "Ngày 1", "title": "Chủ đề",
+                        "morning": "Nội dung sáng...", "morning_place": "Tên địa danh/quán",
                         "noon": "Nội dung trưa...",
-                        "afternoon": "Nội dung chiều...",
-                        "afternoon_place": "Tên địa danh chiều (VD: Eo Gió)",
-                        "evening": "Nội dung tối...",
-                        "evening_place": "Tên địa danh/quán ăn tối (VD: Chợ đêm)"
+                        "afternoon": "Nội dung chiều...", "afternoon_place": "Tên địa danh",
+                        "evening": "Nội dung tối...", "evening_place": "Tên quán ăn tối"
                     }
                 ]
             }`;
@@ -882,7 +938,8 @@
             
             if (res) {
                 try {
-                    const data = JSON.parse(res);
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
 
                     let htmlContent = `
                         <div class="pb-6">
@@ -923,7 +980,7 @@
                     content.innerHTML = htmlContent;
                     
                     if (currentUser.isLoggedIn) {
-                        currentUser.itineraries.push(`Lịch trình ${itinData.days} - Gu: ${itinData.style.split(',')[0]}`);
+                        currentUser.itineraries.push(`Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}...`);
                         saveUserData();
                     }
 
@@ -1356,7 +1413,8 @@
 
             let finalHtml = '';
             try {
-                const aiData = JSON.parse(rawResponse);
+                const cleanRaw = rawResponse.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const aiData = JSON.parse(cleanRaw);
                 
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
 
@@ -1402,9 +1460,13 @@
 Người đang chat với bạn tên là: "${userNameContext}". Hãy khéo léo gọi tên họ trong câu trả lời cho thân thiện.
 Khách hỏi: "${userText}"
 
-HƯỚNG DẪN TƯ DUY:
-1. Gợi ý 1-2 địa điểm CÓ THẬT, UY TÍN NHẤT nếu người dùng hỏi chỗ ăn chơi.
-2. Output JSON theo cấu trúc sau:
+HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG:
+1. TUYỆT ĐỐI KHÔNG sử dụng bộ database mặc định. Hãy tìm kiếm kết quả thực tế trên Google (Search Grounding) để trả lời mọi thứ chính xác nhất.
+2. PHÂN BIỆT RÕ INTENT:
+   - Nếu khách hỏi "chỗ đi chơi", "ngắm cảnh", "sống ảo" -> CHỈ gọi tên các địa điểm tham quan, khu du lịch.
+   - Nếu khách hỏi "chỗ ăn", "nhà hàng", "món ngon" -> CHỈ gọi tên các quán ăn, nhà hàng cụ thể.
+3. Gợi ý 1-2 địa điểm/quán ăn CÓ THẬT, UY TÍN NHẤT.
+4. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json):
 {
   "type": "location",
   "text": "Câu trả lời của bạn...",
