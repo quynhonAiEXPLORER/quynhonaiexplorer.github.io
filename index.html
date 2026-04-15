@@ -348,6 +348,16 @@
             challenges: []
         };
 
+        // Hàm lấy tên gọi ngắn gọn
+        function getShortName(fullName) {
+            if (!fullName || !currentUser.isLoggedIn || fullName === 'Khách Phương Xa') return 'bạn';
+            // Xóa các cụm nằm trong ngoặc (vd: "(Beo)")
+            let cleanName = fullName.replace(/\s*\(.*?\)\s*/g, '').trim();
+            // Lấy chữ cái đầu tiên
+            let parts = cleanName.split(' ');
+            return parts[0] || 'bạn'; 
+        }
+
         if (auth) {
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
@@ -423,7 +433,7 @@
 
         function updateDynamicGreeting() {
             const hour = new Date().getHours();
-            const nameToGreet = currentUser.isLoggedIn ? currentUser.name : 'bạn mình';
+            const nameToGreet = getShortName(currentUser.name); 
             let text = "";
             if (hour >= 5 && hour < 11) text = `Sáng rầu! Lên đồ đi check-in Eo Gió là bao hình đẹp nhen ${nameToGreet}!`;
             else if (hour >= 11 && hour < 14) text = `Trưa nắng gắt! ${nameToGreet} ghé làm dĩa Bánh xèo tôm nhảy cho mát dạ nhen.`;
@@ -918,7 +928,7 @@
         async function startFinalGeneration() {
             renderStep('loading');
             const content = document.getElementById('modal-content');
-            const userName = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
+            const userName = getShortName(currentUser.name);
             const styleString = itinData.styles.join(' VÀ ');
 
             const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".
@@ -1144,40 +1154,265 @@
                 icon: '<i class="fa-solid fa-location-dot"></i>',
                 content: `
                     <div class="space-y-4 pb-4">
-                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                        <p class="text-sm text-gray-300 text-center">Bách khoa toàn thư 16 tọa độ check-in "đỉnh chóp" xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 max-h-[65vh] overflow-y-auto no-scrollbar pr-1 pb-4">
                             
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
                                     <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
                                         <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Kỳ Co</h4>
-                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam" với làn nước trong xanh ngọc bích.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review AI</button>
+                                        <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-28 h-28 shrink-0 relative bg-gray-800">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
                                         <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Eo Gió</h4>
-                                        <p class="text-[11px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nơi ngắm hoàng hôn đẹp nhất với con đường đi bộ ven biển.</p>
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review AI</button>
+                                        <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Thap_Doi_Quy_Nhon.jpg/500px-Thap_Doi_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Đôi</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Kiến trúc Chăm Pa cổ kính độc đáo ngay giữa lòng thành phố.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/gQ9jT" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Tháp Đôi')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Ghenh_Rang.jpg/500px-Ghenh_Rang.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Ghềnh Ráng</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Bãi tắm đá trứng và nơi an nghỉ của thi sĩ Hàn Mặc Tử.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/Kj8mR" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Ghềnh Ráng Tiên Sa')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Thap_Banh_It.jpg/500px-Thap_Banh_It.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Bánh Ít</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Quần thể tháp Chăm nghìn năm tuổi uy nghi trên đỉnh đồi.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/a1B2C" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Tháp Bánh Ít')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Hon_Kho_Quy_Nhon.jpg/500px-Hon_Kho_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Hòn Khô</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nổi tiếng với con đường cát xuyên biển và rạn san hô tuyệt đẹp.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/3D4eF" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Đảo Hòn Khô')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Cu_Lao_Xanh_Quy_Nhon.jpg/500px-Cu_Lao_Xanh_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Cù Lao Xanh</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Hòn đảo ngọc nguyên sơ với ngọn hải đăng trăm tuổi.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/G5h6J" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Cù Lao Xanh')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Chua_Ong_Nui.jpg/500px-Chua_Ong_Nui.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chùa Ông Núi</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Sở hữu tượng Phật ngồi cao nhất Đông Nam Á uy nghi.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.app.goo.gl/7L8kM" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Chùa Ông Núi')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Trung_Luong_Camp.jpg/500px-Trung_Luong_Camp.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Trung Lương</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Đảo Jeju phiên bản Việt" với view cắm trại ngắm biển từ trên cao.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed2" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Khu dã ngoại Trung Lương')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Chua_Thien_Hung.jpg/500px-Chua_Thien_Hung.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chùa Thiên Hưng</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi chùa có kiến trúc tuyệt đẹp, được ví như "Phượng Hoàng Cổ Trấn" của Việt Nam.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed3" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Chùa Thiên Hưng')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Cau_Thi_Nai.jpg/500px-Cau_Thi_Nai.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Cầu Thị Nại</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Cây cầu vượt biển dài nhất nhì Việt Nam, ngắm hoàng hôn trên đầm cực chill.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed4" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Cầu Thị Nại')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bai_Xep_Quy_Nhon.jpg/500px-Bai_Xep_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Bãi Xép</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Hòn ngọc bí ẩn", bãi biển êm đềm mang đậm nét hoang sơ của làng chài.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed5" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Làng chài Bãi Xép')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bao_Tang_Quang_Trung.jpg/500px-Bao_Tang_Quang_Trung.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>BT Quang Trung</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Tìm hiểu về hào khí Tây Sơn và chiêm ngưỡng màn biểu diễn võ thuật, trống trận oai hùng.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed6" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Bảo tàng Quang Trung')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Lang_Chai_Nhon_Ly.jpg/500px-Lang_Chai_Nhon_Ly.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Làng chài Nhơn Lý</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi làng ven biển với những con hẻm nhỏ bích họa được ví như "Hometown Cha-Cha-Cha".</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed7" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Làng chài Nhơn Lý')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/KDL_Ham_Ho.jpg/500px-KDL_Ham_Ho.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>KDL Hầm Hô</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Vịnh Hạ Long thu nhỏ" giữa lòng rừng núi với tiếng chim hót và suối chảy róc rách.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed8" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Khu du lịch Hầm Hô')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Tinh_Xa_Ngoc_Hoa.jpg/500px-Tinh_Xa_Ngoc_Hoa.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tịnh xá Ngọc Hòa</h4>
+                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi chùa ngay cạnh Eo Gió, nổi bật với tượng Phật đôi Quan Thế Âm cao nhất Việt Nam.</p>
+                                    </div>
+                                    <div class="flex gap-2 mt-2">
+                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed9" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                        <button onclick="showAIReview('Tịnh xá Ngọc Hòa')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>`
             },
@@ -1286,7 +1521,7 @@
             
             if (name === 'Chatbot Thổ Địa') {
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
-                const greetName = currentUser.isLoggedIn ? currentUser.name : "Bạn";
+                const greetName = getShortName(currentUser.name);
                 
                 if (!document.getElementById('chat-box')) {
                     let historyHtml = `<div class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">Chu cha! Chào ${greetName}. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, ${greetName} muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!</div></div>`;
@@ -1328,7 +1563,7 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI đang viết...';
             btn.disabled = true;
 
-            const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Du khách";
+            const userNameContext = getShortName(currentUser.name);
             const prompt = `Đóng vai một du khách gen Z tên là ${userNameContext}, viết 1 đoạn nhật ký ngắn gọn (3-4 câu) khoe vừa đi thăm Tháp Đôi, biển Kỳ Co và ăn bánh xèo tôm nhảy ở Quy Nhơn. Giọng điệu vui nhộn, xài emoji. Không markdown.`;
             
             const res = await fetchSpecialAI(prompt);
@@ -1576,7 +1811,7 @@
         }
 
         async function getAIResponse(userText) {
-            const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Khách";
+            const userNameContext = getShortName(currentUser.name);
             
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. 
 Người đang chat với bạn tên là: "${userNameContext}". 
@@ -2054,7 +2289,7 @@ Nếu không cần địa điểm:
         }
 
         async function getGeminiVisionResponse(base64Data) {
-            const userNameContext = currentUser.isLoggedIn ? currentUser.name : "Bạn mình";
+            const userNameContext = getShortName(currentUser.name);
             
             const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi cho bạn một bức ảnh.
             Hãy phân tích bức ảnh này:
