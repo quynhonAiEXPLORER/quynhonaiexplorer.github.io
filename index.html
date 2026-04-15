@@ -1026,6 +1026,48 @@
                 </div>`;
         }
 
+        async function showAIReview(placeName) {
+            // 1. Tạo popup nếu chưa có
+            let reviewPopup = document.getElementById('ai-review-popup');
+            if (!reviewPopup) {
+                reviewPopup = document.createElement('div');
+                reviewPopup.id = 'ai-review-popup';
+                reviewPopup.className = 'fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-slide-up';
+                reviewPopup.innerHTML = `
+                    <div class="bg-gray-900/95 border border-orange-500/40 shadow-[0_0_20px_rgba(249,115,22,0.3)] rounded-2xl p-5 max-w-sm w-full relative">
+                        <button onclick="document.getElementById('ai-review-popup').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-gray-400 hover:text-white hover:bg-white/20 transition cursor-pointer">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <h4 class="font-black text-orange-400 mb-3 flex items-center gap-2 text-lg uppercase tracking-wide">
+                            <i class="fa-solid fa-bullhorn"></i> Đánh giá: <span id="review-place-name" class="text-white"></span>
+                        </h4>
+                        <div class="bg-black/40 rounded-xl p-3 border border-white/10">
+                            <div id="review-content" class="text-sm text-gray-200 leading-relaxed whitespace-pre-line italic"></div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(reviewPopup);
+            }
+
+            // 2. Cập nhật tên địa điểm và hiển thị trạng thái loading
+            document.getElementById('review-place-name').innerText = placeName;
+            document.getElementById('review-content').innerHTML = '<span class="animate-pulse text-orange-300 flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang đi hỏi thăm thực tế...</span>';
+            reviewPopup.classList.remove('hidden');
+
+            // 3. Gọi prompt chuyên biệt cho review
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Tóm tắt nhanh ưu điểm, nhược điểm và nhận xét thực tế của khách du lịch về địa điểm "${placeName}" tại Quy Nhơn. 
+            YÊU CẦU: Viết cực kỳ ngắn gọn (tối đa 4 câu), khách quan (có khen có chê), chân thực, dùng ngôn từ địa phương (chu cha, nghen). Không dùng định dạng markdown phức tạp.`;
+
+            // 4. Lấy kết quả và hiển thị
+            const res = await fetchSpecialAI(prompt);
+            
+            const finalContent = res 
+                ? res.replace(/\n/g, '<br>') 
+                : 'Chu cha, mạng lag quá Anh Tư chưa tải kịp review nhen. Bạn đóng rồi bấm thử lại nghen!';
+                
+            document.getElementById('review-content').innerHTML = finalContent;
+        }
+
         // ==========================================
         // 5. CÁC TÍNH NĂNG KHÁC 
         // ==========================================
@@ -1048,7 +1090,7 @@
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review AI</button>
                                     </div>
                                 </div>
                             </div>
@@ -1064,7 +1106,7 @@
                                     </div>
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <a href="https://www.google.com/search?q=Kinh+nghiệm+du+lịch+Eo+Gió+Quy+Nhơn" target="_blank" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-magnifying-glass"></i> Review</a>
+                                        <button onclick="showAIReview('Eo Gió')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review AI</button>
                                     </div>
                                 </div>
                             </div>
