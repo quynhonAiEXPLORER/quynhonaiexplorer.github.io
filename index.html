@@ -34,7 +34,7 @@
         .glass-card:hover { background: rgba(251, 146, 60, 0.2); transform: translateY(-5px); border-color: rgba(251, 146, 60, 0.5); }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        #chat-box { scroll-behavior: smooth; }
+        #chat-box-content { scroll-behavior: smooth; }
 
         .message-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-end; width: 100%; }
         .message-row.user { flex-direction: row-reverse; }
@@ -56,85 +56,21 @@
         .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 
-        /* ==========================================
-           HIỆU ỨNG MẮT THẦN AI (CAMERA)
-           ========================================== */
-        .viewfinder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 320px;
-            aspect-ratio: 3/4;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .viewfinder::before, .viewfinder::after,
-        .viewfinder-inner::before, .viewfinder-inner::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-color: rgba(249, 115, 22, 0.8);
-            border-style: solid;
-            transition: all 0.3s ease;
-        }
-
+        /* Camera AI Styles */
+        .viewfinder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 320px; aspect-ratio: 3/4; z-index: 20; pointer-events: none; }
+        .viewfinder::before, .viewfinder::after, .viewfinder-inner::before, .viewfinder-inner::after { content: ''; position: absolute; width: 40px; height: 40px; border-color: rgba(249, 115, 22, 0.8); border-style: solid; transition: all 0.3s ease; }
         .viewfinder::before { top: 0; left: 0; border-width: 3px 0 0 3px; border-top-left-radius: 20px; }
         .viewfinder::after { top: 0; right: 0; border-width: 3px 3px 0 0; border-top-right-radius: 20px; }
         .viewfinder-inner { width: 100%; height: 100%; position: absolute; }
         .viewfinder-inner::before { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-bottom-left-radius: 20px; }
         .viewfinder-inner::after { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-bottom-right-radius: 20px; }
-
-        .viewfinder.hidden-frame {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .scanner-line {
-            position: absolute;
-            left: 10px;
-            right: 10px;
-            height: 2px;
-            background: rgba(249, 115, 22, 0.9);
-            box-shadow: 0 0 20px 4px rgba(249, 115, 22, 0.4);
-            animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 95%; opacity: 0; }
-        }
-
-        .camera-overlay {
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
-            pointer-events: none;
-        }
-
-        .focus-ring {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            transform: translate(-50%, -50%) scale(1.5);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 50;
-        }
-        .focus-ring.active {
-            animation: focusAnim 0.6s ease-out forwards;
-        }
-        @keyframes focusAnim {
-            0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; border-color: white; }
-            30% { transform: translate(-50%, -50%) scale(1); opacity: 1; border-color: white; }
-            80% { opacity: 1; border-color: #4ade80; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; border-color: #4ade80; }
-        }
+        .viewfinder.hidden-frame { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+        .scanner-line { position: absolute; left: 10px; right: 10px; height: 2px; background: rgba(249, 115, 22, 0.9); box-shadow: 0 0 20px 4px rgba(249, 115, 22, 0.4); animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        @keyframes scan { 0% { top: 5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
+        .camera-overlay { background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%); pointer-events: none; }
+        .focus-ring { position: absolute; width: 60px; height: 60px; border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 8px; transform: translate(-50%, -50%) scale(1.5); opacity: 0; pointer-events: none; z-index: 50; }
+        .focus-ring.active { animation: focusAnim 0.6s ease-out forwards; }
+        @keyframes focusAnim { 0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; border-color: white; } 30% { transform: translate(-50%, -50%) scale(1); opacity: 1; border-color: white; } 80% { opacity: 1; border-color: #4ade80; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; border-color: #4ade80; } }
     </style>
 </head>
 <body class="flex flex-col items-center pt-20 pb-24 md:pb-8"> 
@@ -255,9 +191,7 @@
             <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover"></video>
             <img id="camera-preview" class="w-full h-full object-cover hidden">
             <canvas id="camera-canvas" class="hidden"></canvas>
-            
             <div id="focus-ring" class="focus-ring"></div>
-
             <div id="camera-overlay" class="absolute inset-0 camera-overlay transition-opacity duration-300"></div>
             <div id="camera-viewfinder" class="viewfinder transition-all duration-300">
                 <div class="viewfinder-inner"></div>
@@ -270,19 +204,14 @@
 
         <div class="p-6 bg-gradient-to-t from-black via-black/90 to-transparent flex justify-center items-center gap-8 absolute bottom-0 left-0 right-0 pb-safe h-36 z-40">
             <input type="file" id="camera-upload-input" accept="image/*" class="hidden" onchange="handleCameraUpload(event)">
-            
             <button id="btn-camera-upload" onclick="document.getElementById('camera-upload-input').click()" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors shadow-lg">
                 <i class="fa-regular fa-image text-xl"></i>
             </button>
-
             <button id="btn-retake" onclick="retakePhoto()" class="hidden text-white font-semibold py-2.5 px-5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition shadow-lg">Chụp lại</button>
-            
             <button id="btn-capture" onclick="takePhoto()" class="w-16 h-16 rounded-full bg-white/20 border-4 border-white flex items-center justify-center active:scale-90 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]">
                 <div class="w-12 h-12 bg-white rounded-full"></div>
             </button>
-            
             <button id="btn-analyze" onclick="analyzePhoto()" class="hidden bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 px-6 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition">Gửi Tư Nẫu</button>
-            
             <div id="camera-spacer" class="w-12 h-12"></div>
         </div>
     </div>
@@ -337,12 +266,15 @@
         // ==========================================
         // 2. DỮ LIỆU NGƯỜI DÙNG & ĐỒNG BỘ FIRESTORE
         // ==========================================
+        let currentChatSessionId = null;
+        let currentChatMessages = [];
+
         let currentUser = {
             isLoggedIn: false,
             uid: null,
             name: 'Khách Phương Xa',
             avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true',
-            chatHistory: [],
+            chatSessions: [],
             itineraries: [],
             points: 0,
             challenges: []
@@ -364,7 +296,7 @@
                         uid: user.uid,
                         name: displayName,
                         avatar: user.photoURL || `https://ui-avatars.com/api/?name=${displayName.charAt(0)}&background=f97316&color=fff&rounded=true`,
-                        chatHistory: [],
+                        chatSessions: [],
                         itineraries: [],
                         points: 0,
                         challenges: []
@@ -375,7 +307,7 @@
                             const doc = await db.collection('users').doc(user.uid).get();
                             if (doc.exists) {
                                 const data = doc.data();
-                                currentUser.chatHistory = data.chatHistory || [];
+                                currentUser.chatSessions = data.chatSessions || [];
                                 currentUser.itineraries = data.itineraries || [];
                                 currentUser.points = data.points || 0;
                                 currentUser.challenges = data.challenges || [];
@@ -385,7 +317,7 @@
                         }
                     }
                 } else {
-                    currentUser = { isLoggedIn: false, uid: null, name: 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatHistory: [], itineraries: [], points: 0, challenges: [] };
+                    currentUser = { isLoggedIn: false, uid: null, name: 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [] };
                 }
                 
                 updateDynamicGreeting();
@@ -398,7 +330,7 @@
             if (currentUser.isLoggedIn && currentUser.uid && db) {
                 try {
                     await db.collection('users').doc(currentUser.uid).set({
-                        chatHistory: currentUser.chatHistory,
+                        chatSessions: currentUser.chatSessions,
                         itineraries: currentUser.itineraries,
                         points: currentUser.points,
                         challenges: currentUser.challenges,
@@ -408,6 +340,91 @@
                     console.error("Lỗi đồng bộ dữ liệu:", error);
                 }
             }
+        }
+
+        function startNewChat() {
+            currentChatSessionId = Date.now().toString(); 
+            currentChatMessages = [];
+            const historyList = document.getElementById('chat-history-list');
+            if (historyList) historyList.classList.add('hidden');
+            renderCurrentChat();
+        }
+
+        function saveCurrentChatSession() {
+            if (!currentUser.isLoggedIn || currentChatMessages.length === 0) return;
+            
+            let sessionIndex = currentUser.chatSessions.findIndex(s => s.id === currentChatSessionId);
+            
+            let title = "Đoạn chat mới";
+            const firstUserMsg = currentChatMessages.find(m => m.role === 'user' && !m.text.includes("[Đã"));
+            if (firstUserMsg && firstUserMsg.text) {
+                title = firstUserMsg.text.substring(0, 30) + (firstUserMsg.text.length > 30 ? "..." : "");
+            }
+
+            const sessionData = {
+                id: currentChatSessionId,
+                title: title,
+                timestamp: currentChatSessionId, 
+                messages: currentChatMessages
+            };
+
+            if (sessionIndex >= 0) {
+                currentUser.chatSessions[sessionIndex] = sessionData;
+            } else {
+                currentUser.chatSessions.push(sessionData);
+            }
+            saveUserData();
+        }
+
+        function toggleChatHistory() {
+            const list = document.getElementById('chat-history-list');
+            if (list.classList.contains('hidden')) {
+                list.innerHTML = '';
+                if (!currentUser.isLoggedIn || currentUser.chatSessions.length === 0) {
+                    list.innerHTML = '<p class="text-xs text-gray-500 italic text-center py-2">Chưa có lịch sử chat nào.</p>';
+                } else {
+                    const sorted = [...currentUser.chatSessions].sort((a, b) => b.timestamp - a.timestamp);
+                    sorted.forEach(session => {
+                        const activeClass = session.id === currentChatSessionId ? 'border-orange-500/50 bg-orange-500/10 text-white' : 'border-white/5 bg-black/20 text-gray-300 hover:bg-white/10';
+                        list.innerHTML += `
+                            <button onclick="loadChatSession('${session.id}')" class="text-left text-sm p-2.5 rounded-lg border transition truncate ${activeClass}">
+                                <i class="fa-regular fa-message mr-1.5 text-orange-400"></i> ${session.title}
+                            </button>
+                        `;
+                    });
+                }
+                list.classList.remove('hidden');
+            } else {
+                list.classList.add('hidden');
+            }
+        }
+
+        function loadChatSession(id) {
+            const session = currentUser.chatSessions.find(s => s.id === id);
+            if (!session) return;
+            currentChatSessionId = session.id;
+            currentChatMessages = session.messages || [];
+            document.getElementById('chat-history-list').classList.add('hidden');
+            renderCurrentChat();
+        }
+
+        function renderCurrentChat() {
+            const chatBoxContent = document.getElementById('chat-box-content');
+            if (!chatBoxContent) return;
+
+            const greetName = getShortName(currentUser.name);
+            let historyHtml = `<div class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">Chu cha! Chào ${greetName}. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, ${greetName} muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!</div></div>`;
+
+            currentChatMessages.forEach(msg => {
+                if (msg.role === 'user') {
+                    historyHtml += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10 ${msg.text && msg.text.includes('[Đã') ? 'italic text-xs text-gray-400' : ''}">${msg.text}</div></div>`;
+                } else if (msg.role === 'ai') {
+                    historyHtml += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${msg.html}</div></div></div>`;
+                }
+            });
+            
+            chatBoxContent.innerHTML = historyHtml;
+            setTimeout(() => { chatBoxContent.scrollTop = chatBoxContent.scrollHeight; }, 50);
         }
 
         const keyPoolNguoc = [
@@ -592,8 +609,8 @@
         function logout() {
             if(!auth) return;
             auth.signOut().then(() => {
-                const chatBox = document.getElementById('chat-box');
-                if(chatBox) chatBox.remove(); 
+                const chatBox = document.getElementById('chat-box-content');
+                if(chatBox) chatBox.innerHTML = ''; 
                 closeModal();
             });
         }
@@ -1061,7 +1078,7 @@
                 document.body.appendChild(reviewPopup);
             }
 
-            let imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg'; // Default Kỳ Co
+            let imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg';
             if (placeName.toLowerCase().includes('eo gió')) {
                 imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg';
             } else if (placeName.toLowerCase().includes('kỳ co')) {
@@ -1183,7 +1200,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
                                 <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Thap_Doi_Quy_Nhon.jpg/500px-Thap_Doi_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
@@ -1196,214 +1213,6 @@
                                     <div class="flex gap-2 mt-2">
                                         <a href="https://maps.app.goo.gl/gQ9jT" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
                                         <button onclick="showAIReview('Tháp Đôi')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Ghenh_Rang.jpg/500px-Ghenh_Rang.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Ghềnh Ráng</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Bãi tắm đá trứng và nơi an nghỉ của thi sĩ Hàn Mặc Tử.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.app.goo.gl/Kj8mR" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Ghềnh Ráng Tiên Sa')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Thap_Banh_It.jpg/500px-Thap_Banh_It.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tháp Bánh Ít</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Quần thể tháp Chăm nghìn năm tuổi uy nghi trên đỉnh đồi.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.app.goo.gl/a1B2C" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Tháp Bánh Ít')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Hon_Kho_Quy_Nhon.jpg/500px-Hon_Kho_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Hòn Khô</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Nổi tiếng với con đường cát xuyên biển và rạn san hô tuyệt đẹp.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.app.goo.gl/3D4eF" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Đảo Hòn Khô')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Cu_Lao_Xanh_Quy_Nhon.jpg/500px-Cu_Lao_Xanh_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Cù Lao Xanh</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Hòn đảo ngọc nguyên sơ với ngọn hải đăng trăm tuổi.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.app.goo.gl/G5h6J" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Cù Lao Xanh')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Chua_Ong_Nui.jpg/500px-Chua_Ong_Nui.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chùa Ông Núi</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Sở hữu tượng Phật ngồi cao nhất Đông Nam Á uy nghi.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.app.goo.gl/7L8kM" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Chùa Ông Núi')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Trung_Luong_Camp.jpg/500px-Trung_Luong_Camp.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Trung Lương</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Đảo Jeju phiên bản Việt" với view cắm trại ngắm biển từ trên cao.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed2" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Khu dã ngoại Trung Lương')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Chua_Thien_Hung.jpg/500px-Chua_Thien_Hung.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Chùa Thiên Hưng</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi chùa có kiến trúc tuyệt đẹp, được ví như "Phượng Hoàng Cổ Trấn" của Việt Nam.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed3" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Chùa Thiên Hưng')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Cau_Thi_Nai.jpg/500px-Cau_Thi_Nai.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Cầu Thị Nại</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Cây cầu vượt biển dài nhất nhì Việt Nam, ngắm hoàng hôn trên đầm cực chill.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed4" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Cầu Thị Nại')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bai_Xep_Quy_Nhon.jpg/500px-Bai_Xep_Quy_Nhon.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Bãi Xép</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Hòn ngọc bí ẩn", bãi biển êm đềm mang đậm nét hoang sơ của làng chài.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed5" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Làng chài Bãi Xép')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bao_Tang_Quang_Trung.jpg/500px-Bao_Tang_Quang_Trung.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>BT Quang Trung</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Tìm hiểu về hào khí Tây Sơn và chiêm ngưỡng màn biểu diễn võ thuật, trống trận oai hùng.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed6" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Bảo tàng Quang Trung')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Lang_Chai_Nhon_Ly.jpg/500px-Lang_Chai_Nhon_Ly.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Làng chài Nhơn Lý</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi làng ven biển với những con hẻm nhỏ bích họa được ví như "Hometown Cha-Cha-Cha".</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed7" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Làng chài Nhơn Lý')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/KDL_Ham_Ho.jpg/500px-KDL_Ham_Ho.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>KDL Hầm Hô</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Vịnh Hạ Long thu nhỏ" giữa lòng rừng núi với tiếng chim hót và suối chảy róc rách.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed8" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Khu du lịch Hầm Hô')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                                <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Tinh_Xa_Ngoc_Hoa.jpg/500px-Tinh_Xa_Ngoc_Hoa.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${fallbackImg}'" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Tịnh xá Ngọc Hòa</h4>
-                                        <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">Ngôi chùa ngay cạnh Eo Gió, nổi bật với tượng Phật đôi Quan Thế Âm cao nhất Việt Nam.</p>
-                                    </div>
-                                    <div class="flex gap-2 mt-2">
-                                        <a href="https://maps.google.com/maps?q=Eo+Gió,+Quy+Nhơn,+Bình+Định&t=&z=14&ie=UTF8&iwloc=&output=embed9" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                        <button onclick="showAIReview('Tịnh xá Ngọc Hòa')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold transition flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
                                     </div>
                                 </div>
                             </div>
@@ -1462,9 +1271,6 @@
                             </button>
                         </div>
                         <div class="bg-white/5 p-4 rounded-2xl border border-white/10 relative min-h-[100px]">
-                            <div class="absolute top-3 right-3 flex gap-2">
-                                <button onclick="copyTranslation()" class="text-gray-400 hover:text-white transition" title="Copy"><i class="fa-regular fa-copy"></i></button>
-                            </div>
                             <div id="nau-output" class="text-sm text-gray-200 mt-2 leading-relaxed">Kết quả dịch sẽ hiện ra ở đây...</div>
                         </div>
                     </div>
@@ -1475,11 +1281,11 @@
                 content: `
                     <div class="space-y-4">
                         <p class="text-sm text-gray-300">
-                            Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" cho hành trình khám phá Quy Nhơn của bạn hôm nay!
+                            Anh Tư Nẫu sẽ tổng hợp và tự động viết một trang nhật ký cực "cháy" dựa trên cuộc trò chuyện hiện tại của bạn!
                         </p>
                         <div class="bg-white/5 p-4 rounded-2xl border border-white/5 min-h-[120px] relative">
                             <div id="journal-content" class="text-sm text-white italic leading-relaxed">
-                                Nhấn nút bên dưới để AI tự động soạn thảo...
+                                Nhấn nút bên dưới để AI tự động phân tích lịch sử chat và soạn thảo...
                             </div>
                         </div>
                         <button onclick="generateJournal(event)" 
@@ -1500,8 +1306,7 @@
                                 <span id="gacha-total-points" class="font-black text-orange-400 text-lg">0</span>
                             </div>
                         </div>
-                        <div id="gacha-content-area">
-                        </div>
+                        <div id="gacha-content-area"></div>
                     </div>
                 `
             }
@@ -1516,24 +1321,25 @@
             
             if (name === 'Chatbot Thổ Địa') {
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
-                const greetName = getShortName(currentUser.name);
                 
                 if (!document.getElementById('chat-box')) {
-                    let historyHtml = `<div class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">Chu cha! Chào ${greetName}. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, ${greetName} muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!</div></div>`;
-
-                    if (currentUser.isLoggedIn && currentUser.chatHistory && currentUser.chatHistory.length > 0) {
-                        currentUser.chatHistory.forEach(msg => {
-                            if (msg.role === 'user') {
-                                historyHtml += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10">${msg.text}</div></div>`;
-                            } else if (msg.role === 'ai') {
-                                historyHtml += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${msg.html}</div></div></div>`;
-                            }
-                        });
-                    }
-                    content.innerHTML = `<div id="chat-box" class="space-y-3 flex flex-col pb-4 no-scrollbar h-full overflow-y-auto">${historyHtml}</div>`;
+                    const chatHeader = `
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-3 shrink-0">
+                            <button onclick="startNewChat()" class="text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Đoạn chat mới</button>
+                            <button onclick="toggleChatHistory()" class="text-xs bg-white/10 hover:bg-white/20 text-gray-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử</button>
+                        </div>
+                        <div id="chat-history-list" class="hidden flex-col gap-2 mb-3 max-h-40 overflow-y-auto no-scrollbar border-b border-white/10 pb-3 shrink-0"></div>
+                        <div id="chat-box-content" class="space-y-3 flex flex-col pb-4 no-scrollbar h-full overflow-y-auto"></div>
+                    `;
+                    content.innerHTML = `<div id="chat-box" class="flex flex-col h-full">${chatHeader}</div>`;
                 }
                 chatArea.classList.remove('hidden');
-                setTimeout(() => { const chatBox = document.getElementById('chat-box'); if (chatBox) chatBox.scrollTop = chatBox.scrollHeight; }, 50);
+
+                if (!currentChatSessionId) {
+                    startNewChat();
+                } else {
+                    renderCurrentChat();
+                }
 
             } else {
                 document.getElementById('modal-icon').innerHTML = features[name]?.icon || '';
@@ -1555,26 +1361,82 @@
         async function generateJournal(event) {
             const btn = event.currentTarget;
             const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI đang viết...';
+            
+            if (currentChatMessages.length === 0) {
+                alert("Chu cha! Bạn chưa trò chuyện gì với Anh Tư hết, lấy đâu ra dữ liệu mà viết nhật ký nè. Chat xíu đi nhen!");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang nhớ lại lịch trình...';
             btn.disabled = true;
 
             const userNameContext = getShortName(currentUser.name);
-            const prompt = `Đóng vai một du khách gen Z tên là ${userNameContext}, viết 1 đoạn nhật ký ngắn gọn (3-4 câu) khoe vừa đi thăm Tháp Đôi, biển Kỳ Co và ăn bánh xèo tôm nhảy ở Quy Nhơn. Giọng điệu vui nhộn, xài emoji. Không markdown.`;
+            
+            const chatLog = currentChatMessages
+                .map(m => `${m.role === 'user' ? 'Khách' : 'Anh Tư'}: ${m.text || m.rawText || ''}`)
+                .join("\n");
+
+            const prompt = `Bạn là trợ lý viết nhật ký du lịch. Hãy dựa vào Lịch sử trò chuyện dưới đây giữa một du khách tên là ${userNameContext} và thổ địa Anh Tư để viết một trang nhật ký hành trình (khoảng 100-150 chữ).
+            
+            LỊCH SỬ TRÒ CHUYỆN:
+            ${chatLog}
+
+            YÊU CẦU:
+            1. Ngôn ngữ: Tiếng Việt, giọng điệu Gen Z, hào hứng, có sử dụng từ địa phương Quy Nhơn (nhen, chu cha, dẫy...).
+            2. Nội dung: Phải nhắc đúng tên các địa danh, món ăn đã xuất hiện trong chat. 
+            3. Cấu trúc: Có ngày tháng (giả định hôm nay), cảm xúc và lời hứa quay lại.
+            4. Định dạng: Trả về TEXT thuần, không có markdown.`;
             
             const res = await fetchSpecialAI(prompt);
-            
             const contentDiv = document.getElementById('journal-content');
-            let finalContent = res ? res.replace(/\n/g, '<br>') : `Hôm nay đi chơi đã quá chừng! Sáng ghé Tháp Đôi chụp hình xịn sò, chiều lặn biển Kỳ Co nước xanh ngắt, tối làm dĩa Bánh Xèo Tôm Nhảy giòn rụm! Hẹn Quy Nhơn một ngày không xa nhen 🌊🔥✨`;
             
-            contentDiv.innerHTML = finalContent;
+            let finalContent = res ? res : `Hôm nay ở Quy Nhơn vui ác liệt luôn! Được Anh Tư chỉ cho bao nhiêu chỗ ăn ngon, chơi xịn. Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨`;
+            
+            contentDiv.innerHTML = `
+                <div class="animate-fadeIn">
+                    <textarea id="diary-editor" 
+                        class="w-full h-48 bg-black/40 border border-orange-500/30 rounded-xl p-3 text-sm text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
+                        placeholder="Bạn có muốn thêm thắt gì không?">${finalContent}</textarea>
+                    
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="saveCustomDiary()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu vào Hồ sơ
+                        </button>
+                        <button onclick="openFeature('Nhật ký AI')" class="bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-2.5 rounded-lg transition">
+                            <i class="fa-solid fa-rotate-right"></i> Viết lại
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Lại Nhật Ký Khác';
+            btn.disabled = false;
+        }
+
+        async function saveCustomDiary() {
+            const editor = document.getElementById('diary-editor');
+            const finalDiary = editor.value.trim();
+
+            if (!finalDiary) return alert("Nhật ký trống trơn dẫy bạn mình?");
 
             if (currentUser.isLoggedIn) {
-                currentUser.itineraries.push(finalContent);
-                saveUserData(); 
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã lưu vào Hồ sơ';
-                setTimeout(() => { btn.innerHTML = originalHtml; btn.disabled = false; }, 2000);
+                currentUser.itineraries.push(finalDiary);
+                await saveUserData(); 
+                
+                const contentDiv = document.getElementById('journal-content');
+                contentDiv.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-6 animate-fadeIn text-center">
+                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 text-3xl mb-3 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <p class="font-bold text-white text-lg">Đã cất vào Nhật ký!</p>
+                        <p class="text-xs text-gray-400 mt-1">Bạn có thể xem lại trong phần "Cá nhân" nhen.</p>
+                        <button onclick="openFeature('Nhật ký AI')" class="mt-4 text-orange-400 text-sm font-bold hover:underline">Viết thêm trang mới</button>
+                    </div>
+                `;
             } else {
-                btn.innerHTML = originalHtml; btn.disabled = false;
+                alert("Bạn cần đăng nhập để lưu giữ kỷ niệm này nhen!");
+                openAuthModal();
             }
         }
 
@@ -1743,22 +1605,20 @@
         async function sendMessage(event) {
             event.preventDefault();
             const input = document.getElementById('ai-input');
-            const chatBox = document.getElementById('chat-box');
+            const chatBoxContent = document.getElementById('chat-box-content');
             const text = input.value.trim();
             if (!text) return;
 
-            chatBox.innerHTML += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10">${text}</div></div>`;
+            chatBoxContent.innerHTML += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 text-white border border-white/10">${text}</div></div>`;
             input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
-            if (currentUser.isLoggedIn) {
-                currentUser.chatHistory.push({ role: 'user', text: text });
-                saveUserData();
-            }
+            currentChatMessages.push({ role: 'user', text: text });
+            saveCurrentChatSession();
 
             const typingId = 'typing-' + Date.now();
-            chatBox.innerHTML += `<div id="${typingId}" class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBoxContent.innerHTML += `<div id="${typingId}" class="message-row"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
             const rawResponse = await getAIResponse(text);
             document.getElementById(typingId).remove();
@@ -1771,6 +1631,12 @@
                 const aiData = JSON.parse(cleanRaw);
                 
                 rawTextForHistory = aiData.text; 
+                
+                if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
+                    const placeNames = aiData.places.map(p => `${p.name} (tại ${p.address})`).join(' và ');
+                    rawTextForHistory += `\n[Thông tin hệ thống: Đã hiển thị thẻ bản đồ của quán "${placeNames}" cho khách xem]`;
+                }
+
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
@@ -1800,22 +1666,19 @@
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
             }
 
-            chatBox.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
-            if (currentUser.isLoggedIn) {
-                currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: rawTextForHistory }); 
-                saveUserData();
-            }
+            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: rawTextForHistory }); 
+            saveCurrentChatSession();
         }
 
         async function getAIResponse(userText) {
             const userNameContext = getShortName(currentUser.name);
             
-            // --- XỬ LÝ LẤY NGỮ CẢNH (CONTEXT) TỪ LỊCH SỬ ---
             let chatContext = "";
-            if (currentUser.isLoggedIn && currentUser.chatHistory && currentUser.chatHistory.length > 0) {
-                const recentMessages = currentUser.chatHistory.slice(-5);
+            if (currentChatMessages.length > 0) {
+                const recentMessages = currentChatMessages.slice(-5);
                 
                 chatContext = "LỊCH SỬ TRÒ CHUYỆN GẦN ĐÂY (Dùng để hiểu khách đang nói về cái gì):\n";
                 recentMessages.forEach(msg => {
@@ -1842,7 +1705,7 @@ ${chatContext}
 Khách hỏi tiếp: "${userText}"
 
 HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG:
-1. ĐỌC KỸ "LỊCH SỬ TRÒ CHUYỆN": Nếu khách nói "chỗ đó xa không", "quán đó đắt không", bạn phải dựa vào lịch sử để biết "đó" là chỗ nào. KHÔNG GỢI Ý LẠI những địa điểm vừa mới nhắc đến ở trên.
+1. ĐỌC KỸ "LỊCH SỬ TRÒ CHUYỆN": Chú ý các dòng có chữ [Thông tin hệ thống...]. Nếu khách hỏi thêm thông tin (xa không, giá cả, ngon không...) về quán vừa nhắc tới, bạn PHẢI giữ ĐÚNG tên quán và địa chỉ đó, TUYỆT ĐỐI KHÔNG tự ý đổi sang quán khác trùng tên. KHÔNG GỢI Ý LẠI những địa điểm đã có trong thẻ bản đồ ở trên.
 2. TUYỆT ĐỐI KHÔNG sử dụng bộ database mặc định. Hãy tìm kiếm kết quả thực tế.
 3. PHÂN BIỆT RÕ INTENT:
    - Nếu khách hỏi "chỗ đi chơi", "ngắm cảnh" -> CHỈ gọi tên địa điểm tham quan.
@@ -1855,7 +1718,7 @@ HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG:
     { "name": "Tên", "address": "Địa chỉ", "price": "Giá tham khảo", "image_keyword": "keyword" }
   ]
 }
-Nếu không cần địa điểm: 
+Nếu không cần hiển thị thêm địa điểm mới lên bản đồ: 
 { "type": "text", "text": "Câu trả lời..." }`;
 
             const res = await fetchSpecialAI(prompt);
@@ -2143,16 +2006,14 @@ Nếu không cần địa điểm:
             const compressedBase64 = await compressImage(rawBase64Image);
             const pureBase64 = compressedBase64.split(',')[1];
 
-            // 1. RẼ NHÁNH: XÁC THỰC THỬ THÁCH GACHA
             if (pendingChallengeIndex !== null) {
                 await verifyChallengeWithAI(pureBase64, pendingChallengeIndex);
-                pendingChallengeIndex = null; // Reset trạng thái
+                pendingChallengeIndex = null; 
                 return;
             }
 
-            // 2. RẼ NHÁNH: GỬI ẢNH CHO CHATBOT
             openFeature('Chatbot Thổ Địa');
-            const chatBox = document.getElementById('chat-box');
+            const chatBoxContent = document.getElementById('chat-box-content');
             const typingId = 'typing-' + Date.now();
 
             const userImgHtml = `
@@ -2162,40 +2023,38 @@ Nếu không cần địa điểm:
                         <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
                     </div>
                 </div>`;
-            chatBox.innerHTML += userImgHtml;
+            chatBoxContent.innerHTML += userImgHtml;
             
-            chatBox.innerHTML += `
+            chatBoxContent.innerHTML += `
                 <div id="${typingId}" class="message-row">
                     <img src="${aiAvatar}" class="avatar border border-orange-500/30">
                     <div class="typing-indicator">
                         <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
                     </div>
                 </div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
             const aiResponse = await getGeminiVisionResponse(pureBase64);
 
             document.getElementById(typingId).remove();
             const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
-            chatBox.innerHTML += `
+            chatBoxContent.innerHTML += `
                 <div class="message-row flex flex-col items-start gap-0">
                     <div class="flex items-end gap-2">
                         <img src="${aiAvatar}" class="avatar border border-orange-500/30">
                         <div>${finalHtml}</div>
                     </div>
                 </div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
-            if (currentUser.isLoggedIn) {
-                currentUser.chatHistory.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
-                currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); // Updated
-                saveUserData();
-            }
+            currentChatMessages.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
+            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+            saveCurrentChatSession();
         }
 
         async function verifyChallengeWithAI(base64Data, index) {
             const chal = currentUser.challenges[index];
-            openFeature('Gacha Thử Thách'); // Mở lại modal Gacha để user xem kết quả
+            openFeature('Gacha Thử Thách'); 
             
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = `
@@ -2252,7 +2111,7 @@ Nếu không cần địa điểm:
                 alert("Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
             }
             
-            renderGachaUI(); // Tải lại danh sách Gacha
+            renderGachaUI(); 
         }
 
         function handleChatImageUpload(event) {
@@ -2262,48 +2121,46 @@ Nếu không cần địa điểm:
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const originalBase64 = e.target.result;
-                const chatBox = document.getElementById('chat-box');
+                const chatBoxContent = document.getElementById('chat-box-content');
                 
                 const compressedBase64 = await compressImage(originalBase64);
                 const pureBase64 = compressedBase64.split(',')[1];
                 
-                chatBox.innerHTML += `
+                chatBoxContent.innerHTML += `
                     <div class="message-row user">
                         <img src="${currentUser.avatar}" class="avatar">
                         <div class="chat-bubble bg-white/10 border border-white/10 p-2">
                             <img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm">
                         </div>
                     </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
                 
                 const typingId = 'typing-' + Date.now();
-                chatBox.innerHTML += `
+                chatBoxContent.innerHTML += `
                     <div id="${typingId}" class="message-row">
                         <img src="${aiAvatar}" class="avatar border border-orange-500/30">
                         <div class="typing-indicator">
                             <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
                         </div>
                     </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
                 
                 const aiResponse = await getGeminiVisionResponse(pureBase64);
                 
                 document.getElementById(typingId).remove();
                 const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
-                chatBox.innerHTML += `
+                chatBoxContent.innerHTML += `
                     <div class="message-row flex flex-col items-start gap-0">
                         <div class="flex items-end gap-2">
                             <img src="${aiAvatar}" class="avatar border border-orange-500/30">
                             <div>${finalHtml}</div>
                         </div>
                     </div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
-                if (currentUser.isLoggedIn) {
-                    currentUser.chatHistory.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
-                    currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); // Updated
-                    saveUserData();
-                }
+                currentChatMessages.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
+                currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+                saveCurrentChatSession();
 
                 event.target.value = '';
             };
