@@ -348,12 +348,9 @@
             challenges: []
         };
 
-        // Hàm lấy tên gọi ngắn gọn
         function getShortName(fullName) {
             if (!fullName || !currentUser.isLoggedIn || fullName === 'Khách Phương Xa') return 'bạn';
-            // Xóa các cụm nằm trong ngoặc (vd: "(Beo)")
             let cleanName = fullName.replace(/\s*\(.*?\)\s*/g, '').trim();
-            // Lấy chữ cái đầu tiên
             let parts = cleanName.split(' ');
             return parts[0] || 'bạn'; 
         }
@@ -443,12 +440,11 @@
         }
         window.addEventListener('DOMContentLoaded', updateDynamicGreeting);
 
-        // Xóa Nhật Ký AI
         function deleteItinerary(index) {
             if(confirm("Bạn có chắc chắn muốn xóa mục này hông?")) {
                 currentUser.itineraries.splice(index, 1);
                 saveUserData();
-                openAuthModal(); // Refresh modal
+                openAuthModal(); 
             }
         }
 
@@ -615,7 +611,6 @@
             document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
             chatArea.classList.add('hidden'); 
             
-            // Reset data
             itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
             currentItinStep = 1;
             renderStep(1); 
@@ -1769,10 +1764,13 @@
             document.getElementById(typingId).remove();
 
             let finalHtml = '';
+            let rawTextForHistory = ''; 
+
             try {
                 const cleanRaw = rawResponse.replace(/```json/gi, '').replace(/```/gi, '').trim();
                 const aiData = JSON.parse(cleanRaw);
                 
+                rawTextForHistory = aiData.text; 
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
@@ -1798,6 +1796,7 @@
                     });
                 }
             } catch (e) {
+                rawTextForHistory = rawResponse; 
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
             }
 
@@ -1805,7 +1804,7 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             if (currentUser.isLoggedIn) {
-                currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
+                currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: rawTextForHistory }); 
                 saveUserData();
             }
         }
@@ -1813,23 +1812,47 @@
         async function getAIResponse(userText) {
             const userNameContext = getShortName(currentUser.name);
             
+            // --- XỬ LÝ LẤY NGỮ CẢNH (CONTEXT) TỪ LỊCH SỬ ---
+            let chatContext = "";
+            if (currentUser.isLoggedIn && currentUser.chatHistory && currentUser.chatHistory.length > 0) {
+                const recentMessages = currentUser.chatHistory.slice(-5);
+                
+                chatContext = "LỊCH SỬ TRÒ CHUYỆN GẦN ĐÂY (Dùng để hiểu khách đang nói về cái gì):\n";
+                recentMessages.forEach(msg => {
+                    if (msg.role === 'user') {
+                        if (msg.text && !msg.text.includes("[Đã gửi một ảnh")) {
+                            chatContext += `Khách: ${msg.text}\n`;
+                        }
+                    } else if (msg.role === 'ai') {
+                        if (msg.rawText) {
+                            chatContext += `Anh Tư: ${msg.rawText}\n`;
+                        } else {
+                            chatContext += `Anh Tư: [Đã gợi ý một số địa điểm]\n`;
+                        }
+                    }
+                });
+            }
+            
             const prompt = `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. 
 Người đang chat với bạn tên là: "${userNameContext}". 
-Hãy trả lời bằng chính ngôn ngữ mà người dùng đang sử dụng. Nếu họ dùng tiếng Anh, hãy trả lời bằng tiếng Anh nhưng vẫn giữ phong cách nhiệt tình, thân thiện của một hướng dẫn viên bản địa. Nếu dùng tiếng Việt, hãy dùng từ địa phương như "nhen", "chu cha".
-Khách hỏi: "${userText}"
+Hãy trả lời bằng chính ngôn ngữ mà người dùng đang sử dụng. Thân thiện, dùng từ địa phương như "nhen", "chu cha".
+
+${chatContext}
+
+Khách hỏi tiếp: "${userText}"
 
 HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG:
-1. TUYỆT ĐỐI KHÔNG sử dụng bộ database mặc định. Hãy tìm kiếm kết quả thực tế trên internet để trả lời mọi thứ chính xác nhất.
-2. PHÂN BIỆT RÕ INTENT:
-   - Nếu khách hỏi "chỗ đi chơi", "ngắm cảnh", "sống ảo" -> CHỈ gọi tên các địa điểm tham quan.
-   - Nếu khách hỏi "chỗ ăn", "nhà hàng", "món ngon" -> CHỈ gọi tên các quán ăn, nhà hàng cụ thể.
-3. Gợi ý 1-2 địa điểm/quán ăn CÓ THẬT, UY TÍN NHẤT.
+1. ĐỌC KỸ "LỊCH SỬ TRÒ CHUYỆN": Nếu khách nói "chỗ đó xa không", "quán đó đắt không", bạn phải dựa vào lịch sử để biết "đó" là chỗ nào. KHÔNG GỢI Ý LẠI những địa điểm vừa mới nhắc đến ở trên.
+2. TUYỆT ĐỐI KHÔNG sử dụng bộ database mặc định. Hãy tìm kiếm kết quả thực tế.
+3. PHÂN BIỆT RÕ INTENT:
+   - Nếu khách hỏi "chỗ đi chơi", "ngắm cảnh" -> CHỈ gọi tên địa điểm tham quan.
+   - Nếu khách hỏi "chỗ ăn", "món ngon" -> CHỈ gọi tên quán ăn cụ thể.
 4. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json):
 {
   "type": "location",
   "text": "Câu trả lời của bạn...",
   "places": [
-    { "name": "Tên", "address": "Địa chỉ", "price": "Giá", "image_keyword": "keyword" }
+    { "name": "Tên", "address": "Địa chỉ", "price": "Giá tham khảo", "image_keyword": "keyword" }
   ]
 }
 Nếu không cần địa điểm: 
@@ -1837,9 +1860,8 @@ Nếu không cần địa điểm:
 
             const res = await fetchSpecialAI(prompt);
             return res || JSON.stringify({
-                "type": "location",
-                "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, nhưng Anh Tư vẫn nhớ chỗ này siêu ngon nhen!`,
-                "places": [{ "name": "Bánh Xèo Tôm Nhảy Gia Vỹ", "address": "14 Diên Hồng", "price": "Khoảng 40k", "image_keyword": "pancake" }]
+                "type": "text",
+                "text": `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
             });
         }
 
@@ -2166,7 +2188,7 @@ Nếu không cần địa điểm:
 
             if (currentUser.isLoggedIn) {
                 currentUser.chatHistory.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
-                currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
+                currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); // Updated
                 saveUserData();
             }
         }
@@ -2279,7 +2301,7 @@ Nếu không cần địa điểm:
 
                 if (currentUser.isLoggedIn) {
                     currentUser.chatHistory.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
-                    currentUser.chatHistory.push({ role: 'ai', html: finalHtml });
+                    currentUser.chatHistory.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); // Updated
                     saveUserData();
                 }
 
@@ -2418,9 +2440,6 @@ Nếu không cần địa điểm:
             "lầm": "Sai, nhầm lẫn.",
         };
 
-        // ==========================================
-        // CẬP NHẬT HÀM DỊCH TIẾNG NẪU (PARSE JSON & FIX UI)
-        // ==========================================
         async function translateNau() {
             const input = document.getElementById('nau-input').value.trim();
             const outputDiv = document.getElementById('nau-output');
