@@ -1032,40 +1032,115 @@
             if (!reviewPopup) {
                 reviewPopup = document.createElement('div');
                 reviewPopup.id = 'ai-review-popup';
-                reviewPopup.className = 'fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-slide-up';
+                reviewPopup.className = 'fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-md modal-slide-up';
                 reviewPopup.innerHTML = `
-                    <div class="bg-gray-900/95 border border-orange-500/40 shadow-[0_0_20px_rgba(249,115,22,0.3)] rounded-2xl p-5 max-w-sm w-full relative">
-                        <button onclick="document.getElementById('ai-review-popup').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-gray-400 hover:text-white hover:bg-white/20 transition cursor-pointer">
+                    <div class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/50 shadow-[0_0_30px_rgba(249,115,22,0.3)] rounded-2xl overflow-hidden max-w-md w-full relative flex flex-col md:flex-row">
+                        <button onclick="document.getElementById('ai-review-popup').classList.add('hidden')" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-black/50 hover:bg-black/80 rounded-full text-white transition cursor-pointer z-20 backdrop-blur-sm border border-white/10">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
-                        <h4 class="font-black text-orange-400 mb-3 flex items-center gap-2 text-lg uppercase tracking-wide">
-                            <i class="fa-solid fa-bullhorn"></i> Đánh giá: <span id="review-place-name" class="text-white"></span>
-                        </h4>
-                        <div class="bg-black/40 rounded-xl p-3 border border-white/10">
-                            <div id="review-content" class="text-sm text-gray-200 leading-relaxed whitespace-pre-line italic"></div>
+
+                        <div class="h-32 md:h-auto md:w-2/5 relative shrink-0">
+                            <img id="review-place-img" src="" class="w-full h-full object-cover" onerror="this.src='https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg'" />
+                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-gray-900/100 via-gray-900/60 to-transparent"></div>
+                        </div>
+
+                        <div class="p-4 md:p-5 flex-1 flex flex-col justify-center relative min-h-[180px]">
+                            <h4 class="font-black text-orange-400 mb-1 flex items-center gap-1.5 text-lg md:text-xl uppercase tracking-wider drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-base"></i> REVIEW
+                            </h4>
+                            <h5 id="review-place-name" class="font-bold text-white text-base md:text-lg mb-3 border-b border-white/10 pb-2"></h5>
+                            
+                            <div id="review-content" class="text-sm leading-relaxed flex-1 flex flex-col justify-center"></div>
                         </div>
                     </div>
                 `;
                 document.body.appendChild(reviewPopup);
             }
 
-            // 2. Cập nhật tên địa điểm và hiển thị trạng thái loading
+            // 2. Chọn ảnh background tùy theo địa điểm
+            let imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg'; // Default Kỳ Co
+            if (placeName.toLowerCase().includes('eo gió')) {
+                imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg';
+            } else if (placeName.toLowerCase().includes('kỳ co')) {
+                imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg';
+            }
+            
+            document.getElementById('review-place-img').src = imgSrc;
             document.getElementById('review-place-name').innerText = placeName;
-            document.getElementById('review-content').innerHTML = '<span class="animate-pulse text-orange-300 flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang đi hỏi thăm thực tế...</span>';
+
+            // Hiệu ứng Loading siêu mượt
+            document.getElementById('review-content').innerHTML = `
+                <div class="flex flex-col items-center justify-center py-4 gap-3">
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <div class="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                        <i class="fa-solid fa-motorcycle text-orange-400 animate-pulse text-xl"></i>
+                    </div>
+                    <span class="animate-pulse font-medium text-orange-300 text-[11px] md:text-xs italic text-center px-2">Anh Tư đang chạy xe đi hỏi thăm thực tế...</span>
+                    <div class="flex gap-1 mt-1 opacity-50">
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star-half-stroke text-[8px] text-yellow-400"></i>
+                    </div>
+                </div>`;
             reviewPopup.classList.remove('hidden');
 
-            // 3. Gọi prompt chuyên biệt cho review
-            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Tóm tắt nhanh ưu điểm, nhược điểm và nhận xét thực tế của khách du lịch về địa điểm "${placeName}" tại Quy Nhơn. 
-            YÊU CẦU: Viết cực kỳ ngắn gọn (tối đa 4 câu), khách quan (có khen có chê), chân thực, dùng ngôn từ địa phương (chu cha, nghen). Không dùng định dạng markdown phức tạp.`;
+            // 3. Prompt ÉP cấu trúc 3 phần rõ ràng
+            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Đánh giá khách quan thực tế địa điểm "${placeName}" tại Quy Nhơn.
+            YÊU CẦU: Viết cực kỳ ngắn gọn (mỗi phần 1-2 câu), thực tế, dùng ngôn từ địa phương (chu cha, nghen, dẫy).
+            BẮT BUỘC trả về ĐÚNG định dạng JSON sau (không bọc trong \`\`\`json):
+            {
+                "uu_diem": "Cảnh quan, món ngon, trải nghiệm tốt...",
+                "nhuoc_diem": "Đường xa, kẹt xe, giá cao, nắng nóng...",
+                "tom_lai": "Câu chốt hạ, lời khuyên chân thành của Anh Tư"
+            }`;
 
-            // 4. Lấy kết quả và hiển thị
+            // 4. Gọi AI và vẽ giao diện
             const res = await fetchSpecialAI(prompt);
+            let finalHtml = '<p class="text-red-400">Chu cha, mạng lag quá Anh Tư chưa tải kịp review nhen. Bạn đóng rồi bấm thử lại nghen!</p>';
             
-            const finalContent = res 
-                ? res.replace(/\n/g, '<br>') 
-                : 'Chu cha, mạng lag quá Anh Tư chưa tải kịp review nhen. Bạn đóng rồi bấm thử lại nghen!';
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+                    
+                    // Render 3 khối màu riêng biệt, thêm scroll nếu dài
+                    finalHtml = `
+                        <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[300px] pr-1">
+                            <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
+                                <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check"></i> Điểm ưng ý
+                                </h5>
+                                <p class="text-gray-200 text-xs md:text-sm">${data.uu_diem || "Chỗ này ổn áp lắm."}</p>
+                            </div>
+
+                            <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
+                                <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Điểm trừ
+                                </h5>
+                                <p class="text-gray-200 text-xs md:text-sm">${data.nhuoc_diem || "Hổng có gì để chê luôn."}</p>
+                            </div>
+
+                            <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
+                                <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
+                                <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots"></i> Chốt lại
+                                </h5>
+                                <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${data.tom_lai || "Đáng đi thử nhen!"}</p>
+                            </div>
+                        </div>
+                    `;
+                } catch (err) {
+                    // Backup nếu AI ngáo không ra JSON chuẩn
+                    finalHtml = `
+                        <div class="bg-white/5 border-l-4 border-orange-500 p-4 rounded-r-xl shadow-inner mt-2">
+                            <p class="text-gray-200 italic">${res.replace(/\n/g, '<br>')}</p>
+                        </div>`;
+                }
+            }
                 
-            document.getElementById('review-content').innerHTML = finalContent;
+            document.getElementById('review-content').innerHTML = finalHtml;
         }
 
         // ==========================================
