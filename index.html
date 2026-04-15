@@ -342,28 +342,42 @@
             }
         }
 
-        function startNewChat() {
-            currentChatSessionId = Date.now().toString(); 
-            currentChatMessages = [];
-            const historyList = document.getElementById('chat-history-list');
-            if (historyList) historyList.classList.add('hidden');
-            renderCurrentChat();
+        async function updateChatTitleIfNeeded(sessionId) {
+            let session = currentUser.chatSessions.find(s => s.id === sessionId);
+            if (!session || session.title !== "Đoạn chat mới" || session.messages.filter(m => m.role === 'user').length < 2) return;
+            
+            const chatLog = session.messages.map(m => `${m.role}: ${m.text || ''}`).join('\n').substring(0, 500);
+            const prompt = `Đọc đoạn chat sau và tóm tắt thành một tiêu đề ngắn gọn (3-5 từ) để làm tên lưu trữ lịch sử chat.
+            VÍ DỤ: "Hỏi chỗ ăn sáng", "Đường đi Kỳ Co", "Quán cafe sống ảo".
+            TUYỆT ĐỐI KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON. CHỈ TRẢ VỀ TEXT THUẦN.
+            Đoạn chat: ${chatLog}`;
+            
+            const titleRes = await fetchSpecialAI(prompt);
+            
+            if (titleRes) {
+                const cleanTitle = titleRes.replace(/[\"\'\[\]\{\}]/g, '').trim();
+                session.title = cleanTitle;
+                saveUserData();
+                
+                if (currentChatSessionId === sessionId) {
+                    updateChatHeaderTitle();
+                    const sidebar = document.getElementById('chat-history-sidebar');
+                    if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                        renderChatHistorySidebar();
+                    }
+                }
+            }
         }
 
         function saveCurrentChatSession() {
             if (!currentUser.isLoggedIn || currentChatMessages.length === 0) return;
             
             let sessionIndex = currentUser.chatSessions.findIndex(s => s.id === currentChatSessionId);
-            
-            let title = "Đoạn chat mới";
-            const firstUserMsg = currentChatMessages.find(m => m.role === 'user' && !m.text.includes("[Đã"));
-            if (firstUserMsg && firstUserMsg.text) {
-                title = firstUserMsg.text.substring(0, 30) + (firstUserMsg.text.length > 30 ? "..." : "");
-            }
+            let currentTitle = sessionIndex >= 0 ? currentUser.chatSessions[sessionIndex].title : "Đoạn chat mới";
 
             const sessionData = {
                 id: currentChatSessionId,
-                title: title,
+                title: currentTitle,
                 timestamp: currentChatSessionId, 
                 messages: currentChatMessages
             };
@@ -374,29 +388,48 @@
                 currentUser.chatSessions.push(sessionData);
             }
             saveUserData();
+
+            if (currentTitle === "Đoạn chat mới") {
+                updateChatTitleIfNeeded(currentChatSessionId);
+            }
         }
 
-        function toggleChatHistory() {
-            const list = document.getElementById('chat-history-list');
-            if (list.classList.contains('hidden')) {
-                list.innerHTML = '';
-                if (!currentUser.isLoggedIn || currentUser.chatSessions.length === 0) {
-                    list.innerHTML = '<p class="text-xs text-gray-500 italic text-center py-2">Chưa có lịch sử chat nào.</p>';
-                } else {
-                    const sorted = [...currentUser.chatSessions].sort((a, b) => b.timestamp - a.timestamp);
-                    sorted.forEach(session => {
-                        const activeClass = session.id === currentChatSessionId ? 'border-orange-500/50 bg-orange-500/10 text-white' : 'border-white/5 bg-black/20 text-gray-300 hover:bg-white/10';
-                        list.innerHTML += `
-                            <button onclick="loadChatSession('${session.id}')" class="text-left text-sm p-2.5 rounded-lg border transition truncate ${activeClass}">
-                                <i class="fa-regular fa-message mr-1.5 text-orange-400"></i> ${session.title}
-                            </button>
-                        `;
-                    });
-                }
-                list.classList.remove('hidden');
+        function toggleChatSidebar() {
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                renderChatHistorySidebar();
             } else {
-                list.classList.add('hidden');
+                sidebar.classList.add('-translate-x-full');
             }
+        }
+
+        function renderChatHistorySidebar() {
+            const list = document.getElementById('sidebar-list');
+            if (!list) return;
+            list.innerHTML = '';
+            if (!currentUser.isLoggedIn || currentUser.chatSessions.length === 0) {
+                list.innerHTML = '<p class="text-xs text-gray-500 italic text-center py-4">Chưa có lịch sử chat nào.</p>';
+            } else {
+                const sorted = [...currentUser.chatSessions].sort((a, b) => b.timestamp - a.timestamp);
+                sorted.forEach(session => {
+                    const isActive = session.id === currentChatSessionId;
+                    const bgClass = isActive ? 'bg-orange-500/20 border-orange-500/50 text-orange-300' : 'bg-transparent border-transparent text-gray-300 hover:bg-white/5';
+                    list.innerHTML += `
+                        <button onclick="loadChatSession('${session.id}')" class="w-full text-left text-sm p-3 rounded-xl border transition-all truncate flex items-center gap-3 ${bgClass}">
+                            <i class="fa-regular fa-message ${isActive ? 'text-orange-400' : 'text-gray-500'}"></i> 
+                            <span class="truncate flex-1">${session.title}</span>
+                        </button>
+                    `;
+                });
+            }
+        }
+
+        function updateChatHeaderTitle() {
+            const titleEl = document.getElementById('current-chat-title');
+            if (!titleEl) return;
+            const session = currentUser.chatSessions.find(s => s.id === currentChatSessionId);
+            titleEl.innerText = session && session.title !== "Đoạn chat mới" ? session.title : "Tư Nẫu";
         }
 
         function loadChatSession(id) {
@@ -404,7 +437,19 @@
             if (!session) return;
             currentChatSessionId = session.id;
             currentChatMessages = session.messages || [];
-            document.getElementById('chat-history-list').classList.add('hidden');
+            toggleChatSidebar(); 
+            updateChatHeaderTitle();
+            renderCurrentChat();
+        }
+
+        function startNewChat() {
+            currentChatSessionId = Date.now().toString(); 
+            currentChatMessages = [];
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+            updateChatHeaderTitle();
             renderCurrentChat();
         }
 
@@ -471,7 +516,7 @@
         function openAuthModal() {
             const modal = document.getElementById('modal');
             const chatArea = document.getElementById('chat-input-area');
-            chatArea.classList.add('hidden');
+            if(chatArea) chatArea.classList.add('hidden');
             
             if (currentUser.isLoggedIn) {
                 document.getElementById('modal-title').innerText = 'Hồ Sơ Của Bạn';
@@ -481,31 +526,57 @@
                 let savedItemsHtml = '';
                 if (currentUser.itineraries && currentUser.itineraries.length > 0) {
                     currentUser.itineraries.forEach((item, index) => {
+                        let isObj = typeof item === 'object';
+                        let type = isObj ? item.type : (item.includes("Lịch trình") ? 'itinerary' : 'diary');
+                        let contentText = isObj ? item.content : item;
+                        let title = isObj ? item.title : contentText.substring(0, 35) + "...";
+                        let date = isObj ? item.date : "";
+
+                        let icon = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot text-blue-400"></i>' : '<i class="fa-solid fa-book-open text-orange-400"></i>';
+                        let typeName = type === 'itinerary' ? 'Lịch trình AI' : 'Nhật ký AI';
+
                         savedItemsHtml += `
-                        <div class="bg-black/30 p-3 rounded-lg mb-2 text-left border border-white/10 text-sm italic text-gray-300 relative group">
-                            <button onclick="deleteItinerary(${index})" class="absolute top-2 right-2 text-gray-500 hover:text-red-400 transition" title="Xóa"><i class="fa-solid fa-trash-can"></i></button>
-                            <p class="font-bold text-orange-400 mb-1 text-xs">Nhật ký AI #${index + 1}</p>${item}
+                        <div class="bg-black/30 p-3 rounded-2xl mb-3 text-left border border-white/10 hover:border-orange-500/50 hover:bg-white/5 transition-all relative group flex items-center cursor-pointer shadow-md" onclick="viewSavedItem(${index})">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 shrink-0 shadow-inner">
+                                ${icon}
+                            </div>
+                            <div class="flex-1 overflow-hidden pr-8">
+                                <div class="flex justify-between items-center mb-0.5">
+                                    <p class="font-bold text-white text-sm truncate">${typeName}</p>
+                                    ${date ? `<span class="text-[10px] text-gray-500 font-medium">${date}</span>` : ''}
+                                </div>
+                                <p class="text-xs text-gray-400 truncate italic">${title.replace(/<[^>]*>?/gm, '')}</p>
+                            </div>
+                            <button onclick="event.stopPropagation(); deleteItinerary(${index})" class="absolute right-3 text-gray-500 hover:text-red-400 transition bg-black/60 hover:bg-black/80 w-8 h-8 rounded-full flex items-center justify-center opacity-80 hover:opacity-100 shadow" title="Xóa">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
                         </div>`;
                     });
                 } else {
-                    savedItemsHtml = '<p class="text-xs text-gray-500">Chưa có lịch trình/nhật ký nào.</p>';
+                    savedItemsHtml = `
+                    <div class="flex flex-col items-center justify-center py-6 opacity-50">
+                        <i class="fa-solid fa-folder-open text-4xl mb-2 text-gray-500"></i>
+                        <p class="text-xs text-gray-400 italic">Túi hành trang đang trống.</p>
+                    </div>`;
                 }
 
                 content.innerHTML = `
-                    <div class="flex flex-col items-center gap-4 py-6">
-                        <img src="${currentUser.avatar}" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.4)]">
-                        <h2 class="text-xl md:text-2xl font-bold text-white mb-0">${currentUser.name}</h2>
+                    <div class="flex flex-col items-center gap-4 py-4 md:py-6">
+                        <img src="${currentUser.avatar}" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                        <h2 class="text-xl md:text-2xl font-black text-white mb-0 uppercase tracking-wider">${currentUser.name}</h2>
                         
-                        <div class="bg-orange-500/20 border border-orange-500/50 px-4 py-1.5 rounded-full flex items-center gap-2 mb-2">
+                        <div class="bg-orange-500/10 border border-orange-500/30 px-5 py-2 rounded-full flex items-center gap-2 mb-2 shadow-inner">
                             <i class="fa-solid fa-gem text-orange-400 animate-pulse"></i>
-                            <span class="font-black text-orange-400">${currentUser.points || 0} Điểm Gacha</span>
+                            <span class="font-bold text-orange-300">${currentUser.points || 0} Điểm Gacha</span>
                         </div>
 
-                        <div class="bg-white/5 w-full rounded-2xl p-4 border border-white/10 text-center max-h-48 overflow-y-auto no-scrollbar">
-                            <h3 class="font-bold text-white mb-3 text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-bookmark text-orange-400"></i> Lịch trình đã lưu</h3>
+                        <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-64 overflow-y-auto no-scrollbar shadow-lg">
+                            <h3 class="font-bold text-white mb-4 text-sm flex items-center justify-start gap-2 border-b border-white/10 pb-3">
+                                <i class="fa-solid fa-bookmark text-orange-400"></i> Hành Trang Đã Lưu
+                            </h3>
                             ${savedItemsHtml}
                         </div>
-                        <button onclick="logout()" class="mt-2 w-full bg-red-500/20 border border-red-500/50 hover:bg-red-500/40 text-red-400 px-8 py-3 rounded-xl transition font-bold cursor-pointer">Đăng xuất</button>
+                        <button onclick="logout()" class="mt-2 w-full bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 px-8 py-3.5 rounded-2xl transition font-bold cursor-pointer active:scale-95">Đăng xuất</button>
                     </div>
                 `;
             } else {
@@ -514,6 +585,62 @@
                 renderLoginForm();
             }
             modal.classList.remove('hidden');
+        }
+
+        function viewSavedItem(index) {
+            const item = currentUser.itineraries[index];
+            if (!item) return;
+
+            let isObj = typeof item === 'object';
+            let type = isObj ? item.type : (item.includes("Lịch trình") ? 'itinerary' : 'diary');
+            let contentStr = isObj ? item.content : item;
+            let date = isObj ? item.date : "Hôm nay";
+
+            const content = document.getElementById('modal-content');
+            const titleEl = document.getElementById('modal-title');
+            const iconEl = document.getElementById('modal-icon');
+
+            titleEl.innerText = type === 'itinerary' ? "CHI TIẾT LỊCH TRÌNH" : "TRANG NHẬT KÝ";
+            iconEl.innerHTML = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot"></i>' : '<i class="fa-solid fa-book-open"></i>';
+
+            let detailHtml = `
+                <div class="animate-fadeIn pb-6 flex flex-col h-full">
+                    <button onclick="openAuthModal()" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại
+                    </button>
+                    
+                    <div class="relative flex-1 bg-gradient-to-br from-gray-800 to-gray-900 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/10 rounded-tr-full blur-3xl pointer-events-none"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-4 mb-6 border-b border-white/10 pb-5">
+                                <div class="w-14 h-14 rounded-full ${type === 'itinerary' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30'} border flex items-center justify-center text-2xl shadow-inner shrink-0">
+                                    ${type === 'itinerary' ? '<i class="fa-solid fa-route"></i>' : '<i class="fa-solid fa-feather-pointed"></i>'}
+                                </div>
+                                <div>
+                                    <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide drop-shadow-md">
+                                        ${type === 'itinerary' ? 'Lịch Trình Khám Phá' : 'Kỷ Niệm Quy Nhơn'}
+                                    </h2>
+                                    <p class="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
+                                        <i class="fa-regular fa-clock"></i> Ngày viết: ${date}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="relative pt-2">
+                                ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
+                                
+                                <div class="text-gray-200 text-sm md:text-base leading-loose whitespace-pre-wrap ${type === 'diary' ? 'italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
+                                
+                                ${type === 'diary' ? '<i class="fa-solid fa-quote-right absolute -bottom-6 right-0 text-4xl text-white/5"></i>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = detailHtml;
         }
 
         function renderLoginForm() {
@@ -626,7 +753,7 @@
             const chatArea = document.getElementById('chat-input-area');
             document.getElementById('modal-title').innerText = 'Lên Lịch Trình AI';
             document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
-            chatArea.classList.add('hidden'); 
+            if(chatArea) chatArea.classList.add('hidden'); 
             
             itinData = { days: '', styles: [], budget: '', locationContext: 'Trung tâm thành phố Quy Nhơn' };
             currentItinStep = 1;
@@ -1012,7 +1139,12 @@
                     content.innerHTML = htmlContent;
                     
                     if (currentUser.isLoggedIn) {
-                        currentUser.itineraries.push(`Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}...`);
+                        currentUser.itineraries.unshift({
+                            type: 'itinerary',
+                            title: `Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}`,
+                            content: htmlContent,
+                            date: new Date().toLocaleDateString('vi-VN')
+                        });
                         saveUserData();
                     }
 
@@ -1322,36 +1454,48 @@
             if (name === 'Chatbot Thổ Địa') {
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
                 
-                if (!document.getElementById('chat-box')) {
-                    const chatHeader = `
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-3 shrink-0">
-                            <button onclick="startNewChat()" class="text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Đoạn chat mới</button>
-                            <button onclick="toggleChatHistory()" class="text-xs bg-white/10 hover:bg-white/20 text-gray-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử</button>
+                if (!document.getElementById('chat-container')) {
+                    content.innerHTML = `
+                        <div id="chat-container" class="relative flex flex-col h-full overflow-hidden -mx-3 md:-mx-5 -mt-3 md:-mt-5">
+                            
+                            <div class="flex justify-between items-center bg-gray-900/50 backdrop-blur-md border-b border-white/10 px-4 py-3 shrink-0 z-10">
+                                <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
+                                    <i class="fa-solid fa-bars text-xl"></i>
+                                </button>
+                                <div class="font-bold text-sm md:text-base text-orange-400 truncate px-4 flex-1 text-center" id="current-chat-title">Tư Nẫu</div>
+                                <button onclick="startNewChat()" class="text-gray-300 hover:text-orange-400 p-1 rounded-lg transition cursor-pointer" title="Tạo đoạn chat mới">
+                                    <i class="fa-solid fa-pen-to-square text-xl"></i>
+                                </button>
+                            </div>
+                            
+                            <div id="chat-history-sidebar" class="absolute inset-y-0 left-0 w-4/5 max-w-[280px] bg-gray-900/95 backdrop-blur-xl border-r border-white/10 z-20 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+                                <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span class="font-bold text-white text-sm uppercase tracking-wider">Lịch sử trò chuyện</span>
+                                    <button onclick="toggleChatSidebar()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/5 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button>
+                                </div>
+                                <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 space-y-1 no-scrollbar"></div>
+                            </div>
+                            
+                            <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 no-scrollbar bg-black/10"></div>
                         </div>
-                        <div id="chat-history-list" class="hidden flex-col gap-2 mb-3 max-h-40 overflow-y-auto no-scrollbar border-b border-white/10 pb-3 shrink-0"></div>
-                        <div id="chat-box-content" class="space-y-3 flex flex-col pb-4 no-scrollbar h-full overflow-y-auto"></div>
                     `;
-                    content.innerHTML = `<div id="chat-box" class="flex flex-col h-full">${chatHeader}</div>`;
                 }
-                chatArea.classList.remove('hidden');
+                if(chatArea) chatArea.classList.remove('hidden');
 
                 if (!currentChatSessionId) {
                     startNewChat();
                 } else {
+                    updateChatHeaderTitle();
                     renderCurrentChat();
                 }
 
             } else {
                 document.getElementById('modal-icon').innerHTML = features[name]?.icon || '';
                 content.innerHTML = features[name]?.content || '';
-                chatArea.classList.add('hidden');
+                if(chatArea) chatArea.classList.add('hidden');
                 
-                if (name === 'Thời Tiết & Đi Đảo') {
-                    fetchRealWeather();
-                }
-                if (name === 'Gacha Thử Thách') {
-                    renderGachaUI();
-                }
+                if (name === 'Thời Tiết & Đi Đảo') fetchRealWeather();
+                if (name === 'Gacha Thử Thách') renderGachaUI();
             }
             modal.classList.remove('hidden');
         }
@@ -1371,39 +1515,45 @@
             btn.disabled = true;
 
             const userNameContext = getShortName(currentUser.name);
+            const currentDate = new Date().toLocaleDateString('vi-VN');
             
             const chatLog = currentChatMessages
                 .map(m => `${m.role === 'user' ? 'Khách' : 'Anh Tư'}: ${m.text || m.rawText || ''}`)
-                .join("\n");
+                .join("\n").substring(0, 1500); 
 
-            const prompt = `Bạn là trợ lý viết nhật ký du lịch. Hãy dựa vào Lịch sử trò chuyện dưới đây giữa một du khách tên là ${userNameContext} và thổ địa Anh Tư để viết một trang nhật ký hành trình (khoảng 100-150 chữ).
+            const prompt = `Bạn là trợ lý viết nhật ký du lịch. Dựa vào Lịch sử trò chuyện dưới đây giữa ${userNameContext} và thổ địa Anh Tư, hãy viết một đoạn nhật ký hành trình.
             
             LỊCH SỬ TRÒ CHUYỆN:
             ${chatLog}
 
-            YÊU CẦU:
-            1. Ngôn ngữ: Tiếng Việt, giọng điệu Gen Z, hào hứng, có sử dụng từ địa phương Quy Nhơn (nhen, chu cha, dẫy...).
-            2. Nội dung: Phải nhắc đúng tên các địa danh, món ăn đã xuất hiện trong chat. 
-            3. Cấu trúc: Có ngày tháng (giả định hôm nay), cảm xúc và lời hứa quay lại.
-            4. Định dạng: Trả về TEXT thuần, không có markdown.`;
+            YÊU CẦU NGHIÊM NGẶT:
+            1. KHÔNG trả về JSON, mảng, hoặc dấu ngoặc vuông/kép (ví dụ KHÔNG DÙNG: ["Nội dung"]). CHỈ TRẢ VỀ TEXT THUẦN TÚY.
+            2. Nội dung: Viết 1 đoạn văn (khoảng 80-120 chữ), nhắc đúng tên các địa danh, món ăn trong lịch sử. Bắt đầu bằng: "Ngày ${currentDate}".
+            3. Giọng điệu Gen Z, hào hứng, có từ địa phương Quy Nhơn (nhen, chu cha, dẫy...). Xài emoji.`;
             
             const res = await fetchSpecialAI(prompt);
             const contentDiv = document.getElementById('journal-content');
             
-            let finalContent = res ? res : `Hôm nay ở Quy Nhơn vui ác liệt luôn! Được Anh Tư chỉ cho bao nhiêu chỗ ăn ngon, chơi xịn. Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨`;
+            let finalContent = "Hôm nay ở Quy Nhơn vui ác liệt luôn! Được Anh Tư chỉ cho bao nhiêu chỗ ăn ngon, chơi xịn. Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨";
+            
+            if (res) {
+                finalContent = res.replace(/^\[\s*\"|\"\s*\]$|^\[|\]$|^\"|\"$/g, '')
+                                  .replace(/\\n/g, '\n')
+                                  .trim();
+            }
             
             contentDiv.innerHTML = `
                 <div class="animate-fadeIn">
                     <textarea id="diary-editor" 
-                        class="w-full h-48 bg-black/40 border border-orange-500/30 rounded-xl p-3 text-sm text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
+                        class="w-full h-48 bg-black/40 border border-orange-500/30 rounded-xl p-4 text-sm text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
                         placeholder="Bạn có muốn thêm thắt gì không?">${finalContent}</textarea>
                     
-                    <div class="flex gap-2 mt-3">
-                        <button onclick="saveCustomDiary()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2">
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="saveCustomDiary()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
                             <i class="fa-solid fa-floppy-disk"></i> Lưu vào Hồ sơ
                         </button>
-                        <button onclick="openFeature('Nhật ký AI')" class="bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-2.5 rounded-lg transition">
-                            <i class="fa-solid fa-rotate-right"></i> Viết lại
+                        <button onclick="openFeature('Nhật ký AI')" class="bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-3 rounded-xl transition flex items-center justify-center" title="Viết lại">
+                            <i class="fa-solid fa-rotate-right"></i>
                         </button>
                     </div>
                 </div>
@@ -1420,7 +1570,12 @@
             if (!finalDiary) return alert("Nhật ký trống trơn dẫy bạn mình?");
 
             if (currentUser.isLoggedIn) {
-                currentUser.itineraries.push(finalDiary);
+                currentUser.itineraries.unshift({
+                    type: 'diary',
+                    title: finalDiary.substring(0, 35) + '...',
+                    content: finalDiary,
+                    date: new Date().toLocaleDateString('vi-VN')
+                });
                 await saveUserData(); 
                 
                 const contentDiv = document.getElementById('journal-content');
@@ -1429,9 +1584,9 @@
                         <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 text-3xl mb-3 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                             <i class="fa-solid fa-check"></i>
                         </div>
-                        <p class="font-bold text-white text-lg">Đã cất vào Nhật ký!</p>
-                        <p class="text-xs text-gray-400 mt-1">Bạn có thể xem lại trong phần "Cá nhân" nhen.</p>
-                        <button onclick="openFeature('Nhật ký AI')" class="mt-4 text-orange-400 text-sm font-bold hover:underline">Viết thêm trang mới</button>
+                        <p class="font-bold text-white text-lg">Đã cất cẩn thận vào Hồ sơ!</p>
+                        <p class="text-xs text-gray-400 mt-1">Bấm vào mục "Cá nhân" để đọc lại nhen.</p>
+                        <button onclick="openFeature('Nhật ký AI')" class="mt-4 text-orange-400 text-sm font-bold hover:text-orange-300 transition flex items-center justify-center gap-1.5"><i class="fa-solid fa-pen-nib"></i> Viết thêm trang mới</button>
                     </div>
                 `;
             } else {
@@ -1949,7 +2104,7 @@ Nếu không cần hiển thị thêm địa điểm mới lên bản đồ:
             document.getElementById('camera-spacer').classList.add('hidden');
             
             document.getElementById('btn-retake').classList.remove('hidden');
-            document.getElementById('btn-analyze').classList.remove('hidden');
+            document.getElementById('btn-analyze').classList.add('hidden');
         }
 
         function retakePhoto() {
