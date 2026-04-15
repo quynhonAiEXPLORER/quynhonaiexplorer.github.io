@@ -344,18 +344,19 @@
 
         async function updateChatTitleIfNeeded(sessionId) {
             let session = currentUser.chatSessions.find(s => s.id === sessionId);
-            if (!session || session.title !== "Đoạn chat mới" || session.messages.filter(m => m.role === 'user').length < 2) return;
+            if (!session || session.title !== "Đoạn chat mới" || session.messages.filter(m => m.role === 'user').length < 1) return;
             
-            const chatLog = session.messages.map(m => `${m.role}: ${m.text || ''}`).join('\n').substring(0, 500);
-            const prompt = `Đọc đoạn chat sau và tóm tắt thành một tiêu đề ngắn gọn (3-5 từ) để làm tên lưu trữ lịch sử chat.
-            VÍ DỤ: "Hỏi chỗ ăn sáng", "Đường đi Kỳ Co", "Quán cafe sống ảo".
-            TUYỆT ĐỐI KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON. CHỈ TRẢ VỀ TEXT THUẦN.
-            Đoạn chat: ${chatLog}`;
+            const chatLog = session.messages.map(m => `${m.role}: ${m.text || ''}`).join('\n').substring(0, 300);
+            
+            const prompt = `Đóng vai hệ thống đặt tên, hãy tóm tắt nội dung cuộc trò chuyện sau thành một tiêu đề cực kỳ ngắn gọn (Tối đa 3 đến 5 từ).
+            VÍ DỤ TIÊU ĐỀ CHUẨN: Hỏi quán ốc, Đường đi Kỳ Co, Thời tiết hôm nay.
+            YÊU CẦU NGHIÊM NGẶT: KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON, KHÔNG giải thích. CHỈ TRẢ VỀ TEXT THUẦN.
+            Cuộc trò chuyện: ${chatLog}`;
             
             const titleRes = await fetchSpecialAI(prompt);
             
             if (titleRes) {
-                const cleanTitle = titleRes.replace(/[\"\'\[\]\{\}]/g, '').trim();
+                const cleanTitle = titleRes.replace(/[\"\'\[\]\{\}]/g, '').replace(/^(Tiêu đề:|Title:)\s*/i, '').trim();
                 session.title = cleanTitle;
                 saveUserData();
                 
@@ -408,20 +409,47 @@
             const list = document.getElementById('sidebar-list');
             if (!list) return;
             list.innerHTML = '';
+            
+            list.innerHTML += `
+                <button onclick="startNewChat()" class="w-full text-left text-sm p-3 mb-4 rounded-xl border border-white/10 bg-white/10 hover:bg-white/20 text-white transition-all flex items-center gap-3 shadow-md cursor-pointer">
+                    <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs"><i class="fa-solid fa-plus"></i></div>
+                    <span class="font-bold">Đoạn chat mới</span>
+                </button>
+                <div class="text-[10px] font-bold text-gray-500 mb-2 px-1">LỊCH SỬ GẦN ĐÂY</div>
+            `;
+
             if (!currentUser.isLoggedIn || currentUser.chatSessions.length === 0) {
-                list.innerHTML = '<p class="text-xs text-gray-500 italic text-center py-4">Chưa có lịch sử chat nào.</p>';
+                list.innerHTML += '<p class="text-xs text-gray-500 italic px-1 py-2">Chưa có lịch sử trò chuyện.</p>';
             } else {
                 const sorted = [...currentUser.chatSessions].sort((a, b) => b.timestamp - a.timestamp);
                 sorted.forEach(session => {
                     const isActive = session.id === currentChatSessionId;
                     const bgClass = isActive ? 'bg-orange-500/20 border-orange-500/50 text-orange-300' : 'bg-transparent border-transparent text-gray-300 hover:bg-white/5';
+                    
                     list.innerHTML += `
-                        <button onclick="loadChatSession('${session.id}')" class="w-full text-left text-sm p-3 rounded-xl border transition-all truncate flex items-center gap-3 ${bgClass}">
-                            <i class="fa-regular fa-message ${isActive ? 'text-orange-400' : 'text-gray-500'}"></i> 
-                            <span class="truncate flex-1">${session.title}</span>
-                        </button>
+                        <div class="flex items-center group w-full text-left text-sm px-2 py-1 rounded-xl border transition-all mb-1 ${bgClass}">
+                            <div onclick="loadChatSession('${session.id}')" class="flex-1 flex items-center gap-3 truncate py-2 cursor-pointer">
+                                <i class="fa-regular fa-message ${isActive ? 'text-orange-400' : 'text-gray-500'} shrink-0"></i> 
+                                <span class="truncate">${session.title}</span>
+                            </div>
+                            <button onclick="deleteChatSession('${session.id}')" class="text-gray-500 hover:text-red-400 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 cursor-pointer shrink-0" title="Xóa đoạn chat">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
                     `;
                 });
+            }
+        }
+
+        function deleteChatSession(id) {
+            if(!confirm("Bạn có chắc chắn muốn xóa đoạn trò chuyện này không?")) return;
+            currentUser.chatSessions = currentUser.chatSessions.filter(s => s.id !== id);
+            saveUserData();
+            
+            if (currentChatSessionId === id) {
+                startNewChat();
+            } else {
+                renderChatHistorySidebar(); 
             }
         }
 
@@ -437,7 +465,8 @@
             if (!session) return;
             currentChatSessionId = session.id;
             currentChatMessages = session.messages || [];
-            toggleChatSidebar(); 
+            const sidebar = document.getElementById('chat-history-sidebar');
+            if (sidebar) sidebar.classList.add('-translate-x-full'); 
             updateChatHeaderTitle();
             renderCurrentChat();
         }
@@ -1458,22 +1487,21 @@
                     content.innerHTML = `
                         <div id="chat-container" class="relative flex flex-col h-full overflow-hidden -mx-3 md:-mx-5 -mt-3 md:-mt-5">
                             
-                            <div class="flex justify-between items-center bg-gray-900/50 backdrop-blur-md border-b border-white/10 px-4 py-3 shrink-0 z-10">
-                                <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
-                                    <i class="fa-solid fa-bars text-xl"></i>
+                            <div class="flex justify-between items-center bg-gray-900/50 backdrop-blur-md border-b border-white/10 px-3 py-2 shrink-0 z-10">
+                                <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-2 rounded-lg transition cursor-pointer">
+                                    <i class="fa-solid fa-bars text-lg"></i>
                                 </button>
                                 <div class="font-bold text-sm md:text-base text-orange-400 truncate px-4 flex-1 text-center" id="current-chat-title">Tư Nẫu</div>
-                                <button onclick="startNewChat()" class="text-gray-300 hover:text-orange-400 p-1 rounded-lg transition cursor-pointer" title="Tạo đoạn chat mới">
-                                    <i class="fa-solid fa-pen-to-square text-xl"></i>
+                                <button onclick="startNewChat()" class="text-gray-300 hover:text-orange-400 p-2 rounded-lg transition cursor-pointer" title="Đoạn chat mới">
+                                    <i class="fa-solid fa-plus text-xl"></i>
                                 </button>
                             </div>
                             
-                            <div id="chat-history-sidebar" class="absolute inset-y-0 left-0 w-4/5 max-w-[280px] bg-gray-900/95 backdrop-blur-xl border-r border-white/10 z-20 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
-                                <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
-                                    <span class="font-bold text-white text-sm uppercase tracking-wider">Lịch sử trò chuyện</span>
+                            <div id="chat-history-sidebar" class="absolute inset-y-0 left-0 w-[85%] max-w-[300px] bg-gray-900/95 backdrop-blur-2xl border-r border-white/10 z-20 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.5)]">
+                                <div class="p-3 border-b border-white/10 flex justify-end items-center">
                                     <button onclick="toggleChatSidebar()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/5 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button>
                                 </div>
-                                <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 space-y-1 no-scrollbar"></div>
+                                <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 no-scrollbar"></div>
                             </div>
                             
                             <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 no-scrollbar bg-black/10"></div>
@@ -2104,7 +2132,7 @@ Nếu không cần hiển thị thêm địa điểm mới lên bản đồ:
             document.getElementById('camera-spacer').classList.add('hidden');
             
             document.getElementById('btn-retake').classList.remove('hidden');
-            document.getElementById('btn-analyze').classList.add('hidden');
+            document.getElementById('btn-analyze').classList.remove('hidden');
         }
 
         function retakePhoto() {
