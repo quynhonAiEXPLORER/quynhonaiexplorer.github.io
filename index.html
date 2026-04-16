@@ -563,11 +563,20 @@
             YÊU CẦU NGHIÊM NGẶT: KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON, KHÔNG giải thích. CHỈ TRẢ VỀ TEXT THUẦN.
             Cuộc trò chuyện: ${chatLog}`;
             
-            const titleRes = await fetchSpecialAI(prompt);
+            // Gọi AI, tắt ép kiểu JSON
+            const titleRes = await fetchSpecialAI(prompt, 3, false);
             
             if (titleRes) {
-                const cleanTitle = titleRes.replace(/[\"\'\[\]\{\}]/g, '').replace(/^(Tiêu đề:|Title:)\s*/i, '').trim();
-                session.title = cleanTitle;
+                let cleanTitle = titleRes
+                    .replace(/[\"\'\[\]\{\}]/g, '')
+                    .replace(/^(tiêu đề|title|chủ đề|tên)\s*:\s*/i, '')
+                    .trim();
+                
+                if(cleanTitle) {
+                    cleanTitle = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
+                }
+
+                session.title = cleanTitle || "Đoạn chat mới";
                 saveUserData();
                 
                 if (currentChatSessionId === sessionId) {
@@ -640,7 +649,7 @@
                         <div class="flex items-center group w-full text-left text-sm px-2 py-1 rounded-xl border transition-all mb-1 ${bgClass}">
                             <div onclick="loadChatSession('${session.id}')" class="flex-1 flex items-center gap-3 truncate py-2 cursor-pointer">
                                 <i class="fa-regular fa-message ${isActive ? 'text-orange-400' : 'text-gray-500'} shrink-0"></i> 
-                                <span class="truncate">${session.title}</span>
+                                <span class="truncate font-semibold tracking-wide text-[14.5px] drop-shadow-sm">${session.title}</span>
                             </div>
                             <button onclick="deleteChatSession('${session.id}')" class="text-gray-500 hover:text-red-400 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 cursor-pointer shrink-0" title="Xóa đoạn chat">
                                 <i class="fa-solid fa-trash-can text-xs"></i>
@@ -853,7 +862,7 @@
                             <div class="relative pt-2">
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
                                 
-                                <div class="text-gray-200 text-sm md:text-base leading-loose whitespace-pre-wrap ${type === 'diary' ? 'italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
+                                <div class="text-gray-200 text-sm md:text-base leading-loose ${type === 'diary' ? 'whitespace-pre-wrap italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
                                 
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-right absolute -bottom-6 right-0 text-4xl text-white/5"></i>' : ''}
                             </div>
@@ -1240,14 +1249,17 @@
             }
         }
 
-        async function fetchSpecialAI(promptText, maxRetries = 3) {
+        async function fetchSpecialAI(promptText, maxRetries = 3, forceJson = true) {
             const payload = { 
                 contents: [{ parts: [{ text: promptText }] }],
                 generationConfig: { 
-                    temperature: 0.7,
-                    responseMimeType: "application/json" 
+                    temperature: 0.7
                 } 
             };
+            
+            if (forceJson) {
+                payload.generationConfig.responseMimeType = "application/json";
+            }
             
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
@@ -1454,7 +1466,8 @@
                         <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
                         <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
                         <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
-                        <i class="fa-solid fa-star-half-stroke text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-[8px] text-yellow-400"></i>
                     </div>
                 </div>`;
             reviewPopup.classList.remove('hidden');
@@ -1716,15 +1729,25 @@
             2. Nội dung: Viết 1 đoạn văn (khoảng 80-120 chữ), nhắc đúng tên các địa danh, món ăn trong lịch sử. Bắt đầu bằng: "Ngày ${currentDate}".
             3. Giọng điệu Gen Z, hào hứng, có từ địa phương Quy Nhơn (nhen, chu cha, dẫy...). Xài emoji.`;
             
-            const res = await fetchSpecialAI(prompt);
+            const res = await fetchSpecialAI(prompt, 3, false);
             const contentDiv = document.getElementById('journal-content');
             
             let finalContent = "Hôm nay ở Quy Nhơn vui ác liệt luôn! Được Anh Tư chỉ cho bao nhiêu chỗ ăn ngon, chơi xịn. Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨";
             
             if (res) {
-                finalContent = res.replace(/^\[\s*\"|\"\s*\]$|^\[|\]$|^\"|\"$/g, '')
-                                  .replace(/\\n/g, '\n')
-                                  .trim();
+                try {
+                    let cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    let parsed = JSON.parse(cleanRes);
+                    if (typeof parsed === 'object' && parsed !== null) {
+                        finalContent = Object.values(parsed)[0];
+                    } else {
+                        finalContent = parsed;
+                    }
+                } catch(e) {
+                    finalContent = res.replace(/^\[\s*\"|\"\s*\]$|^\[|\]$|^\"|\"$/g, '')
+                                      .replace(/\\n/g, '\n')
+                                      .trim();
+                }
             }
             
             contentDiv.innerHTML = `
