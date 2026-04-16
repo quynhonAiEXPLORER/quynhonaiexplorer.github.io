@@ -208,7 +208,7 @@
             </div>
         </section>
 
-        <section id="page-diary" class="page-view no-scrollbar px-4 w-full">
+        <section id="page-diary" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
             <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
                 
@@ -236,7 +236,7 @@
             </div>
         </section>
 
-        <section id="page-gacha" class="page-view no-scrollbar px-4 w-full">
+        <section id="page-gacha" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
             <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-32 h-32 bg-purple-500/10 rounded-br-full blur-3xl pointer-events-none"></div>
                 
@@ -244,23 +244,23 @@
                     <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 shrink-0">
                         <i class="fa-solid fa-dice"></i>
                     </div>
-                    Thử Thách Xứ Nẫu
+                    GACHA XỨ NẪU
                 </h2>
 
                 <div id="gacha-app-container" class="space-y-4 text-center pb-4 relative z-10 w-full">
-                    <div class="flex justify-center py-4 relative">
-                        <i class="fa-solid fa-gem text-7xl text-orange-400 animate-pulse drop-shadow-[0_0_20px_rgba(249,115,22,0.6)]"></i>
-                        <div class="absolute top-0 right-0 bg-black/50 px-4 py-2 rounded-full border border-white/20 shadow-lg flex items-center gap-2">
-                            <span class="text-xs text-gray-300 uppercase font-bold">Điểm Gacha:</span>
-                            <span id="gacha-total-points" class="font-black text-orange-400 text-xl">0</span>
+                    <div class="flex flex-col items-center justify-center py-2 gap-4">
+                        <i class="fa-solid fa-gem text-6xl md:text-7xl text-orange-400 animate-pulse drop-shadow-[0_0_20px_rgba(249,115,22,0.6)]"></i>
+                        <div class="bg-black/60 px-5 py-2.5 rounded-full border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.3)] inline-flex items-center gap-2">
+                            <span class="text-xs md:text-sm text-gray-300 uppercase font-bold tracking-wider">Điểm Gacha:</span>
+                            <span id="gacha-total-points" class="font-black text-orange-400 text-xl md:text-2xl">0</span>
                         </div>
                     </div>
-                    <div id="gacha-content-area" class="mt-4 w-full"></div>
+                    <div id="gacha-content-area" class="mt-2 w-full"></div>
                 </div>
             </div>
         </section>
 
-        <section id="page-profile" class="page-view no-scrollbar px-4 w-full">
+        <section id="page-profile" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
             <div id="profile-container" class="max-w-2xl w-full mx-auto"></div>
         </section>
 
