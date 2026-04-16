@@ -85,9 +85,9 @@
             transform: translateY(15px) scale(0.98);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
             z-index: 1;
-            padding-top: 80px; 
-            padding-bottom: 140px; /* Nhường chỗ cho Bottom Nav và Nút Camera */
-            display: block; /* Ép hiển thị dạng khối để cuộn mượt mà */
+            padding-top: 85px; 
+            padding-bottom: 140px; 
+            display: block !important; /* Ép hiển thị khối, giải quyết dứt điểm lỗi kẹt scroll của Flexbox */
         }
 
         .page-view.active-page {
@@ -208,7 +208,7 @@
             </div>
         </section>
 
-        <section id="page-diary" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+        <section id="page-diary" class="page-view no-scrollbar px-4 w-full">
             <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
                 
@@ -236,7 +236,7 @@
             </div>
         </section>
 
-        <section id="page-gacha" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+        <section id="page-gacha" class="page-view no-scrollbar px-4 w-full">
             <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-32 h-32 bg-purple-500/10 rounded-br-full blur-3xl pointer-events-none"></div>
                 
@@ -260,7 +260,7 @@
             </div>
         </section>
 
-        <section id="page-profile" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+        <section id="page-profile" class="page-view no-scrollbar px-4 w-full">
             <div id="profile-container" class="max-w-2xl w-full mx-auto"></div>
         </section>
 
