@@ -90,7 +90,7 @@
         <div class="flex items-center gap-2 cursor-pointer" onclick="switchPage('page-home', 'home')">
             <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png" class="w-8 h-8 rounded-full shadow-lg border border-white/20">
             <span class="font-black text-lg md:text-xl text-white tracking-wide uppercase drop-shadow-md">
-                Quy Nhơn <span class="text-orange-500">AI</span>
+                Quy Nhơn <span class="text-orange-500">AI Explorer</span>
             </span>
         </div>
         <div class="flex items-center">
@@ -411,20 +411,21 @@
             localStorage.setItem('app_lang', lang);
             document.getElementById('current-lang-display').innerText = lang.toUpperCase();
 
-            // Đổi text HTML thông thường
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
             });
 
-            // Đổi text Placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (i18n[lang][key]) el.placeholder = i18n[lang][key];
             });
 
-            // Render lại text linh động
             updateDynamicGreeting();
+            
+            if (currentPageId === 'page-gacha') {
+                renderGachaUI();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1897,10 +1898,12 @@
                     const cooldown = 3 * 60 * 60 * 1000; 
                     const canRefresh = timeSinceRefresh >= cooldown;
                     
+                    const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+                    
                     let refreshBtnHtml = '';
                     if (!isCompleted) {
                         if (canRefresh) {
-                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 text-blue-300 px-2 py-1 rounded border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
+                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 hover:text-white text-blue-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
                         } else {
                             const remainingMins = Math.ceil((cooldown - timeSinceRefresh) / 60000);
                             refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded"><i class="fa-solid fa-clock text-orange-400/70"></i> ${remainingMins}m</span>`;
@@ -1913,7 +1916,7 @@
                                 <i class="fa-solid fa-camera text-xs md:text-sm"></i>
                             </button>
                             <div class="flex-1">
-                                <p class="text-sm md:text-base ${isCompleted ? 'text-gray-400 line-through' : 'text-white font-medium'} leading-snug">${chal.text}</p>
+                                <p class="text-sm md:text-base ${isCompleted ? 'text-gray-400 line-through' : 'text-white font-medium'} leading-snug">${displayText}</p>
                                 <div class="flex items-center gap-2 mt-2">
                                     <span class="text-[10px] md:text-xs bg-orange-500/20 text-orange-400 font-bold px-2 py-0.5 rounded border border-orange-500/20">+${chal.points} 💎</span>
                                     ${refreshBtnHtml}
@@ -1940,11 +1943,10 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...';
             btn.disabled = true;
 
-            const langInstruction = currentLang === 'en' ? "Write output entirely in ENGLISH." : "Viết bằng Tiếng Việt.";
             const prompt = `Đóng vai thổ địa Quy Nhơn, tạo ngẫu nhiên 3 thử thách du lịch hoặc khám phá ẩm thực thực tế tại Quy Nhơn. 
-            Mức độ: 1 Dễ (10đ), 1 Vừa (20đ), 1 Khó/Độc lạ (50đ). ${langInstruction}
+            Mức độ: 1 Dễ (10đ), 1 Vừa (20đ), 1 Khó/Độc lạ (50đ).
             Định dạng BẮT BUỘC là JSON Array, KHÔNG CÓ TRÍCH DẪN \`\`\`json:
-            [ { "text": "Thử thách...", "points": 10 } ]`;
+            [ { "text_vi": "Nội dung Tiếng Việt...", "text_en": "English translation...", "points": 10 } ]`;
             
             const res = await fetchSpecialAI(prompt);
             try {
@@ -1953,7 +1955,11 @@
                 
                 if (Array.isArray(data)) {
                     currentUser.challenges = data.slice(0, 3).map(c => ({
-                        text: c.text, points: c.points || 20, isCompleted: false, lastRefreshed: Date.now()
+                        text_vi: c.text_vi || c.text,
+                        text_en: c.text_en || c.text,
+                        points: c.points || 20, 
+                        isCompleted: false, 
+                        lastRefreshed: Date.now()
                     }));
                     await saveUserData();
                     renderGachaUI();
@@ -1969,9 +1975,11 @@
             const chal = currentUser.challenges[index];
             if (chal.isCompleted) return;
             
+            const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+            
             const confirmMsg = currentLang === 'en' 
-                ? `Challenge: "${chal.text}"\n\nUncle Tu needs a photo to verify this! Open AI Camera now?`
-                : `Nhiệm vụ: "${chal.text}"\n\nAnh Tư cần bạn chụp ảnh để làm bằng chứng nghen! Bật Mắt Thần AI lên quét liền hông?`;
+                ? `Challenge: "${displayText}"\n\nUncle Tu needs a photo to verify this! Open AI Camera now?`
+                : `Nhiệm vụ: "${displayText}"\n\nAnh Tư cần bạn chụp ảnh để làm bằng chứng nghen! Bật Mắt Thần AI lên quét liền hông?`;
                 
             if (confirm(confirmMsg)) {
                 pendingChallengeIndex = index;
@@ -1989,17 +1997,22 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-orange-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const langInstruction = currentLang === 'en' ? "Write entirely in ENGLISH." : "Viết bằng Tiếng Việt.";
-            const prompt = `Tạo 1 thử thách du lịch Quy Nhơn mới. ${langInstruction}
-            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text": "Nội dung", "points": 20 }`;
+            const prompt = `Tạo 1 thử thách du lịch Quy Nhơn mới.
+            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Tiếng Việt", "text_en": "English translation", "points": 20 }`;
 
             const res = await fetchSpecialAI(prompt);
             try {
                 const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
                 const data = JSON.parse(cleanRes);
                 
-                if (data && data.text) {
-                    currentUser.challenges[index] = { text: data.text, points: data.points || 20, isCompleted: false, lastRefreshed: Date.now() };
+                if (data && (data.text_vi || data.text)) {
+                    currentUser.challenges[index] = { 
+                        text_vi: data.text_vi || data.text, 
+                        text_en: data.text_en || data.text, 
+                        points: data.points || 20, 
+                        isCompleted: false, 
+                        lastRefreshed: Date.now() 
+                    };
                     await saveUserData();
                 }
             } catch(e) {}
@@ -2119,6 +2132,8 @@
 
         async function verifyChallengeWithAI(base64Data, index) {
             const chal = currentUser.challenges[index];
+            const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+            
             switchPage('page-gacha', 'gacha'); 
             
             const area = document.getElementById('gacha-content-area');
@@ -2137,7 +2152,7 @@
                 ? 'Reply entirely in ENGLISH.'
                 : 'Trả lời bằng TIẾNG VIỆT, dùng từ địa phương Quy Nhơn (chu cha, nghen...).';
 
-            const promptText = `Nhiệm vụ / Challenge: "${chal.text}".
+            const promptText = `Nhiệm vụ / Challenge: "${displayText}".
             Hãy nhìn vào bức ảnh / Look at the image. Does it prove the user completed the challenge?
             ${langInstruction}
             Trả lời BẮT BUỘC bằng định dạng JSON thuần / Strictly return this JSON structure (DO NOT wrap in \`\`\`json):
@@ -2185,8 +2200,10 @@
 
         async function fetchRealWeather() {
             try {
-                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&windspeed_10m=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
                 const res = await fetch(url);
+                if (!res.ok) throw new Error("API Thời tiết phản hồi lỗi!");
+
                 const data = await res.json();
                 
                 const current = data.current_weather;
@@ -2270,11 +2287,91 @@
                     `;
                 }
             } catch (error) {
+                console.error("Lỗi lấy thời tiết:", error);
+                document.getElementById('temp-display').innerText = '30°C';
                 document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Offline Data' : 'Dữ liệu offline';
+                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
+                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
             }
         }
 
-        // --- Bắt đầu phần code Camera (giữ nguyên không sửa thêm để giảm tải code) ---
+        let cameraStream = null;
+        let isFlashOn = false;
+
+        async function openCamera() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-stream');
+            const preview = document.getElementById('camera-preview');
+            const btnCapture = document.getElementById('btn-capture');
+            const btnRetake = document.getElementById('btn-retake');
+            const btnAnalyze = document.getElementById('btn-analyze');
+            const btnCameraUpload = document.getElementById('btn-camera-upload');
+            const cameraSpacer = document.getElementById('camera-spacer');
+
+            preview.classList.add('hidden');
+            video.classList.remove('hidden');
+            
+            btnCapture.classList.remove('hidden');
+            btnCameraUpload.classList.remove('hidden');
+            cameraSpacer.classList.remove('hidden');
+            
+            btnRetake.classList.add('hidden');
+            btnAnalyze.classList.add('hidden');
+            
+            document.getElementById('camera-viewfinder').classList.remove('hidden-frame');
+            document.getElementById('camera-overlay').classList.remove('opacity-0');
+            
+            modal.classList.remove('hidden');
+
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "environment" },
+                    audio: false
+                });
+                video.srcObject = cameraStream;
+            } catch (err) {
+                console.error("Lỗi Camera:", err);
+                const errMsg = currentLang === 'en' ? "Cannot open Camera! Please check your browser permissions." : "Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh của trình duyệt nhen.";
+                alert(errMsg);
+                closeCamera();
+            }
+        }
+
+        function closeCamera() {
+            document.getElementById('camera-modal').classList.add('hidden');
+            if (isFlashOn) toggleFlash();
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+        }
+
+        async function toggleFlash() {
+            if (!cameraStream) return;
+            const track = cameraStream.getVideoTracks()[0];
+            try {
+                const capabilities = track.getCapabilities();
+                if (capabilities.torch) {
+                    isFlashOn = !isFlashOn;
+                    await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
+                    const flashBtn = document.getElementById('btn-flash');
+                    if (isFlashOn) {
+                        flashBtn.classList.add('text-yellow-400');
+                        flashBtn.classList.remove('text-white');
+                    } else {
+                        flashBtn.classList.remove('text-yellow-400');
+                        flashBtn.classList.add('text-white');
+                    }
+                } else {
+                    const msg = currentLang === 'en' ? "Flash is not supported on this device/browser!" : "Trình duyệt hoặc máy của bạn hổng hỗ trợ bật Flash trên web rầu!";
+                    alert(msg);
+                }
+            } catch (e) {
+                console.error("Lỗi bật Flash:", e);
+            }
+        }
+
         function triggerFocus(event) {
             if(event.target.closest('button')) return;
             const ring = document.getElementById('focus-ring');
