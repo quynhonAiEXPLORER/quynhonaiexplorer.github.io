@@ -563,7 +563,6 @@
             YÊU CẦU NGHIÊM NGẶT: KHÔNG dùng dấu ngoặc kép, KHÔNG dùng mảng JSON, KHÔNG giải thích. CHỈ TRẢ VỀ TEXT THUẦN.
             Cuộc trò chuyện: ${chatLog}`;
             
-            // Gọi AI, tắt ép kiểu JSON
             const titleRes = await fetchSpecialAI(prompt, 3, false);
             
             if (titleRes) {
@@ -754,7 +753,7 @@
             if(confirm("Bạn có chắc chắn muốn xóa mục này hông?")) {
                 currentUser.itineraries.splice(index, 1);
                 saveUserData();
-                renderProfile(); // Render lại view
+                renderProfile(); 
             }
         }
 
@@ -1751,12 +1750,12 @@
             }
             
             contentDiv.innerHTML = `
-                <div class="animate-fadeIn w-full max-w-xl mx-auto">
+                <div class="animate-fadeIn w-full max-w-xl mx-auto flex flex-col h-[60vh] md:h-[50vh]">
                     <textarea id="diary-editor" 
-                        class="w-full h-48 bg-black/40 border border-orange-500/30 rounded-xl p-4 text-sm text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
+                        class="flex-1 w-full bg-black/40 border border-orange-500/30 rounded-xl p-4 md:p-5 text-sm md:text-base text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic"
                         placeholder="Bạn có muốn thêm thắt gì không?">${finalContent}</textarea>
                     
-                    <div class="flex gap-3 mt-4">
+                    <div class="flex gap-3 mt-4 shrink-0">
                         <button onclick="saveCustomDiary()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
                             <i class="fa-solid fa-floppy-disk"></i> Lưu vào Hồ sơ
                         </button>
