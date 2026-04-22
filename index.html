@@ -275,21 +275,25 @@
     </div>
 
     <div class="fixed bottom-0 left-0 right-0 glass-bottom-nav z-30 flex justify-around items-center py-2 px-1 md:hidden">
-        <a href="#" onclick="switchPage('page-home', 'home')" data-tab="home" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-orange-500 nav-item-active transition-all py-2 w-[24%] rounded-xl">
+        <a href="#" onclick="switchPage('page-home', 'home')" data-tab="home" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-orange-500 nav-item-active transition-all py-2 w-[20%] rounded-xl">
             <i class="fa-solid fa-house text-xl"></i>
             <span data-i18n="nav_explore" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Khám phá</span>
         </a>
-        <a href="#" onclick="switchPage('page-diary', 'diary')" data-tab="diary" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[24%] rounded-xl">
+        <a href="#" onclick="switchPage('page-diary', 'diary')" data-tab="diary" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[20%] rounded-xl">
             <i class="fa-solid fa-book text-xl"></i>
             <span data-i18n="nav_diary" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Nhật ký AI</span>
         </a>
-        <a href="#" onclick="switchPage('page-gacha', 'gacha')" data-tab="gacha" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[24%] rounded-xl">
+        <a href="#" onclick="switchPage('page-gacha', 'gacha')" data-tab="gacha" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[20%] rounded-xl">
             <i class="fa-solid fa-dice text-xl"></i>
             <span data-i18n="nav_gacha" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Gacha Xứ Nẫu</span>
         </a>
-        <a href="#" onclick="switchPage('page-profile', 'profile')" data-tab="profile" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[24%] rounded-xl">
+        <a href="#" onclick="switchPage('page-profile', 'profile')" data-tab="profile" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[20%] rounded-xl">
             <i class="fa-regular fa-circle-user text-xl"></i>
             <span data-i18n="nav_profile" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Cá nhân</span>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-blue-500 transition-all py-2 w-[20%] rounded-xl">
+            <i class="fab fa-facebook-f text-xl"></i>
+            <span class="text-[10px] font-bold whitespace-nowrap tracking-wide">Cộng đồng</span>
         </a>
     </div>
 
@@ -371,6 +375,46 @@
             <h2 class="text-xl font-black text-white mb-1 uppercase tracking-wide">Hồ sơ Du Lịch</h2>
             <p class="text-xs text-gray-400 mb-2">Trợ lý Tư Nẫu cần biết một chút về bạn để tư vấn chuẩn xác nhất nhen!</p>
             <div id="ob-step-container" class="flex-1 flex flex-col justify-center"></div>
+        </div>
+    </div>
+
+    <div id="paywall-modal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-gradient-to-br from-gray-900 to-black border border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.3)] rounded-3xl w-full max-w-md p-6 text-center transform transition-all modal-slide-up relative flex flex-col">
+            <button onclick="closePaywall()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition z-20 cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 text-yellow-400 text-3xl shadow-inner shrink-0">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-1 uppercase tracking-wide">Nâng Cấp PRO</h2>
+            <p class="text-xs text-gray-400 mb-5">Mở khóa toàn bộ sức mạnh của Mắt Thần AI & Trợ Lý Tư Nẫu.</p>
+            
+            <div class="space-y-3 mb-6 text-left">
+                <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <i class="fa-solid fa-wand-magic-sparkles text-orange-400"></i>
+                    <span class="text-sm text-gray-200">Tạo lịch trình AI không giới hạn</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <i class="fa-solid fa-camera text-blue-400"></i>
+                    <span class="text-sm text-gray-200">Sử dụng Mắt Thần AI quét ảnh thực tế</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <i class="fa-solid fa-book text-green-400"></i>
+                    <span class="text-sm text-gray-200">Tự động viết Nhật ký du lịch cá nhân</span>
+                </div>
+            </div>
+
+            <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-4 mb-4">
+                <p class="text-yellow-400 font-bold text-lg mb-2">Chỉ 49.000đ / Tháng</p>
+                <div class="w-32 h-32 mx-auto bg-white rounded-xl flex items-center justify-center p-2 mb-2">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ChuyenKhoanNganHang" alt="QR Code" class="w-full h-full object-contain">
+                </div>
+                <p class="text-[10px] text-gray-400">Quét mã QR để chuyển khoản. Khuyên dùng <strong class="text-orange-400">ShopeePay</strong> hoặc App Ngân hàng.</p>
+                <p class="text-[11px] text-yellow-300 font-medium mt-2 border-t border-yellow-500/30 pt-2">Nội dung CK: <strong class="text-white">PRO + Email của bạn</strong></p>
+            </div>
+            
+            <p class="text-[10px] text-gray-500 italic">Tài khoản sẽ được nâng cấp tự động trong vòng 5-10 phút sau khi thanh toán thành công.</p>
         </div>
     </div>
 
@@ -910,10 +954,14 @@
             isLoggedIn: false,
             uid: null,
             name: currentLang !== 'vi' ? 'Guest Traveler' : 'Khách Phương Xa',
+            email: '',
+            role: 'user', 
             avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true',
             chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [],
-            preferences: null, onboardingCompleted: false
+            preferences: null, onboardingCompleted: false, plan: 'free'
         };
+
+        const ADMIN_EMAILS = ['admin@btsxaifirst.com', 'admin@quynhon.vn'];
 
         function getShortName(fullName) {
             if (!fullName || !currentUser.isLoggedIn || fullName.includes('Khách') || fullName.includes('Guest')) return currentLang !== 'vi' ? 'friend' : 'bạn';
@@ -926,11 +974,16 @@
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     const displayName = user.displayName || user.email.split('@')[0];
+                    const userEmail = user.email || '';
+                    const isAdmin = ADMIN_EMAILS.includes(userEmail);
+
                     currentUser = {
-                        isLoggedIn: true, uid: user.uid, name: displayName,
+                        isLoggedIn: true, uid: user.uid, name: displayName, 
+                        email: userEmail, role: isAdmin ? 'admin' : 'user',
                         avatar: user.photoURL || `https://ui-avatars.com/api/?name=${displayName.charAt(0)}&background=f97316&color=fff&rounded=true`,
                         chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [],
-                        preferences: null, onboardingCompleted: false
+                        preferences: null, onboardingCompleted: false, 
+                        plan: isAdmin ? 'pro' : 'free' 
                     };
 
                     if (db) {
@@ -945,6 +998,7 @@
                                 currentUser.trivia = data.trivia || [];
                                 currentUser.preferences = data.preferences || null;
                                 currentUser.onboardingCompleted = data.onboardingCompleted || false;
+                                currentUser.plan = isAdmin ? 'pro' : (data.plan || 'free'); 
                             }
                             
                             if (!currentUser.onboardingCompleted) {
@@ -953,7 +1007,7 @@
                         } catch (error) { console.error("Lỗi tải dữ liệu:", error); }
                     }
                 } else {
-                    currentUser = { isLoggedIn: false, uid: null, name: currentLang !== 'vi' ? 'Guest Traveler' : 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [], preferences: null, onboardingCompleted: false };
+                    currentUser = { isLoggedIn: false, uid: null, name: currentLang !== 'vi' ? 'Guest Traveler' : 'Khách Phương Xa', email: '', role: 'user', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [], preferences: null, onboardingCompleted: false, plan: 'free' };
                 }
                 
                 updateDynamicGreeting();
@@ -1155,12 +1209,30 @@
                         points: currentUser.points,
                         challenges: currentUser.challenges,
                         trivia: currentUser.trivia || [],
+                        plan: currentUser.plan || 'free',
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
                 } catch (error) {
                     console.error("Lỗi đồng bộ dữ liệu:", error);
                 }
             }
+        }
+
+        function checkProAccess() {
+            if (!currentUser.isLoggedIn) {
+                alert(currentLang !== 'vi' ? "Please login to use this feature!" : "Bạn cần đăng nhập để dùng tính năng này nghen!");
+                switchPage('page-profile', 'profile');
+                return false;
+            }
+            if (currentUser.plan !== 'pro') {
+                document.getElementById('paywall-modal').classList.remove('hidden');
+                return false;
+            }
+            return true;
+        }
+
+        function closePaywall() {
+            document.getElementById('paywall-modal').classList.add('hidden');
         }
 
         async function updateChatTitleIfNeeded(sessionId) {
@@ -1424,17 +1496,35 @@
             const pointsLabel = currentLang !== 'vi' ? 'Gacha Points' : 'Điểm Gacha';
             const savedLabel = currentLang !== 'vi' ? 'Saved Backpack' : 'Hành Trang Đã Lưu';
             const logoutLabel = currentLang !== 'vi' ? 'Logout' : 'Đăng xuất';
+            const planText = currentUser.plan === 'pro' ? '<i class="fa-solid fa-crown text-yellow-400"></i> PRO' : 'FREE';
 
             content.innerHTML = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden flex flex-col items-center gap-4 py-4 md:py-6 animate-fadeIn w-full">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
-                    <img src="${currentUser.avatar}" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] z-10">
-                    <h2 class="text-xl md:text-2xl font-black text-white mb-0 uppercase tracking-wider z-10">${currentUser.name}</h2>
+                    
+                    <div class="relative">
+                        <img src="${currentUser.avatar}" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] z-10 relative">
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gray-900 border border-orange-500 text-xs px-2 py-0.5 rounded-full font-bold shadow-md z-20 whitespace-nowrap ${currentUser.plan === 'pro' ? 'text-yellow-400' : 'text-gray-300'}">${planText}</div>
+                    </div>
+
+                    <h2 class="text-xl md:text-2xl font-black text-white mb-0 uppercase tracking-wider z-10 mt-2">${currentUser.name}</h2>
                     
                     <div class="bg-orange-500/10 border border-orange-500/30 px-5 py-2 rounded-full flex items-center gap-2 mb-2 shadow-inner z-10">
                         <i class="fa-solid fa-gem text-orange-400 animate-pulse"></i>
                         <span class="font-bold text-orange-300">${currentUser.points || 0} ${pointsLabel}</span>
                     </div>
+
+                    ${currentUser.plan !== 'pro' ? `
+                    <button onclick="document.getElementById('paywall-modal').classList.remove('hidden')" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-yellow-500/30 active:scale-95 transition-all text-sm mb-2 z-10">
+                        <i class="fa-solid fa-crown mr-1"></i> Nâng cấp PRO
+                    </button>
+                    ` : ''}
+
+                    ${currentUser.role === 'admin' ? `
+                    <button onclick="showAdminConfig()" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-6 py-2 rounded-full shadow-lg shadow-purple-500/30 active:scale-95 transition-all text-sm mb-3 z-10 border border-purple-400 flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> Cấu hình Prompt (Admin)
+                    </button>
+                    ` : ''}
 
                     <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-72 overflow-y-auto custom-scrollbar shadow-lg z-10">
                         <h3 class="font-bold text-white mb-4 text-sm flex items-center justify-start gap-2 border-b border-white/10 pb-3">
@@ -1445,6 +1535,64 @@
                     <button onclick="logout()" class="mt-2 w-full bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 px-8 py-3.5 rounded-2xl transition font-bold cursor-pointer active:scale-95 z-10">${logoutLabel}</button>
                 </div>
             `;
+        }
+
+        function showAdminConfig() {
+            const modal = document.getElementById('modal');
+            const chatArea = document.getElementById('chat-input-area');
+            
+            document.getElementById('modal-title').innerText = 'Cấu hình Prompt Hệ Thống';
+            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-laptop-code"></i>';
+            if(chatArea) chatArea.classList.add('hidden'); 
+            
+            const content = document.getElementById('modal-content');
+            
+            content.innerHTML = `
+                <div class="space-y-4 animate-fadeIn pb-6">
+                    <div class="bg-purple-500/20 border border-purple-500/30 p-3 rounded-xl text-purple-300 text-sm text-center mb-4">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> <strong>Chế độ Admin:</strong> Hiển thị cấu trúc lệnh (Prompt) đằng sau các tính năng AI cốt lõi.
+                    </div>
+                    
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 shadow-lg">
+                        <h4 class="font-bold text-orange-400 mb-2 flex items-center gap-2"><i class="fa-solid fa-route"></i> Prompt Lên Lịch Trình (Itinerary)</h4>
+                        <pre class="text-[11px] text-gray-300 whitespace-pre-wrap bg-black/60 p-3 rounded-lg overflow-x-auto border border-white/5 font-mono">Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện.
+Lập lịch trình cho: {days}. Gu đi chơi: {styles}. Ngân sách: {budget}.
+Vị trí xuất phát: {locationContext}.
+THỜI TIẾT HIỆN TẠI: {currentWeatherContext}.
+
+QUY TẮC NGHIÊM NGẶT:
+1. Nếu thời tiết xấu (mưa, dông), TUYỆT ĐỐI KHÔNG xếp lịch đi biển đảo.
+2. Trả về đúng định dạng JSON có chứa "morning", "noon", "afternoon", "evening" và tên địa danh để map với hệ thống bản đồ.</pre>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 shadow-lg">
+                        <h4 class="font-bold text-blue-400 mb-2 flex items-center gap-2"><i class="fa-solid fa-camera"></i> Prompt Mắt Thần AI (Vision)</h4>
+                        <pre class="text-[11px] text-gray-300 whitespace-pre-wrap bg-black/60 p-3 rounded-lg overflow-x-auto border border-white/5 font-mono">Nhiệm vụ / Challenge: "{ChallengeText}".
+Hãy nhìn vào bức ảnh. Does it prove the user completed the challenge?
+Trả lời bằng TIẾNG VIỆT, dùng từ địa phương Quy Nhơn (chu cha, nghen...).
+Strictly return this JSON structure:
+{
+    "verified": true/false,
+    "message": "Lời nhận xét..."
+}</pre>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 shadow-lg">
+                        <h4 class="font-bold text-green-400 mb-2 flex items-center gap-2"><i class="fa-solid fa-book"></i> Prompt Viết Nhật Ký (Summarization)</h4>
+                        <pre class="text-[11px] text-gray-300 whitespace-pre-wrap bg-black/60 p-3 rounded-lg overflow-x-auto border border-white/5 font-mono">Bạn là trợ lý viết nhật ký du lịch. Dựa vào Lịch sử trò chuyện dưới đây, hãy viết một đoạn nhật ký hành trình (80-120 chữ).
+YÊU CẦU NGHIÊM NGẶT: Giọng điệu Gen Z, có từ địa phương Quy Nhơn. Bắt đầu bằng: "Ngày {currentDate}". Trả về TEXT thuần túy.</pre>
+                    </div>
+
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 shadow-lg">
+                        <h4 class="font-bold text-yellow-400 mb-2 flex items-center gap-2"><i class="fa-solid fa-dice"></i> Prompt Gacha (Data Generation)</h4>
+                        <pre class="text-[11px] text-gray-300 whitespace-pre-wrap bg-black/60 p-3 rounded-lg overflow-x-auto border border-white/5 font-mono">Đóng vai nhà giáo dục. Tạo bộ thử thách thực tế cực dễ & 2 câu hỏi trắc nghiệm CHỈ THUỘC VỀ Quy Nhơn - Bình Định. 
+Lấy context từ lịch sử chat của khách.
+YÊU CẦU: Kiến thức lịch sử/văn hóa ("fact") PHẢI được lấy từ NGUỒN CHÍNH THỐNG.
+Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
         }
 
         function viewSavedItemSPA(index) {
@@ -1623,6 +1771,8 @@
         let currentItinStep = 1;
 
         function openItineraryPlanner() {
+            if (!checkProAccess()) return;
+            
             const modal = document.getElementById('modal');
             const chatArea = document.getElementById('chat-input-area');
             document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'AI Itinerary Planner' : 'Lên Lịch Trình AI';
@@ -2442,6 +2592,8 @@
         }
 
         async function generateJournal(event) {
+            if (!checkProAccess()) return; 
+
             const btn = event.currentTarget;
             
             if (currentChatMessages.length === 0) {
@@ -3074,6 +3226,8 @@
         let isFlashOn = false;
 
         async function openCamera() {
+            if (!checkProAccess()) return;
+            
             const modal = document.getElementById('camera-modal');
             const video = document.getElementById('camera-stream');
             const preview = document.getElementById('camera-preview');
@@ -3326,20 +3480,7 @@
         }
 
         const nauDictionary = {
-            "nẫu": "Người ta, họ.", "tui": "Tôi.", "mi": "Mày.", "bay": "Tụi mày, các bạn.",
-            "chế": "Chị.", "tía": "Cha, bố.", "má": "Mẹ, má.", "chu cha": "Trời ơi!",
-            "chu choa": "Trời ơi!", "chèn ơi": "Trời ơi!", "gơ": "Ghê, rất.", "gớm": "Ghê, rất.",
-            "dữ thần": "Rất nhiều.", "ác": "Rất.", "nhức nách": "Cực kỳ ngon.", "hết sẩy": "Cực kỳ ngon.",
-            "phẻ": "Khỏe.", "quỡn": "Rảnh rỗi.", "mắc cừ": "Buồn cười.", "trớt quớt": "Sai bét.",
-            "chà bá": "Siêu to.", "chút ét": "Rất nhỏ.", "làm nư": "Giận dỗi.", "chóc ngóc": "Lẻ loi.",
-            "rề rề": "Chậm chạp.", "ngộ": "Lạ/Đẹp.", "mần": "Làm.", "dìa": "Về.",
-            "biểu": "Bảo, nói.", "phỉnh": "Lừa dối.", "càm ràm": "Càu nhàu.", "cự nự": "Cãi cọ.",
-            "ngầu": "Ngồi.", "nghía": "Nhìn trộm.", "hỗng": "Không.", "miết": "Liên tục.",
-            "hoài": "Mãi.", "gộ": "Gạo.", "nứ": "Nước.", "rọt": "Ruột.", "gầu": "Đầu.",
-            "quấn": "Quần.", "xà lách": "Quần đùi.", "mền": "Chăn.", "chén": "Bát.",
-            "trổng": "Trong đó.", "ngoải": "Ngoài đó.", "trển": "Trên đó.", "dưới": "Dưới đó.",
-            "tấu": "Buổi tối.", "sáng mơi": "Sáng mai.", "hồi nãy": "Vừa nãy.", "hồi tê": "Lúc nãy.",
-            "dẫy": "Vậy, thế.", "dị": "Vậy.", "dẫy na": "Vậy hả.", "dẫy nhen": "Vậy nhé.",
+            "nẫu": "Người ta, họ.", "tui": "Tôi.", "mi": ""dẫy": "Vậy, thế.", "dị": "Vậy.", "dẫy na": "Vậy hả.", "dẫy nhen": "Vậy nhé.",
             "nhen": "Nhé.", "chết ngắc": "Chết rồi.", "nhột": "Buồn buồn/Chột dạ.", "huề": "Hòa.", "lầm": "Nhầm lẫn."
         };
 
