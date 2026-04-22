@@ -192,7 +192,7 @@
 
         <section id="page-map" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
             <div class="max-w-4xl w-full mx-auto" id="map-page-content">
-                </div>
+            </div>
         </section>
 
         <section id="page-diary" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
@@ -416,134 +416,134 @@
             }
         };
 
-const checkinLocations = [
-    {
-        name: "Kỳ Co",
-        desc_vi: '"Maldives của Việt Nam" với làn nước trong xanh ngọc bích',
-        desc_en: '"Vietnam\'s Maldives" with crystal clear emerald water',
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn"
-    },
-    {
-        name: "Eo Gió",
-        desc_vi: "Nơi ngắm hoàng hôn đẹp nhất Việt Nam với con đường ven biển tuyệt đẹp",
-        desc_en: "The best place to watch the sunset in Vietnam with a stunning coastal path",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/eogio.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn"
-    },
-    {
-        name: "Tháp Đôi",
-        desc_vi: "Di tích kiến trúc Chăm Pa cổ kính giữa lòng thành phố",
-        desc_en: "Ancient Cham Towers right in the heart of the city",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn"
-    },
-    {
-        name: "Ghềnh Ráng Tiên Sa",
-        desc_vi: "Bãi tắm Hoàng Hậu với vô số hòn đá trứng, nơi có mộ thi sĩ Hàn Mặc Tử",
-        desc_en: "Queen's Beach with egg-shaped stones and Han Mac Tu poet's tomb",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/ghenhrang.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng+Tiên+Sa+Quy+Nhơn"
-    },
-    {
-        name: "Hòn Khô",
-        desc_vi: "Cây cầu gỗ vòng quanh núi và con đường cát xuyên biển độc đáo",
-        desc_en: "Wooden bridge around the mountain and a unique sand path through the sea",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/honkho.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Đảo+Hòn+Khô+Quy+Nhơn"
-    },
-    {
-        name: "Cù Lao Xanh",
-        desc_vi: "Hòn ngọc xanh giữa biển Đông, ngọn hải đăng trăm tuổi",
-        desc_en: "Green pearl of the East Sea, century-old lighthouse",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/culaoxanh.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn"
-    },
-    {
-        name: "Khu dã ngoại Trung Lương",
-        desc_vi: "Thung lũng cắm trại cực chill bên bờ biển xanh mát",
-        desc_en: "A relaxing camping valley by the cool blue sea",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/trungluong.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương"
-    },
-    {
-        name: "Chùa Ông Núi",
-        desc_vi: "Nơi có tượng Phật ngồi cao nhất Đông Nam Á",
-        desc_en: "Home to the tallest sitting Buddha statue in Southeast Asia",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuaongnui.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định"
-    },
-    {
-        name: "Đồi cát Phương Mai",
-        desc_vi: "Tiểu sa mạc vàng rực rỡ sát biển, lý tưởng để trượt cát",
-        desc_en: "A vibrant golden mini-desert by the sea, ideal for sandboarding",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/doicat.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Đồi+cát+Phương+Mai+Quy+Nhơn"
-    },
-    {
-        name: "Tháp Bánh Ít",
-        desc_vi: "Cụm 4 tháp Chăm nghìn năm tuổi mang vẻ đẹp huyền bí trên đồi cao",
-        desc_en: "A cluster of 4 thousand-year-old Cham towers with mystical beauty",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapbanhit.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định"
-    },
-    {
-        name: "Chùa Thiên Hưng",
-        desc_vi: "Được mệnh danh là 'Phượng Hoàng Cổ Trấn' phiên bản Việt Nam",
-        desc_en: "Known as the Vietnamese version of 'Fenghuang Ancient Town'",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuathienhung.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Chùa+Thiên+Hưng+Bình+Định"
-    },
-    {
-        name: "Làng chài Nhơn Lý",
-        desc_vi: "Những con hẻm bích họa tuyệt đẹp mang hơi thở nhịp sống vạn chài",
-        desc_en: "Beautiful mural alleys capturing the breath of local fishing life",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/nhonly.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý+Quy+Nhơn"
-    },
-    {
-        name: "Đầm Thị Nại",
-        desc_vi: "Đầm nước mặn lớn nhất Bình Định cùng cây cầu vượt biển lừng danh",
-        desc_en: "The largest saltwater lagoon in Binh Dinh with its famous sea bridge",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/damthinai.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Cầu+Thị+Nại+Quy+Nhơn"
-    },
-    {
-        name: "Mũi Vi Rồng",
-        desc_vi: "Kiệt tác thiên nhiên hoang sơ với mỏm đá hình con rồng vươn ra biển",
-        desc_en: "Pristine natural masterpiece with a dragon-shaped rock reaching out to sea",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/muivirrong.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Mũi+Vi+Rồng+Bình+Định"
-    },
-    {
-        name: "Khu du lịch Hầm Hô",
-        desc_vi: "Vương quốc đá xanh mát lạnh giữa núi rừng đại ngàn",
-        desc_en: "A cool, green stone kingdom hidden in the deep forest",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/hamho.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Khu+du+lịch+Hầm+Hô+Bình+Định"
-    },
-    {
-        name: "Surf Bar",
-        desc_vi: "Quán bar cực chill nằm ngay trên bãi cát biển Quy Nhơn",
-        desc_en: "An extremely chill bar located right on the sand of Quy Nhon beach",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/surfbar.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Surf+Bar+Quy+Nhơn"
-    },
-    {
-        name: "Bãi biển Quy Hòa",
-        desc_vi: "Bãi biển yên bình tuyệt đẹp, gắn liền với Trại phong và khu vườn tượng nhân danh",
-        desc_en: "A beautiful, peaceful beach associated with the historic Leprosy Hospital and statue garden",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/quyhoa.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Bãi+biển+Quy+Hòa+Quy+Nhơn"
-    },
-    {
-        name: "Chợ Đêm Quy Nhơn",
-        desc_vi: "Thiên đường ăn vặt và mua sắm về đêm ngay trung tâm thành phố",
-        desc_en: "Nighttime snacking and shopping paradise in the city center",
-        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chodem.jpg",
-        map: "https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn"
-    }
-];
+        const checkinLocations = [
+            {
+                name: "Kỳ Co",
+                desc_vi: '"Maldives của Việt Nam" với làn nước trong xanh ngọc bích',
+                desc_en: '"Vietnam\'s Maldives" with crystal clear emerald water',
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn"
+            },
+            {
+                name: "Eo Gió",
+                desc_vi: "Nơi ngắm hoàng hôn đẹp nhất Việt Nam với con đường ven biển tuyệt đẹp",
+                desc_en: "The best place to watch the sunset in Vietnam with a stunning coastal path",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/eogio.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn"
+            },
+            {
+                name: "Tháp Đôi",
+                desc_vi: "Di tích kiến trúc Chăm Pa cổ kính giữa lòng thành phố",
+                desc_en: "Ancient Cham Towers right in the heart of the city",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn"
+            },
+            {
+                name: "Ghềnh Ráng Tiên Sa",
+                desc_vi: "Bãi tắm Hoàng Hậu với vô số hòn đá trứng, nơi có mộ thi sĩ Hàn Mặc Tử",
+                desc_en: "Queen's Beach with egg-shaped stones and Han Mac Tu poet's tomb",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/ghenhrang.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng+Tiên+Sa+Quy+Nhơn"
+            },
+            {
+                name: "Hòn Khô",
+                desc_vi: "Cây cầu gỗ vòng quanh núi và con đường cát xuyên biển độc đáo",
+                desc_en: "Wooden bridge around the mountain and a unique sand path through the sea",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/honkho.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Đảo+Hòn+Khô+Quy+Nhơn"
+            },
+            {
+                name: "Cù Lao Xanh",
+                desc_vi: "Hòn ngọc xanh giữa biển Đông, ngọn hải đăng trăm tuổi",
+                desc_en: "Green pearl of the East Sea, century-old lighthouse",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/culaoxanh.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn"
+            },
+            {
+                name: "Khu dã ngoại Trung Lương",
+                desc_vi: "Thung lũng cắm trại cực chill bên bờ biển xanh mát",
+                desc_en: "A relaxing camping valley by the cool blue sea",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/trungluong.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương"
+            },
+            {
+                name: "Chùa Ông Núi",
+                desc_vi: "Nơi có tượng Phật ngồi cao nhất Đông Nam Á",
+                desc_en: "Home to the tallest sitting Buddha statue in Southeast Asia",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuaongnui.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định"
+            },
+            {
+                name: "Đồi cát Phương Mai",
+                desc_vi: "Tiểu sa mạc vàng rực rỡ sát biển, lý tưởng để trượt cát",
+                desc_en: "A vibrant golden mini-desert by the sea, ideal for sandboarding",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/doicat.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Đồi+cát+Phương+Mai+Quy+Nhơn"
+            },
+            {
+                name: "Tháp Bánh Ít",
+                desc_vi: "Cụm 4 tháp Chăm nghìn năm tuổi mang vẻ đẹp huyền bí trên đồi cao",
+                desc_en: "A cluster of 4 thousand-year-old Cham towers with mystical beauty",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapbanhit.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định"
+            },
+            {
+                name: "Chùa Thiên Hưng",
+                desc_vi: "Được mệnh danh là 'Phượng Hoàng Cổ Trấn' phiên bản Việt Nam",
+                desc_en: "Known as the Vietnamese version of 'Fenghuang Ancient Town'",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuathienhung.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Chùa+Thiên+Hưng+Bình+Định"
+            },
+            {
+                name: "Làng chài Nhơn Lý",
+                desc_vi: "Những con hẻm bích họa tuyệt đẹp mang hơi thở nhịp sống vạn chài",
+                desc_en: "Beautiful mural alleys capturing the breath of local fishing life",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/nhonly.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý+Quy+Nhơn"
+            },
+            {
+                name: "Đầm Thị Nại",
+                desc_vi: "Đầm nước mặn lớn nhất Bình Định cùng cây cầu vượt biển lừng danh",
+                desc_en: "The largest saltwater lagoon in Binh Dinh with its famous sea bridge",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/damthinai.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Cầu+Thị+Nại+Quy+Nhơn"
+            },
+            {
+                name: "Mũi Vi Rồng",
+                desc_vi: "Kiệt tác thiên nhiên hoang sơ với mỏm đá hình con rồng vươn ra biển",
+                desc_en: "Pristine natural masterpiece with a dragon-shaped rock reaching out to sea",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/muivirrong.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Mũi+Vi+Rồng+Bình+Định"
+            },
+            {
+                name: "Khu du lịch Hầm Hô",
+                desc_vi: "Vương quốc đá xanh mát lạnh giữa núi rừng đại ngàn",
+                desc_en: "A cool, green stone kingdom hidden in the deep forest",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/hamho.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Khu+du+lịch+Hầm+Hô+Bình+Định"
+            },
+            {
+                name: "Surf Bar",
+                desc_vi: "Quán bar cực chill nằm ngay trên bãi cát biển Quy Nhơn",
+                desc_en: "An extremely chill bar located right on the sand of Quy Nhon beach",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/surfbar.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Surf+Bar+Quy+Nhơn"
+            },
+            {
+                name: "Bãi biển Quy Hòa",
+                desc_vi: "Bãi biển yên bình tuyệt đẹp, gắn liền với Trại phong và khu vườn tượng nhân danh",
+                desc_en: "A beautiful, peaceful beach associated with the historic Leprosy Hospital and statue garden",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/quyhoa.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Bãi+biển+Quy+Hòa+Quy+Nhơn"
+            },
+            {
+                name: "Chợ Đêm Quy Nhơn",
+                desc_vi: "Thiên đường ăn vặt và mua sắm về đêm ngay trung tâm thành phố",
+                desc_en: "Nighttime snacking and shopping paradise in the city center",
+                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chodem.jpg",
+                map: "https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn"
+            }
+        ];
 
         let currentLang = localStorage.getItem('app_lang') || 'vi';
 
@@ -1760,7 +1760,7 @@ const checkinLocations = [
                 </div>`;
         }
 
-async function showAIReview(placeName) {
+        async function showAIReview(placeName) {
             let reviewPopup = document.getElementById('ai-review-popup');
             if (!reviewPopup) {
                 reviewPopup = document.createElement('div');
@@ -1787,70 +1787,8 @@ async function showAIReview(placeName) {
                 document.body.appendChild(reviewPopup);
             }
 
-            // TÌM ẢNH ĐÚNG CỦA ĐỊA ĐIỂM TỪ MẢNG DỮ LIỆU
             const locationData = checkinLocations.find(loc => loc.name === placeName);
             let imgSrc = locationData ? locationData.img : 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png';
-            
-            document.getElementById('review-place-img').src = imgSrc;
-            document.getElementById('review-place-name').innerText = placeName;
-
-            const drivingTxt = currentLang === 'en' ? "Uncle Tu is driving there to check..." : "Anh Tư đang chạy xe đi hỏi thăm thực tế...";
-            document.getElementById('review-content').innerHTML = `
-                <div class="flex flex-col items-center justify-center py-4 gap-3">
-                    <div class="relative w-14 h-14 flex items-center justify-center">
-                        <div class="absolute inset-0 border-4 border-orange-500/20 rounded-full"></div>
-                        <div class="absolute inset-0 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                        <i class="fa-solid fa-motorcycle text-orange-400 animate-pulse text-xl"></i>
-                    </div>
-                    <span class="animate-pulse font-medium text-orange-300 text-[11px] md:text-xs italic text-center px-2">${drivingTxt}</span>
-                </div>`;
-            reviewPopup.classList.remove('hidden');
-
-            const promptLang = currentLang === 'en' ? "Reply entirely in ENGLISH." : "Dùng ngôn từ địa phương (chu cha, nghen, dẫy).";
-            const prompt = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. Đánh giá khách quan thực tế địa điểm "${placeName}" tại Quy Nhơn. ${promptLang}
-            BẮT BUỘC trả về ĐÚNG định dạng JSON sau, không dịch các key "uu_diem", "nhuoc_diem", "tom_lai" sang tiếng Anh, chỉ dịch Value (không bọc trong \`\`\`json):
-            {
-                "uu_diem": "Pros / Cảnh quan, món ngon...",
-                "nhuoc_diem": "Cons / Đường xa, nắng nóng...",
-                "tom_lai": "Summary / Lời khuyên chân thành"
-            }`;
-
-            const res = await fetchSpecialAI(prompt);
-            let finalHtml = `<p class="text-red-400">${currentLang === 'en' ? "Network lag! Try again later." : "Chu cha, mạng lag quá Anh Tư chưa tải kịp review nhen."}</p>`;
-            
-            if (res) {
-                try {
-                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
-                    const data = JSON.parse(cleanRes);
-                    
-                    const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
-                    const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
-                    const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
-
-                    finalHtml = `
-                        <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[300px] pr-1">
-                            <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> ${prosTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${data.uu_diem}</p>
-                            </div>
-                            <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${consTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${data.nhuoc_diem}</p>
-                            </div>
-                            <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
-                                <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
-                                <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-comment-dots"></i> ${sumTxt}</h5>
-                                <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${data.tom_lai}</p>
-                            </div>
-                        </div>
-                    `;
-                } catch (err) {}
-            }
-            document.getElementById('review-content').innerHTML = finalHtml;
-        }
-
-            let imgSrc = 'https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg';
-            if (placeName.toLowerCase().includes('eo gió')) imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Eo_Gi%C3%B3.jpg/500px-Eo_Gi%C3%B3.jpg';
             
             document.getElementById('review-place-img').src = imgSrc;
             document.getElementById('review-place-name').innerText = placeName;
