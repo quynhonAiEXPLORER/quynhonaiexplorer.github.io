@@ -910,9 +910,16 @@
             setTimeout(() => { chatBoxContent.scrollTop = chatBoxContent.scrollHeight; }, 50);
         }
 
+        const keyPoolNguoc = [
+            'QBGPFUBKDAM-YeV7sV0n_SZ4tNGKIfTVBySazIA',
+            'gQMHoJNIewQeiNS-Hy5MzEV3QEY_2Pr5DySazIA',
+            'cnOrQudc0gP3zmd7M07e-2p_Ki3kbpuACySazIA',
+            'QJ6wvTWhfrK3SN0mhCd48oJzfMCd3kHPCySazIA',
+            'U24QXtXYWT_MUZNE6uki7P-qqr32A7CJCySazIA'
+        ];
+        
         let currentKeyIndex = 0;
         function getNextApiKey() {
-            // keyPoolNguoc được khai báo ở config.js
             const keyThat = keyPoolNguoc[currentKeyIndex].split('').reverse().join('');
             currentKeyIndex = (currentKeyIndex + 1) % keyPoolNguoc.length;
             return keyThat;
