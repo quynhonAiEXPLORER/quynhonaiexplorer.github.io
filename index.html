@@ -42,6 +42,13 @@
         .top-nav-active { color: #f97316 !important; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1) !important; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* THANH CUỘN MỚI CHO POPUP LỊCH SỬ / REVIEW TRÁNH CẮT CHỮ */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.4); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(249,115,22,0.8); }
+
         #chat-box-content { scroll-behavior: smooth; }
 
         .message-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-end; width: 100%; }
@@ -798,50 +805,41 @@
         }
 
         // ==========================================
-        // HÀM TẠO DỮ LIỆU BẰNG AI VÀ SEARCH BAR
+        // HÀM TẠO DỮ LIỆU BẰNG AI VÀ SEARCH BAR (FACT-CHECKED)
         // ==========================================
         async function fetchLocationDataWithAI(placeName) {
-            const prompt = `Bạn là một nhà sử học và thổ địa du lịch Quy Nhơn, Bình Định.
-            Người dùng muốn tìm hiểu về địa danh: "${placeName}".
-            Nhiệm vụ của bạn là tạo ra một bộ dữ liệu JSON chứa thông tin chi tiết về địa điểm này.
+            const prompt = `Bạn là HỆ THỐNG KIỂM CHỨNG SỰ THẬT (Fact-Checker) trực thuộc ứng dụng du lịch Quy Nhơn.
+            Người dùng muốn truy xuất thông tin về địa danh: "${placeName}".
             
-            YÊU CẦU NGHIÊM NGẶT:
-            1. BẮT BUỘC TRẢ VỀ ĐÚNG CẤU TRÚC JSON BÊN DƯỚI (Không bọc trong markdown \`\`\`json).
-            2. Nếu địa điểm không ở Quy Nhơn/Bình Định, hãy từ chối khéo léo trong trường "desc_vi".
-            3. Dữ liệu lịch sử (history) phải chính xác. Dữ liệu đánh giá (review) mang tính chân thực, khách quan.
+            BỘ QUY TẮC BẢO VỆ BIÊN GIỚI VÀ KIỂM DUYỆT TỐI CAO:
+            1. ĐỊA GIỚI HÀNH CHÍNH ĐỘC QUYỀN: Địa danh này BẮT BUỘC PHẢI NẰM TRONG tỉnh Bình Định (ưu tiên Quy Nhơn). Nếu địa danh thuộc tỉnh/thành phố khác hoặc ở nước ngoài, BẠN PHẢI TRẢ VỀ "is_verified": false.
+            2. KHÔNG BỊA ĐẶT TIN GIẢ: Nếu địa danh hư cấu, trả về "is_verified": false.
+            3. NGUỒN CHÍNH THỐNG & TRÍCH DẪN: Các thông tin về lịch sử, địa lý, văn hóa PHẢI dựa trên các nguồn thông tin chính thống (ví dụ: Cổng TTĐT tỉnh Bình Định, Báo Bình Định, tài liệu lịch sử cấp quốc gia). BẮT BUỘC phải có trích dẫn nguồn tham khảo trong trường "source".
+            4. Trả về ĐÚNG cấu trúc JSON sau (KHÔNG bọc trong \`\`\`json):
             
             {
-                "name": "Tên địa danh (chuẩn hóa lại nếu nhập sai lỗi chính tả)",
-                "desc_vi": "Mô tả ngắn gọn bằng tiếng Việt (1 câu)",
-                "desc_en": "Short description in English",
-                "img": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png",
-                "map": "http://googleusercontent.com/maps.google.com/search?q=${encodeURIComponent(placeName)}+Quy+Nhon",
-                "history_vi": "Lịch sử chi tiết, nguồn gốc tên gọi, đặc điểm địa lý bằng tiếng Việt.",
-                "history_en": "Detailed history, origin of the name, and geographical features in English.",
-                "source": "Nguồn tham khảo (VD: Tổng cục Du lịch, Cổng thông tin Bình Định...)",
-                "review_vi": {
-                    "pros": "Ưu điểm, điểm nổi bật đáng trải nghiệm (tiếng Việt).",
-                    "cons": "Nhược điểm, lưu ý khi đi (nắng nóng, đường khó đi...) (tiếng Việt).",
-                    "summary": "Lời khuyên tổng kết (tiếng Việt)."
-                },
-                "review_en": {
-                    "pros": "Pros and highlights (English).",
-                    "cons": "Cons and things to note (English).",
-                    "summary": "Summary advice (English)."
+                "is_verified": true hoặc false,
+                "reject_reason": "Nếu false, từ chối rõ ràng. VD: 'Chu cha, địa danh này hổng nằm ở Quy Nhơn - Bình Định rầu! Anh Tư chỉ rành đất võ trời văn xứ Nẫu thôi nhen.'",
+                "data": {
+                    "name": "Tên chuẩn hóa",
+                    "desc_vi": "Mô tả chuẩn xác (1 câu)",
+                    "desc_en": "Short description",
+                    "img": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png",
+                    "map": "http://googleusercontent.com/maps.google.com/search?q=${encodeURIComponent(placeName)}+Quy+Nhon",
+                    "history_vi": "Lịch sử chi tiết, chính xác. BẮT BUỘC ghi kèm nguồn thông tin chính thống (nếu có).",
+                    "history_en": "Detailed history. MUST include official source citation (if any).",
+                    "source": "Ghi rõ nguồn thông tin chính thống đã sử dụng (VD: Cổng TTĐT tỉnh Bình Định, Báo Bình Định...)",
+                    "review_vi": { "pros": "Điểm mạnh", "cons": "Điểm yếu", "summary": "Tổng kết" },
+                    "review_en": { "pros": "Pros", "cons": "Cons", "summary": "Summary" }
                 }
             }`;
 
             const res = await fetchSpecialAI(prompt, 3, true);
-            
             if (res) {
                 try {
                     const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
-                    const newLocationData = JSON.parse(cleanRes);
-                    return newLocationData;
-                } catch (error) {
-                    console.error("Lỗi parse JSON từ AI:", error);
-                    return null;
-                }
+                    return JSON.parse(cleanRes);
+                } catch (error) { return null; }
             }
             return null;
         }
@@ -851,64 +849,76 @@
             const placeName = searchInput.value.trim();
             if (!placeName) return;
 
-            const btn = searchInput.nextElementSibling.nextElementSibling;
-            const originalBtnText = btn.innerHTML;
+            const btnTextSpan = document.getElementById('search-btn-text');
+            const originalBtnText = btnTextSpan.innerHTML;
+            const btn = btnTextSpan.parentElement;
             
-            const loadTxt = currentLang === 'en' ? 'Generating...' : 'Đang tạo...';
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}`;
+            const loadTxt = currentLang === 'en' ? 'Scanning...' : 'Đang quét nguồn...';
+            btnTextSpan.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}`;
             btn.disabled = true;
 
-            // 1. Kiểm tra mảng local
-            const existingIndex = checkinLocations.findIndex(loc => 
-                loc.name.toLowerCase().includes(placeName.toLowerCase())
-            );
+            const existingIndex = checkinLocations.findIndex(loc => loc.name.toLowerCase().includes(placeName.toLowerCase()));
 
             if (existingIndex !== -1) {
-                showAIReview(checkinLocations[existingIndex].name);
-                resetSearchBtn(btn, originalBtnText);
+                const elName = checkinLocations[existingIndex].name.replace(/\s+/g, '-');
+                const el = document.getElementById(`loc-card-${elName}`);
+                if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                resetSearchBtn(btnTextSpan, btn, originalBtnText);
                 return;
             }
 
-            // 2. Gọi AI tạo mới
-            const aiGeneratedLocation = await fetchLocationDataWithAI(placeName);
+            const aiResponse = await fetchLocationDataWithAI(placeName);
 
-            if (aiGeneratedLocation) {
-                // 3. Đẩy vào đầu mảng và vẽ lại UI
-                checkinLocations.unshift(aiGeneratedLocation);
-                renderMapLocations();
-                
-                // Tùy chọn lưu lên Firestore để làm crowdsourcing data
-                if (db && currentUser.isLoggedIn) {
-                    try {
-                        await db.collection('global_locations').doc(aiGeneratedLocation.name).set(aiGeneratedLocation);
-                    } catch(e) {
-                        console.log('Lưu Firestore thất bại, dùng local.', e);
-                    }
+            if (aiResponse) {
+                if (!aiResponse.is_verified) {
+                    alert("⚠️ CẢNH BÁO TỪ HỆ THỐNG:\n" + aiResponse.reject_reason);
+                    resetSearchBtn(btnTextSpan, btn, originalBtnText);
+                    return;
                 }
 
-                // Hiển thị kết quả luôn cho user
-                showStaticHistory(aiGeneratedLocation.name);
+                const aiGeneratedLocation = aiResponse.data;
+
+                // Thêm tag xác nhận an toàn
+                aiGeneratedLocation.desc_vi = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Đã xác minh</span> • ` + aiGeneratedLocation.desc_vi;
+                aiGeneratedLocation.desc_en = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Verified</span> • ` + aiGeneratedLocation.desc_en;
+
+                checkinLocations.unshift(aiGeneratedLocation);
+                renderMapLocations(aiGeneratedLocation.name);
+                
+                if (db && currentUser.isLoggedIn) {
+                    try { await db.collection('global_locations').doc(aiGeneratedLocation.name).set(aiGeneratedLocation); } 
+                    catch(e) {}
+                }
+
+                setTimeout(() => {
+                    const newCard = document.getElementById(`loc-card-${aiGeneratedLocation.name.replace(/\s+/g, '-')}`);
+                    if (newCard) {
+                        newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                            newCard.classList.remove('border-orange-500/80', 'shadow-[0_0_20px_rgba(249,115,22,0.4)]');
+                            newCard.classList.add('border-white/5');
+                        }, 3000);
+                    }
+                }, 100);
+                
             } else {
-                const failMsg = currentLang === 'en' ? "AI is busy, please try again!" : "Anh Tư đang bị nghẽn mạng, không tìm ra thông tin chỗ này rầu!";
-                alert(failMsg);
-                resetSearchBtn(btn, originalBtnText);
+                alert(currentLang === 'en' ? "Server timeout!" : "Hệ thống đang quá tải, không thể xác thực lúc này!");
             }
+            resetSearchBtn(btnTextSpan, btn, originalBtnText);
         }
 
-        function resetSearchBtn(btn, text) {
-            if(btn) {
-                btn.innerHTML = text;
-                btn.disabled = false;
-            }
+        function resetSearchBtn(btnTextSpan, btn, text) {
+            if(btnTextSpan) btnTextSpan.innerHTML = text;
+            if(btn) btn.disabled = false;
         }
 
-        function renderMapLocations() {
+        function renderMapLocations(highlightName = null) {
             const container = document.getElementById('map-page-content');
             const title = currentLang === 'en' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
             const desc = currentLang === 'en' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
 
-            const searchPlaceholder = currentLang === 'en' ? 'Search or generate new place...' : 'Nhập tên địa danh mới để AI tạo...';
-            const searchBtnTxt = currentLang === 'en' ? 'AI Search' : 'Tìm & Tạo AI';
+            const searchPlaceholder = currentLang === 'en' ? 'Search verified places...' : 'Tra cứu địa danh từ nguồn chính thống...';
+            const searchBtnTxt = currentLang === 'en' ? 'Deep Search' : 'Quét Dữ Liệu';
 
             let html = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden mt-4">
@@ -916,21 +926,29 @@
                     <button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
                         <i class="fa-solid fa-arrow-left"></i> ${currentLang === 'en' ? 'Back' : 'Quay lại'}
                     </button>
-                    <h2 class="text-xl md:text-2xl font-black text-white mb-2 uppercase tracking-wider flex items-center gap-3 border-b border-white/10 pb-4">
-                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                    
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+                        <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            ${title}
+                        </h2>
+                        <div class="flex items-center gap-2 text-[10px] md:text-xs font-bold px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-full w-fit">
+                            <i class="fa-solid fa-shield-halved"></i> Đã kết nối Cổng Dữ Liệu Chính Thống
                         </div>
-                        ${title}
-                    </h2>
-                    <p class="text-sm text-gray-300 mb-6">${desc}</p>
+                    </div>
 
-                    <div class="relative w-full mb-6">
-                        <input type="text" id="location-search-input" placeholder="${searchPlaceholder}" 
-                               class="w-full bg-black/40 border border-white/20 rounded-2xl px-4 py-3 pl-12 text-sm text-white focus:outline-none focus:border-orange-500 transition">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <button onclick="handleSearchLocation()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold transition shadow cursor-pointer">
-                            ${searchBtnTxt}
-                        </button>
+                    <div class="relative w-full mb-8 group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                        <div class="relative flex items-center bg-black/80 border border-white/10 rounded-2xl overflow-hidden">
+                            <i class="fa-solid fa-radar pl-5 text-orange-400 animate-pulse"></i>
+                            <input type="text" id="location-search-input" placeholder="${searchPlaceholder}" 
+                                   class="w-full bg-transparent px-4 py-3.5 text-sm md:text-base text-white focus:outline-none transition">
+                            <button onclick="handleSearchLocation()" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-5 md:px-6 py-3.5 text-xs md:text-sm font-bold transition shadow border-l border-white/20 whitespace-nowrap cursor-pointer">
+                                <i class="fa-solid fa-magnifying-glass mr-1"></i> <span id="search-btn-text">${searchBtnTxt}</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -940,8 +958,11 @@
                 const itemDesc = currentLang === 'en' ? (loc.desc_en || loc.desc) : (loc.desc_vi || loc.desc);
                 const btnHist = currentLang === 'en' ? 'History' : 'Lịch sử';
                 
+                const isNew = loc.name === highlightName;
+                const highlightClass = isNew ? 'border-orange-500/80 shadow-[0_0_20px_rgba(249,115,22,0.4)]' : 'border-white/5';
+                
                 html += `
-                    <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                    <div id="loc-card-${loc.name.replace(/\s+/g, '-')}" class="bg-white/5 p-3 rounded-2xl flex gap-3 border hover:bg-white/10 hover:border-orange-500/50 transition duration-500 group ${highlightClass}">
                         <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
                             <img src="${loc.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png'" />
                         </div>
@@ -952,8 +973,8 @@
                             </div>
                             <div class="flex gap-2 mt-2">
                                 <a href="${loc.map}" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 transition"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                <button onclick="showAIReview('${loc.name}')" class="flex-1 bg-orange-500/80 hover:bg-orange-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                <button onclick="showStaticHistory('${loc.name}')" class="flex-1 bg-purple-500/80 hover:bg-purple-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-scroll"></i> ${btnHist}</button>
+                                <button onclick="showAIReview('${loc.name.replace(/'/g, "\\'")}')" class="flex-1 bg-orange-500/80 hover:bg-orange-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                <button onclick="showStaticHistory('${loc.name.replace(/'/g, "\\'")}')" class="flex-1 bg-purple-500/80 hover:bg-purple-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-scroll"></i> ${btnHist}</button>
                             </div>
                         </div>
                     </div>
@@ -1384,7 +1405,7 @@
                         <span class="font-bold text-orange-300">${currentUser.points || 0} ${pointsLabel}</span>
                     </div>
 
-                    <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-72 overflow-y-auto no-scrollbar shadow-lg z-10">
+                    <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-72 overflow-y-auto custom-scrollbar shadow-lg z-10">
                         <h3 class="font-bold text-white mb-4 text-sm flex items-center justify-start gap-2 border-b border-white/10 pb-3">
                             <i class="fa-solid fa-bookmark text-orange-400"></i> ${savedLabel}
                         </h3>
@@ -1438,7 +1459,7 @@
                             <div class="relative pt-2">
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
                                 
-                                <div class="text-gray-200 text-sm md:text-base leading-loose ${type === 'diary' ? 'whitespace-pre-wrap italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
+                                <div class="text-gray-200 text-sm md:text-base leading-loose ${type === 'diary' ? 'whitespace-pre-wrap italic font-medium' : ''} px-2 md:px-4 z-10 relative custom-scrollbar overflow-y-auto max-h-[50vh] pb-6" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
                                 
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-right absolute -bottom-6 right-0 text-4xl text-white/5"></i>' : ''}
                             </div>
@@ -2099,41 +2120,43 @@
             setTimeout(() => {
                 let finalHtml = '';
                 
-                if (locationData && locationData.review_vi) {
-                    const reviewData = currentLang === 'en' && locationData.review_en ? locationData.review_en : locationData.review_vi;
-                    
-                    const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
-                    const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
-                    const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
-
-                    finalHtml = `
-                        <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[300px] pr-1 animate-fadeIn">
-                            <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> ${prosTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${reviewData.pros}</p>
-                            </div>
-                            <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${consTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${reviewData.cons}</p>
-                            </div>
-                            <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
-                                <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
-                                <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-comment-dots"></i> ${sumTxt}</h5>
-                                <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${reviewData.summary}</p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    finalHtml = `<p class="text-orange-400 text-center italic text-sm mt-4">${currentLang === 'en' ? "Uncle Tu is still writing this review. Check back later!" : "Chu cha, Anh Tư chưa rảnh để đi viết review chỗ này. Bạn thông cảm nhen!"}</p>`;
+                let reviewData = {
+                    pros: "Dữ liệu đang được AI thu thập thêm...",
+                    cons: "Dữ liệu đang được AI thu thập thêm...",
+                    summary: "Anh Tư đang cất công đi lấy thêm thông tin nhen!"
+                };
+                
+                if (locationData) {
+                    if (currentLang === 'en' && locationData.review_en) reviewData = locationData.review_en;
+                    else if (locationData.review_vi) reviewData = locationData.review_vi;
                 }
+                
+                const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
+                const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
+                const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
+
+                finalHtml = `
+                    <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[300px] pr-3 pb-6 animate-fadeIn">
+                        <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
+                            <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> ${prosTxt}</h5>
+                            <p class="text-gray-200 text-xs md:text-sm">${reviewData.pros}</p>
+                        </div>
+                        <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
+                            <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${consTxt}</h5>
+                            <p class="text-gray-200 text-xs md:text-sm">${reviewData.cons}</p>
+                        </div>
+                        <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
+                            <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
+                            <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-comment-dots"></i> ${sumTxt}</h5>
+                            <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${reviewData.summary}</p>
+                        </div>
+                    </div>
+                `;
                 
                 document.getElementById('review-content').innerHTML = finalHtml;
             }, 1500); 
         }
 
-        // ==========================================
-        // NEW FEATURE: STATIC HISTORY DISPLAY
-        // ==========================================
         function showStaticHistory(placeName) {
             let historyPopup = document.getElementById('static-history-popup');
             
@@ -2181,7 +2204,7 @@
             const sourceLbl = currentLang === 'en' ? "Source" : "Nguồn tham khảo";
 
             document.getElementById('history-content').innerHTML = `
-                <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[350px] pr-1 animate-fadeIn">
+                <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[350px] pr-3 pb-6 animate-fadeIn">
                     <div class="bg-purple-500/10 border border-purple-500/20 p-3 rounded-xl">
                         <h5 class="font-bold text-purple-400 text-[11px] mb-2 uppercase flex items-center gap-1.5"><i class="fa-solid fa-landmark-dome"></i> ${originTxt}</h5>
                         <p class="text-gray-200 text-xs md:text-sm text-justify leading-relaxed">${historyText}</p>
@@ -2275,7 +2298,7 @@
                                 </div>
                                 <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 no-scrollbar"></div>
                             </div>
-                            <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 no-scrollbar bg-black/10"></div>
+                            <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 custom-scrollbar bg-black/10"></div>
                         </div>`;
                 }
                 if(chatArea) chatArea.classList.remove('hidden');
@@ -2335,7 +2358,7 @@
 
             contentDiv.innerHTML = `
                 <div class="animate-fadeIn w-full max-w-xl mx-auto flex flex-col h-[60vh] md:h-[50vh]">
-                    <textarea id="diary-editor" class="flex-1 w-full bg-black/40 border border-orange-500/30 rounded-xl p-4 md:p-5 text-sm md:text-base text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic">${finalContent}</textarea>
+                    <textarea id="diary-editor" class="flex-1 w-full bg-black/40 border border-orange-500/30 rounded-xl p-4 md:p-5 text-sm md:text-base text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic custom-scrollbar">${finalContent}</textarea>
                     <div class="flex gap-3 mt-4 shrink-0">
                         <button onclick="saveCustomDiary()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
                             <i class="fa-solid fa-floppy-disk"></i> ${btnSaveTxt}
@@ -2573,11 +2596,13 @@
             
             ${chatContext}
 
-            YÊU CẦU:
-            1. "tasks": 2 thử thách thực tế cực dễ. Phải có ĐỦ "text_vi", "text_en", "fact_vi", "fact_en".
-            2. "trivia": 2 câu hỏi trắc nghiệm (4 đáp án) dựa trên những gì vừa chat (nếu có). 
-               - Nếu Lịch sử trống, hãy tự tạo câu hỏi chung về Quy Nhơn. Mức độ RẤT DỄ cho người mới.
-               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh cho mọi trường (question, options, explanation).
+            YÊU CẦU ĐỘC QUYỀN ĐỊA PHƯƠNG:
+            Tất cả thử thách và câu hỏi BẮT BUỘC CHỈ xoay quanh lịch sử, văn hóa, ẩm thực, và địa danh của Quy Nhơn - Bình Định. TUYỆT ĐỐI KHÔNG lấy dữ liệu từ tỉnh khác.
+            
+            1. "tasks": 2 thử thách thực tế cực dễ tại Quy Nhơn. Phải có ĐỦ "text_vi", "text_en", "fact_vi", "fact_en".
+            2. "trivia": 2 câu hỏi trắc nghiệm (4 đáp án) về Bình Định dựa trên những gì vừa chat (nếu có). 
+               - Nếu Lịch sử trống, hãy tự tạo câu hỏi chung về Quy Nhơn.
+               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh cho mọi trường.
 
             BẮT BUỘC TRẢ VỀ JSON SONG NGỮ THEO CẤU TRÚC (KHÔNG BỌC TRONG \`\`\`json):
             {
@@ -2654,8 +2679,9 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-orange-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách chụp ảnh du lịch Quy Nhơn mới kèm theo 1 kiến thức lịch sử/văn hóa.
-            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Nhiệm vụ", "text_en": "Challenge", "fact_vi": "Kiến thức", "fact_en": "Fact", "points": 20 }`;
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách chụp ảnh du lịch ĐỘC QUYỀN TẠI Quy Nhơn - Bình Định mới kèm theo 1 kiến thức lịch sử/văn hóa của xứ Nẫu. Tuyệt đối không dùng dữ liệu tỉnh khác. 
+            YÊU CẦU: Kiến thức lịch sử/văn hóa ("fact_vi" và "fact_en") PHẢI được lấy từ NGUỒN THÔNG TIN CHÍNH THỐNG và CÓ GHI KÈM TRÍCH DẪN NGUỒN.
+            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Nhiệm vụ", "text_en": "Challenge", "fact_vi": "Kiến thức (Trích nguồn: ...)", "fact_en": "Fact (Source: ...)", "points": 20 }`;
 
             const res = await fetchSpecialAI(prompt);
             try {
@@ -2683,7 +2709,8 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-cyan-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const prompt = `Đóng vai nhà giáo dục, tạo 1 câu hỏi trắc nghiệm văn hóa/ẩm thực Quy Nhơn RẤT DỄ.
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 câu hỏi trắc nghiệm văn hóa/ẩm thực CHỈ THUỘC VỀ Quy Nhơn - Bình Định RẤT DỄ.
+            YÊU CẦU: Phần giải thích ("explanation_vi" và "explanation_en") PHẢI dựa trên NGUỒN THÔNG TIN CHÍNH THỐNG và CÓ GHI KÈM TRÍCH DẪN NGUỒN.
             Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): 
             { 
                 "question_vi": "...", "question_en": "...", 
@@ -2749,7 +2776,7 @@
                     rawTextForHistory += `\n[Thông tin hệ thống: Đã hiển thị thẻ bản đồ của quán "${placeNames}" cho khách xem]`;
                 }
 
-                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
+                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiData.text}</div>`;
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     const btnMap = currentLang === 'en' ? "View on Map" : "Xem Bản đồ";
@@ -2796,8 +2823,8 @@
             }
             
             const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. Keep the tone welcoming and helpful.`
-                : `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Người đang chat với bạn tên là: "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương thân thiện như "nhen", "chu cha".`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.`;
 
             const prompt = `${personaPrompt}
 
@@ -3052,7 +3079,7 @@
             const aiResponse = await getGeminiVisionResponse(pureBase64);
             document.getElementById(typingId).remove();
             
-            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
             chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
@@ -3079,7 +3106,7 @@
                 const aiResponse = await getGeminiVisionResponse(pureBase64);
                 document.getElementById(typingId).remove();
                 
-                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
                 chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
                 chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
@@ -3094,13 +3121,13 @@
         async function getGeminiVisionResponse(base64Data) {
             const userNameContext = getShortName(currentUser.name);
             const langInstruction = currentLang === 'en' 
-                ? `Reply entirely in ENGLISH. If it is a Quy Nhon place/food, identify it and give a quick tip. If not, make a fun joke to invite them to Quy Nhon.`
-                : `Dùng tiếng địa phương (chu cha, nghen). Nếu đúng Quy Nhơn thì giới thiệu, không phải thì trêu chọc rủ đi Quy Nhơn.`;
+                ? `Reply entirely in ENGLISH. If the image is a place or food NOT in Quy Nhon/Binh Dinh, playfully reject it and invite them to visit Quy Nhon instead.`
+                : `Dùng tiếng địa phương (chu cha, nghen). Nếu ảnh chụp địa danh/món ăn thuộc tỉnh khác, hãy trêu chọc bảo "Cảnh này hổng phải xứ Nẫu quê tui rầu!" và khéo léo khoe cảnh đẹp Quy Nhơn.`;
 
             const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi một bức ảnh.
-            Hãy phân tích bức ảnh:
-            1. Nếu ảnh là địa danh, món ăn Quy Nhơn: Nhận diện, khen ngợi và cho mẹo.
-            2. Nếu ảnh không liên quan: Nhận xét vui vẻ khéo léo lái câu chuyện mời đi Quy Nhơn.
+            Hãy phân tích bức ảnh với QUY TẮC ĐỊA LÝ NGHIÊM NGẶT:
+            1. Nếu ảnh chắc chắn nằm ở Quy Nhơn/Bình Định: Nhận diện, khen ngợi và cho mẹo.
+            2. Nếu ảnh rõ ràng thuộc địa phương khác hoặc không liên quan: Từ chối khéo léo, khẳng định đây không phải Quy Nhơn và bẻ lái rủ đi Quy Nhơn.
             YÊU CẦU: Văn bản thuần, 3-4 câu. ${langInstruction}`;
 
             const payload = {
