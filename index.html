@@ -2377,7 +2377,7 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`;
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview:generateContent?key=${currentKey}`;
                 
                 try {
                     const res = await fetch(API_URL, { 
@@ -3472,7 +3472,7 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
                 let resultJson = null;
                 for (let attempt = 0; attempt < 3; attempt++) {
                     const currentKey = getNextApiKey();
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     
@@ -3745,7 +3745,7 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             for (let attempt = 0; attempt < 3; attempt++) {
                 const currentKey = getNextApiKey();
                 try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     if (res.ok) {
