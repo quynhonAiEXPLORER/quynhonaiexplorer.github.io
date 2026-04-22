@@ -797,10 +797,118 @@
             renderMapLocations();
         }
 
+        // ==========================================
+        // HÀM TẠO DỮ LIỆU BẰNG AI VÀ SEARCH BAR
+        // ==========================================
+        async function fetchLocationDataWithAI(placeName) {
+            const prompt = `Bạn là một nhà sử học và thổ địa du lịch Quy Nhơn, Bình Định.
+            Người dùng muốn tìm hiểu về địa danh: "${placeName}".
+            Nhiệm vụ của bạn là tạo ra một bộ dữ liệu JSON chứa thông tin chi tiết về địa điểm này.
+            
+            YÊU CẦU NGHIÊM NGẶT:
+            1. BẮT BUỘC TRẢ VỀ ĐÚNG CẤU TRÚC JSON BÊN DƯỚI (Không bọc trong markdown \`\`\`json).
+            2. Nếu địa điểm không ở Quy Nhơn/Bình Định, hãy từ chối khéo léo trong trường "desc_vi".
+            3. Dữ liệu lịch sử (history) phải chính xác. Dữ liệu đánh giá (review) mang tính chân thực, khách quan.
+            
+            {
+                "name": "Tên địa danh (chuẩn hóa lại nếu nhập sai lỗi chính tả)",
+                "desc_vi": "Mô tả ngắn gọn bằng tiếng Việt (1 câu)",
+                "desc_en": "Short description in English",
+                "img": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png",
+                "map": "http://googleusercontent.com/maps.google.com/search?q=${encodeURIComponent(placeName)}+Quy+Nhon",
+                "history_vi": "Lịch sử chi tiết, nguồn gốc tên gọi, đặc điểm địa lý bằng tiếng Việt.",
+                "history_en": "Detailed history, origin of the name, and geographical features in English.",
+                "source": "Nguồn tham khảo (VD: Tổng cục Du lịch, Cổng thông tin Bình Định...)",
+                "review_vi": {
+                    "pros": "Ưu điểm, điểm nổi bật đáng trải nghiệm (tiếng Việt).",
+                    "cons": "Nhược điểm, lưu ý khi đi (nắng nóng, đường khó đi...) (tiếng Việt).",
+                    "summary": "Lời khuyên tổng kết (tiếng Việt)."
+                },
+                "review_en": {
+                    "pros": "Pros and highlights (English).",
+                    "cons": "Cons and things to note (English).",
+                    "summary": "Summary advice (English)."
+                }
+            }`;
+
+            const res = await fetchSpecialAI(prompt, 3, true);
+            
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const newLocationData = JSON.parse(cleanRes);
+                    return newLocationData;
+                } catch (error) {
+                    console.error("Lỗi parse JSON từ AI:", error);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        async function handleSearchLocation() {
+            const searchInput = document.getElementById('location-search-input');
+            const placeName = searchInput.value.trim();
+            if (!placeName) return;
+
+            const btn = searchInput.nextElementSibling.nextElementSibling;
+            const originalBtnText = btn.innerHTML;
+            
+            const loadTxt = currentLang === 'en' ? 'Generating...' : 'Đang tạo...';
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}`;
+            btn.disabled = true;
+
+            // 1. Kiểm tra mảng local
+            const existingIndex = checkinLocations.findIndex(loc => 
+                loc.name.toLowerCase().includes(placeName.toLowerCase())
+            );
+
+            if (existingIndex !== -1) {
+                showAIReview(checkinLocations[existingIndex].name);
+                resetSearchBtn(btn, originalBtnText);
+                return;
+            }
+
+            // 2. Gọi AI tạo mới
+            const aiGeneratedLocation = await fetchLocationDataWithAI(placeName);
+
+            if (aiGeneratedLocation) {
+                // 3. Đẩy vào đầu mảng và vẽ lại UI
+                checkinLocations.unshift(aiGeneratedLocation);
+                renderMapLocations();
+                
+                // Tùy chọn lưu lên Firestore để làm crowdsourcing data
+                if (db && currentUser.isLoggedIn) {
+                    try {
+                        await db.collection('global_locations').doc(aiGeneratedLocation.name).set(aiGeneratedLocation);
+                    } catch(e) {
+                        console.log('Lưu Firestore thất bại, dùng local.', e);
+                    }
+                }
+
+                // Hiển thị kết quả luôn cho user
+                showStaticHistory(aiGeneratedLocation.name);
+            } else {
+                const failMsg = currentLang === 'en' ? "AI is busy, please try again!" : "Anh Tư đang bị nghẽn mạng, không tìm ra thông tin chỗ này rầu!";
+                alert(failMsg);
+                resetSearchBtn(btn, originalBtnText);
+            }
+        }
+
+        function resetSearchBtn(btn, text) {
+            if(btn) {
+                btn.innerHTML = text;
+                btn.disabled = false;
+            }
+        }
+
         function renderMapLocations() {
             const container = document.getElementById('map-page-content');
             const title = currentLang === 'en' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
             const desc = currentLang === 'en' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
+
+            const searchPlaceholder = currentLang === 'en' ? 'Search or generate new place...' : 'Nhập tên địa danh mới để AI tạo...';
+            const searchBtnTxt = currentLang === 'en' ? 'AI Search' : 'Tìm & Tạo AI';
 
             let html = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden mt-4">
@@ -815,6 +923,16 @@
                         ${title}
                     </h2>
                     <p class="text-sm text-gray-300 mb-6">${desc}</p>
+
+                    <div class="relative w-full mb-6">
+                        <input type="text" id="location-search-input" placeholder="${searchPlaceholder}" 
+                               class="w-full bg-black/40 border border-white/20 rounded-2xl px-4 py-3 pl-12 text-sm text-white focus:outline-none focus:border-orange-500 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <button onclick="handleSearchLocation()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold transition shadow cursor-pointer">
+                            ${searchBtnTxt}
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             `;
 
