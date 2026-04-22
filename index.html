@@ -99,7 +99,7 @@
             <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-300">
                 <a href="#" onclick="switchPage('page-home', 'home')" data-tab="home" data-i18n="nav_explore" class="top-nav-item flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:text-orange-400 transition-colors top-nav-active"><i class="fa-solid fa-house"></i> Khám phá</a>
                 <a href="#" onclick="switchPage('page-diary', 'diary')" data-tab="diary" data-i18n="nav_diary" class="top-nav-item flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:text-orange-400 transition-colors"><i class="fa-solid fa-book"></i> Nhật ký AI</a>
-                <a href="#" onclick="switchPage('page-gacha', 'gacha')" data-tab="gacha" data-i18n="nav_gacha" class="top-nav-item flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:text-orange-400 transition-colors"><i class="fa-solid fa-dice"></i> Thử Thách</a>
+                <a href="#" onclick="switchPage('page-gacha', 'gacha')" data-tab="gacha" data-i18n="nav_gacha" class="top-nav-item flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:text-orange-400 transition-colors"><i class="fa-solid fa-dice"></i> Gacha Xứ Nẫu</a>
                 <a href="#" onclick="switchPage('page-profile', 'profile')" data-tab="profile" data-i18n="nav_profile" class="top-nav-item flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:text-orange-400 transition-colors"><i class="fa-regular fa-circle-user"></i> Cá nhân</a>
             </div>
             
@@ -139,7 +139,7 @@
 
                 <div class="max-w-5xl w-full relative z-10 flex flex-col gap-5 md:gap-6 mx-auto pb-4">
                     
-                    <div onclick="openFeature('Chatbot Thổ Địa')" class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 flex items-center justify-between cursor-pointer border border-orange-500/40 bg-gradient-to-r from-orange-500/20 to-transparent hover:bg-orange-500/20 shadow-[0_0_20px_rgba(249,115,22,0.15)] group">
+                    <div onclick="openFeature('Trợ Lý Tư Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 flex items-center justify-between cursor-pointer border border-orange-500/40 bg-gradient-to-r from-orange-500/20 to-transparent hover:bg-orange-500/20 shadow-[0_0_20px_rgba(249,115,22,0.15)] group">
                         <div class="flex items-center gap-4 md:gap-6 text-left">
                             <div class="w-14 h-14 md:w-20 md:h-20 rounded-2xl md:rounded-[20px] bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white text-3xl md:text-4xl shadow-lg group-hover:scale-105 transition-transform shrink-0">
                                 <i class="fa-regular fa-comments animate-pulse"></i>
@@ -160,12 +160,12 @@
                                 <i class="fa-solid fa-location-dot"></i>
                             </div>
                             <div class="text-center">
-                                <h3 data-i18n="feat_map_title" class="font-bold text-[11px] md:text-base text-white">Check-in</h3>
+                                <h3 data-i18n="feat_map_title" class="font-bold text-[11px] md:text-base text-white">Bản Đồ Check-in</h3>
                                 <p data-i18n="feat_map_desc" class="text-[9px] md:text-xs text-gray-400 mt-1 hidden md:block">Tọa độ HOT</p>
                             </div>
                         </div>
                         
-                        <div onclick="openFeature('Thời Tiết & Đi Đảo')" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
+                        <div onclick="openWeatherPage()" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
                             <div class="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl md:text-2xl">
                                 <i class="fa-solid fa-cloud-sun-rain"></i>
                             </div>
@@ -175,12 +175,12 @@
                             </div>
                         </div>
 
-                        <div onclick="openFeature('Từ Điển Tiếng Nẫu')" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
+                        <div onclick="openDictionaryPage()" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
                             <div class="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 text-xl md:text-2xl">
                                 <i class="fa-solid fa-language"></i>
                             </div>
                             <div class="text-center">
-                                <h3 data-i18n="feat_dict_title" class="font-bold text-[11px] md:text-base text-white">Tiếng Nẫu</h3>
+                                <h3 data-i18n="feat_dict_title" class="font-bold text-[11px] md:text-base text-white">Từ Điển Tiếng Nẫu</h3>
                                 <p data-i18n="feat_dict_desc" class="text-[9px] md:text-xs text-gray-400 mt-1 hidden md:block">Từ bản địa</p>
                             </div>
                         </div>
@@ -196,6 +196,16 @@
 
         <section id="page-map" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
             <div class="max-w-4xl w-full mx-auto" id="map-page-content">
+            </div>
+        </section>
+
+        <section id="page-weather" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+            <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden" id="weather-page-content">
+            </div>
+        </section>
+
+        <section id="page-dictionary" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+            <div class="max-w-2xl w-full mx-auto bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden" id="dictionary-page-content">
             </div>
         </section>
 
@@ -275,7 +285,7 @@
         </a>
         <a href="#" onclick="switchPage('page-gacha', 'gacha')" data-tab="gacha" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[24%] rounded-xl">
             <i class="fa-solid fa-dice text-xl"></i>
-            <span data-i18n="nav_gacha" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Thử Thách</span>
+            <span data-i18n="nav_gacha" class="text-[10px] font-bold whitespace-nowrap tracking-wide">Gacha Xứ Nẫu</span>
         </a>
         <a href="#" onclick="switchPage('page-profile', 'profile')" data-tab="profile" class="bottom-nav-item flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-200 transition-all py-2 w-[24%] rounded-xl">
             <i class="fa-regular fa-circle-user text-xl"></i>
@@ -366,13 +376,45 @@
 
     <script>
         // ==========================================
+        // HIỆU ỨNG GÕ CHỮ (TYPEWRITER) CHO CHATBOT
+        // ==========================================
+        function typeWriterEffect(elementId, text, speed = 15) {
+            return new Promise(resolve => {
+                const el = document.getElementById(elementId);
+                if (!el) return resolve();
+                
+                let i = 0;
+                let htmlTag = false;
+                let currentHtml = "";
+                
+                const timer = setInterval(() => {
+                    if (i < text.length) {
+                        if (text.charAt(i) === '<') htmlTag = true;
+                        currentHtml += text.charAt(i);
+                        el.innerHTML = currentHtml;
+                        if (text.charAt(i) === '>') htmlTag = false;
+                        
+                        if (!htmlTag) {
+                            const chatBox = document.getElementById('chat-box-content');
+                            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+                        }
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        // ==========================================
         // 0. BỘ TỪ ĐIỂN ĐA NGÔN NGỮ (i18n) & DỮ LIỆU BẢN ĐỒ
         // ==========================================
         const i18n = {
             vi: {
                 "nav_explore": '<i class="fa-solid fa-house"></i> Khám phá',
                 "nav_diary": '<i class="fa-solid fa-book"></i> Nhật ký AI',
-                "nav_gacha": '<i class="fa-solid fa-dice"></i> Thử Thách',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> Gacha Xứ Nẫu',
                 "nav_profile": '<i class="fa-regular fa-circle-user"></i> Cá nhân',
                 "hero_title": "Quy Nhơn",
                 "hero_desc": "Khám phá vẻ đẹp xứ Nẫu với sự hỗ trợ của trí tuệ nhân tạo. Có tui lo!",
@@ -380,11 +422,11 @@
                 "greeting_loading": "Đang tải...",
                 "feat_chat_title": "Trợ Lý Tư Nẫu",
                 "feat_chat_desc": "Hỏi đáp 24/7, tìm quán ăn, xếp lịch trình chuẩn thổ địa!",
-                "feat_map_title": "Check-in",
+                "feat_map_title": "Bản Đồ Check-in",
                 "feat_map_desc": "Tọa độ HOT",
                 "feat_weather_title": "Thời Tiết",
                 "feat_weather_desc": "Biển & Đi đảo",
-                "feat_dict_title": "Tiếng Nẫu",
+                "feat_dict_title": "Từ Điển Tiếng Nẫu",
                 "feat_dict_desc": "Từ bản địa",
                 "footer_text": "© 2026 AI First – BTSX - Trường THPT Bùi Thị Xuân",
                 "chat_placeholder": "Hỏi Tư Nẫu chỗ ăn, ngủ, chơi nghen...",
@@ -402,7 +444,7 @@
             en: {
                 "nav_explore": '<i class="fa-solid fa-house"></i> Explore',
                 "nav_diary": '<i class="fa-solid fa-book"></i> AI Diary',
-                "nav_gacha": '<i class="fa-solid fa-dice"></i> Challenges',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> Quy Nhon Gacha',
                 "nav_profile": '<i class="fa-regular fa-circle-user"></i> Profile',
                 "hero_title": "Quy Nhon",
                 "hero_desc": "Discover the beauty of Quy Nhon with the support of Artificial Intelligence. I've got you covered!",
@@ -410,8 +452,8 @@
                 "greeting_loading": "Loading...",
                 "feat_chat_title": "Tu Nau Assistant",
                 "feat_chat_desc": "24/7 Q&A, find food, plan a true local itinerary!",
-                "feat_map_title": "Hotspots",
-                "feat_map_desc": "Check-in Map",
+                "feat_map_title": "Check-in Map",
+                "feat_map_desc": "Hotspots",
                 "feat_weather_title": "Weather",
                 "feat_weather_desc": "Sea & Islands",
                 "feat_dict_title": "Local Slang",
@@ -432,7 +474,7 @@
             ko: {
                 "nav_explore": '<i class="fa-solid fa-house"></i> 탐색',
                 "nav_diary": '<i class="fa-solid fa-book"></i> AI 일기',
-                "nav_gacha": '<i class="fa-solid fa-dice"></i> 챌린지',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> 가챠',
                 "nav_profile": '<i class="fa-regular fa-circle-user"></i> 프로필',
                 "hero_title": "꾸이년",
                 "hero_desc": "인공지능의 도움으로 꾸이년의 아름다움을 발견하세요. 제가 도와드릴게요!",
@@ -441,7 +483,7 @@
                 "feat_chat_title": "Tu Nau 어시스턴트",
                 "feat_chat_desc": "연중무휴 Q&A, 맛집 찾기, 현지 일정 계획!",
                 "feat_map_title": "핫스팟",
-                "feat_map_desc": "체크인",
+                "feat_map_desc": "체크인 지도",
                 "feat_weather_title": "날씨",
                 "feat_weather_desc": "바다와 섬",
                 "feat_dict_title": "현지 속어",
@@ -462,7 +504,7 @@
             zh: {
                 "nav_explore": '<i class="fa-solid fa-house"></i> 探索',
                 "nav_diary": '<i class="fa-solid fa-book"></i> AI 日记',
-                "nav_gacha": '<i class="fa-solid fa-dice"></i> 挑战',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> 抽卡',
                 "nav_profile": '<i class="fa-regular fa-circle-user"></i> 个人主页',
                 "hero_title": "归仁",
                 "hero_desc": "在人工智能的帮助下探索归仁之美。交给我吧！",
@@ -470,11 +512,11 @@
                 "greeting_loading": "加载中...",
                 "feat_chat_title": "Tu Nau 助手",
                 "feat_chat_desc": "24/7 问答，寻找美食，规划地道行程！",
-                "feat_map_title": "热门打卡",
-                "feat_map_desc": "打卡地图",
+                "feat_map_title": "打卡地图",
+                "feat_map_desc": "热门打卡",
                 "feat_weather_title": "天气",
                 "feat_weather_desc": "海滩与岛屿",
-                "feat_dict_title": "方言",
+                "feat_dict_title": "方言字典",
                 "feat_dict_desc": "词典",
                 "footer_text": "© 2026 AI First – BTSX - 裴氏春高中",
                 "chat_placeholder": "问问 Tu Nau 关于美食、住宿和游玩...",
@@ -508,7 +550,6 @@
 
         let currentLang = localStorage.getItem('app_lang') || 'vi';
 
-        // BẢN ĐỒ NGÔN NGỮ CHUẨN ĐỂ AI HIỂU
         const aiLangMap = { vi: 'VIETNAMESE', en: 'ENGLISH', ko: 'KOREAN', zh: 'CHINESE' };
 
         function changeLanguage(lang) {
@@ -595,6 +636,35 @@
         function openMapPage() {
             switchPage('page-map', 'home');
             renderMapLocations();
+        }
+
+        function openWeatherPage() {
+            switchPage('page-weather', 'home');
+            const container = document.getElementById('weather-page-content');
+            const backBtn = `<button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-arrow-left"></i> ${currentLang !== 'vi' ? 'Back' : 'Quay lại'}</button>`;
+            const title = currentLang !== 'vi' ? 'Weather & Islands' : 'Thời Tiết & Đi Đảo';
+            
+            container.innerHTML = backBtn + `
+                <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                    <div class="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center text-cyan-400 shrink-0"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                    ${title}
+                </h2>
+            ` + getWeatherContent();
+            fetchRealWeather();
+        }
+
+        function openDictionaryPage() {
+            switchPage('page-dictionary', 'home');
+            const container = document.getElementById('dictionary-page-content');
+            const backBtn = `<button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-arrow-left"></i> ${currentLang !== 'vi' ? 'Back' : 'Quay lại'}</button>`;
+            const title = currentLang !== 'vi' ? 'Local Slang Dictionary' : 'Từ Điển Tiếng Nẫu';
+            
+            container.innerHTML = backBtn + `
+                <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                    <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center text-yellow-400 shrink-0"><i class="fa-solid fa-language"></i></div>
+                    ${title}
+                </h2>
+            ` + getDictContent();
         }
 
         // ==========================================
@@ -705,7 +775,7 @@
 
         function renderMapLocations(highlightName = null) {
             const container = document.getElementById('map-page-content');
-            const title = currentLang !== 'vi' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
+            const title = currentLang !== 'vi' ? 'Check-in Map' : 'Bản Đồ Check-in';
             const desc = currentLang !== 'vi' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
 
             const searchPlaceholder = currentLang !== 'vi' ? 'Search verified places...' : 'Tra cứu địa danh từ nguồn chính thống...';
@@ -1271,7 +1341,6 @@
             setTimeout(() => { chatBoxContent.scrollTop = chatBoxContent.scrollHeight; }, 50);
         }
 
-        //Điền trực tiếp API Key thật của bạn vào đây
         const GEMINI_API_KEY = 'AIzaSyD5rP2_YEQ3VEzM5yH-SNieQweINJoHMQg'; 
 
         function getNextApiKey() {
@@ -1880,7 +1949,7 @@
             
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${currentKey}`;
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`;
                 
                 try {
                     const res = await fetch(API_URL, { 
@@ -2181,7 +2250,7 @@
         }
 
         // ==========================================
-        // 5. CÁC TÍNH NĂNG PHỤ (GIỮ TRONG MODAL) 
+        // 5. CÁC TÍNH NĂNG PHỤ 
         // ==========================================
         function getDictContent() {
             const desc = currentLang !== 'vi' ? "Enter local Binh Dinh slang, and Uncle Tu will translate it to standard text!" : "Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!";
@@ -2340,15 +2409,14 @@
 
         function openFeature(name) {
             const modal = document.getElementById('modal');
-            const content = document.getElementById('modal-content');
             const chatArea = document.getElementById('chat-input-area');
             
-            if (name === 'Chatbot Thổ Địa') {
+            if (name === 'Trợ Lý Tư Nẫu') {
                 document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Tu Nau Assistant' : 'Trợ Lý Tư Nẫu';
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
                 
                 if (!document.getElementById('chat-container')) {
-                    content.innerHTML = `
+                    document.getElementById('modal-content').innerHTML = `
                         <div id="chat-container" class="relative flex flex-col h-full overflow-hidden -mx-3 md:-mx-5 -mt-3 md:-mt-5">
                             <div class="flex justify-between items-center bg-gray-900/50 backdrop-blur-md border-b border-white/10 px-3 py-2 shrink-0 z-10">
                                 <button onclick="toggleChatSidebar()" class="text-gray-300 hover:text-white p-2 rounded-lg transition cursor-pointer"><i class="fa-solid fa-bars text-lg"></i></button>
@@ -2368,21 +2436,9 @@
 
                 if (!currentChatSessionId) startNewChat();
                 else { updateChatHeaderTitle(); renderCurrentChat(); }
-            } else {
-                if(chatArea) chatArea.classList.add('hidden');
                 
-                if(name === 'Thời Tiết & Đi Đảo') {
-                    document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Weather & Islands' : name;
-                    document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-cloud-sun-rain"></i>';
-                    content.innerHTML = getWeatherContent();
-                    fetchRealWeather();
-                } else if(name === 'Từ Điển Tiếng Nẫu') {
-                    document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Local Slang Dictionary' : name;
-                    document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-language"></i>';
-                    content.innerHTML = getDictContent();
-                }
+                modal.classList.remove('hidden');
             }
-            modal.classList.remove('hidden');
         }
 
         async function generateJournal(event) {
@@ -2824,33 +2880,32 @@
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
             const rawResponse = await getAIResponse(text);
-            document.getElementById(typingId).remove();
+            const typingEl = document.getElementById(typingId);
+            if(typingEl) typingEl.remove();
 
-            let finalHtml = '';
+            let aiText = '';
+            let mapHtml = '';
             let rawTextForHistory = ''; 
 
             try {
                 const cleanRaw = rawResponse.replace(/```json/gi, '').replace(/```/gi, '').trim();
                 const aiData = JSON.parse(cleanRaw);
                 
+                aiText = aiData.text || '';
                 rawTextForHistory = aiData.text; 
                 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     const placeNames = aiData.places.map(p => `${p.name} (tại ${p.address})`).join(' và ');
                     rawTextForHistory += `\n[Thông tin hệ thống: Đã hiển thị thẻ bản đồ của quán "${placeNames}" cho khách xem]`;
-                }
-
-                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiData.text}</div>`;
-
-                if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
+                    
                     const btnMap = currentLang !== 'vi' ? "View on Map" : "Xem Bản đồ";
                     aiData.places.forEach(place => {
                         const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
-                        const autoMapLink = `https://maps.google.com/maps?q=${query}`;
-                        const embedUrl = `https://maps.google.com/maps?q=${query}&output=embed`;
+                        const autoMapLink = `https://maps.google.com/maps?q=$${query}`;
+                        const embedUrl = `https://maps.google.com/maps?q=$${query}&output=embed`;
 
-                        finalHtml += `
-                        <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
+                        mapHtml += `
+                        <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-2 shadow-lg w-[260px] md:w-[300px] animate-fadeIn">
                             <iframe width="100%" height="140" style="border:0; pointer-events: none;" loading="lazy" allowfullscreen src="${embedUrl}"></iframe>
                             <div class="p-3">
                                 <h4 class="font-bold text-orange-400 text-sm mb-1">${place.name}</h4>
@@ -2863,20 +2918,37 @@
                 }
             } catch (e) {
                 rawTextForHistory = rawResponse; 
-                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20">${rawResponse}</div>`;
+                aiText = rawResponse;
             }
 
-            chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
+            const msgId = 'msg-' + Date.now();
+            chatBoxContent.innerHTML += `
+                <div class="message-row flex flex-col items-start gap-0">
+                    <div class="flex items-end gap-2">
+                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                        <div>
+                            <div id="${msgId}" class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-1 custom-scrollbar overflow-x-auto min-h-[40px]"></div>
+                            <div id="${msgId}-map"></div>
+                        </div>
+                    </div>
+                </div>`;
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
-            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: rawTextForHistory }); 
+            await typeWriterEffect(msgId, aiText, 15);
+            
+            if (mapHtml) {
+                document.getElementById(`${msgId}-map`).innerHTML = mapHtml;
+                chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
+            }
+
+            const finalHtmlForHistory = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiText}</div>${mapHtml}`;
+            currentChatMessages.push({ role: 'ai', html: finalHtmlForHistory, rawText: rawTextForHistory }); 
             saveCurrentChatSession();
         }
 
         async function getAIResponse(userText) {
             const userNameContext = getShortName(currentUser.name);
             
-            // TÍCH HỢP NGỮ CẢNH CÁ NHÂN HÓA LÊN PROMPT
             let personalContext = "";
             if (currentUser.isLoggedIn && currentUser.preferences) {
                 const pref = currentUser.preferences;
@@ -2970,7 +3042,7 @@
                 let resultJson = null;
                 for (let attempt = 0; attempt < 3; attempt++) {
                     const currentKey = getNextApiKey();
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     
@@ -3147,7 +3219,7 @@
                 return;
             }
 
-            openFeature('Chatbot Thổ Địa');
+            openFeature('Trợ Lý Tư Nẫu');
             const chatBoxContent = document.getElementById('chat-box-content');
             chatBoxContent.innerHTML += `<div class="message-row user"><img src="${currentUser.avatar}" class="avatar"><div class="chat-bubble bg-white/10 border border-white/10 p-2"><img src="${compressedBase64}" class="rounded-lg w-48 object-cover shadow-sm"></div></div>`;
             const typingId = 'typing-' + Date.now();
@@ -3155,14 +3227,26 @@
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
             const aiResponse = await getGeminiVisionResponse(pureBase64);
-            document.getElementById(typingId).remove();
+            const typingEl = document.getElementById(typingId);
+            if(typingEl) typingEl.remove();
             
-            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
-            chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
+            const msgId = 'msg-' + Date.now();
+            chatBoxContent.innerHTML += `
+                <div class="message-row flex flex-col items-start gap-0">
+                    <div class="flex items-end gap-2">
+                        <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                        <div>
+                            <div id="${msgId}" class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-1 custom-scrollbar overflow-x-auto min-h-[40px]"></div>
+                        </div>
+                    </div>
+                </div>`;
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
+            await typeWriterEffect(msgId, aiResponse, 15);
+
+            const finalHtmlForHistory = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
             currentChatMessages.push({ role: 'user', text: "[Đã gửi một ảnh từ Mắt Thần]" });
-            currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+            currentChatMessages.push({ role: 'ai', html: finalHtmlForHistory, rawText: aiResponse }); 
             saveCurrentChatSession();
         }
 
@@ -3182,14 +3266,26 @@
                 chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
                 
                 const aiResponse = await getGeminiVisionResponse(pureBase64);
-                document.getElementById(typingId).remove();
+                const typingEl = document.getElementById(typingId);
+                if(typingEl) typingEl.remove();
                 
-                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
-                chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
+                const msgId = 'msg-' + Date.now();
+                chatBoxContent.innerHTML += `
+                    <div class="message-row flex flex-col items-start gap-0">
+                        <div class="flex items-end gap-2">
+                            <img src="${aiAvatar}" class="avatar border border-orange-500/30">
+                            <div>
+                                <div id="${msgId}" class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-1 custom-scrollbar overflow-x-auto min-h-[40px]"></div>
+                            </div>
+                        </div>
+                    </div>`;
                 chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
+                await typeWriterEffect(msgId, aiResponse, 15);
+
+                const finalHtmlForHistory = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
                 currentChatMessages.push({ role: 'user', text: "[Đã upload một ảnh lên Chatbot]" });
-                currentChatMessages.push({ role: 'ai', html: finalHtml, rawText: aiResponse }); 
+                currentChatMessages.push({ role: 'ai', html: finalHtmlForHistory, rawText: aiResponse }); 
                 saveCurrentChatSession();
                 event.target.value = '';
             };
@@ -3217,7 +3313,7 @@
             for (let attempt = 0; attempt < 3; attempt++) {
                 const currentKey = getNextApiKey();
                 try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     if (res.ok) {
@@ -3281,40 +3377,4 @@
             const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
             const langInstruction = currentLang !== 'vi' 
                 ? `Translate the following Binh Dinh slang into ${aiLang}.` 
-                : 'Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông.';
-
-            const prompt = `${langInstruction} Text: "${input}"
-            TRẢ VỀ ĐÚNG ĐỊNH DẠNG JSON SAU (Không bọc trong \`\`\`json). The keys must remain "nghia" and "vi_du":
-            {
-                "nghia": "Explanation",
-                "vi_du": "1 context example"
-            }`;
-
-            const res = await fetchSpecialAI(prompt);
-            if (res) {
-                try {
-                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
-                    const data = JSON.parse(cleanRes);
-                    outputDiv.innerHTML = `
-                        <div class="mb-4 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full">
-                            <i class="fa-solid fa-robot"></i> Gemini AI
-                        </div>
-                        <div class="space-y-3">
-                            <div class="bg-white/5 border-l-4 border-orange-500 p-3.5 rounded-r-xl shadow-sm">
-                                <h5 class="text-[11px] font-bold text-orange-400 uppercase mb-1.5"><i class="fa-solid fa-book"></i> Meaning</h5>
-                                <p class="text-white text-sm">${data.nghia}</p>
-                            </div>
-                            <div class="bg-white/5 border-l-4 border-blue-500 p-3.5 rounded-r-xl shadow-sm">
-                                <h5 class="text-[11px] font-bold text-blue-400 uppercase mb-1.5"><i class="fa-solid fa-quote-left"></i> Example</h5>
-                                <p class="text-gray-300 text-sm italic">"${data.vi_du}"</p>
-                            </div>
-                        </div>
-                    `;
-                } catch (err) {
-                    outputDiv.innerHTML = res;
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+                : 'Dịch từ/câu tiếng Bình Định sau
