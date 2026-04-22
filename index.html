@@ -151,7 +151,7 @@
                     </div>
 
                     <div class="grid grid-cols-3 gap-4 md:gap-5">
-                        <div onclick="openFeature('Bản đồ Khám phá')" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
+                        <div onclick="openMapPage()" class="glass-card rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 cursor-pointer">
                             <div class="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-green-500/20 flex items-center justify-center text-green-400 text-xl md:text-2xl">
                                 <i class="fa-solid fa-location-dot"></i>
                             </div>
@@ -188,6 +188,11 @@
                     <a href="https://www.facebook.com/profile.php?id=100094880366095" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-500/20 hover:text-blue-500 transition-colors border border-white/10 shadow-sm"><i class="fab fa-facebook-f text-lg"></i></a>
                 </footer>
             </div>
+        </section>
+
+        <section id="page-map" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
+            <div class="max-w-4xl w-full mx-auto" id="map-page-content">
+                </div>
         </section>
 
         <section id="page-diary" class="page-view no-scrollbar px-4 w-full flex flex-col items-center">
@@ -346,7 +351,7 @@
 
     <script>
         // ==========================================
-        // 0. BỘ TỪ ĐIỂN ĐA NGÔN NGỮ (i18n)
+        // 0. BỘ TỪ ĐIỂN ĐA NGÔN NGỮ (i18n) & DỮ LIỆU BẢN ĐỒ
         // ==========================================
         const i18n = {
             vi: {
@@ -411,6 +416,135 @@
             }
         };
 
+const checkinLocations = [
+    {
+        name: "Kỳ Co",
+        desc_vi: '"Maldives của Việt Nam" với làn nước trong xanh ngọc bích',
+        desc_en: '"Vietnam\'s Maldives" with crystal clear emerald water',
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn"
+    },
+    {
+        name: "Eo Gió",
+        desc_vi: "Nơi ngắm hoàng hôn đẹp nhất Việt Nam với con đường ven biển tuyệt đẹp",
+        desc_en: "The best place to watch the sunset in Vietnam with a stunning coastal path",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/eogio.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn"
+    },
+    {
+        name: "Tháp Đôi",
+        desc_vi: "Di tích kiến trúc Chăm Pa cổ kính giữa lòng thành phố",
+        desc_en: "Ancient Cham Towers right in the heart of the city",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn"
+    },
+    {
+        name: "Ghềnh Ráng Tiên Sa",
+        desc_vi: "Bãi tắm Hoàng Hậu với vô số hòn đá trứng, nơi có mộ thi sĩ Hàn Mặc Tử",
+        desc_en: "Queen's Beach with egg-shaped stones and Han Mac Tu poet's tomb",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/ghenhrang.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng+Tiên+Sa+Quy+Nhơn"
+    },
+    {
+        name: "Hòn Khô",
+        desc_vi: "Cây cầu gỗ vòng quanh núi và con đường cát xuyên biển độc đáo",
+        desc_en: "Wooden bridge around the mountain and a unique sand path through the sea",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/honkho.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Đảo+Hòn+Khô+Quy+Nhơn"
+    },
+    {
+        name: "Cù Lao Xanh",
+        desc_vi: "Hòn ngọc xanh giữa biển Đông, ngọn hải đăng trăm tuổi",
+        desc_en: "Green pearl of the East Sea, century-old lighthouse",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/culaoxanh.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn"
+    },
+    {
+        name: "Khu dã ngoại Trung Lương",
+        desc_vi: "Thung lũng cắm trại cực chill bên bờ biển xanh mát",
+        desc_en: "A relaxing camping valley by the cool blue sea",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/trungluong.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương"
+    },
+    {
+        name: "Chùa Ông Núi",
+        desc_vi: "Nơi có tượng Phật ngồi cao nhất Đông Nam Á",
+        desc_en: "Home to the tallest sitting Buddha statue in Southeast Asia",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuaongnui.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định"
+    },
+    {
+        name: "Đồi cát Phương Mai",
+        desc_vi: "Tiểu sa mạc vàng rực rỡ sát biển, lý tưởng để trượt cát",
+        desc_en: "A vibrant golden mini-desert by the sea, ideal for sandboarding",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/doicat.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Đồi+cát+Phương+Mai+Quy+Nhơn"
+    },
+    {
+        name: "Tháp Bánh Ít",
+        desc_vi: "Cụm 4 tháp Chăm nghìn năm tuổi mang vẻ đẹp huyền bí trên đồi cao",
+        desc_en: "A cluster of 4 thousand-year-old Cham towers with mystical beauty",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapbanhit.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định"
+    },
+    {
+        name: "Chùa Thiên Hưng",
+        desc_vi: "Được mệnh danh là 'Phượng Hoàng Cổ Trấn' phiên bản Việt Nam",
+        desc_en: "Known as the Vietnamese version of 'Fenghuang Ancient Town'",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuathienhung.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Chùa+Thiên+Hưng+Bình+Định"
+    },
+    {
+        name: "Làng chài Nhơn Lý",
+        desc_vi: "Những con hẻm bích họa tuyệt đẹp mang hơi thở nhịp sống vạn chài",
+        desc_en: "Beautiful mural alleys capturing the breath of local fishing life",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/nhonly.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý+Quy+Nhơn"
+    },
+    {
+        name: "Đầm Thị Nại",
+        desc_vi: "Đầm nước mặn lớn nhất Bình Định cùng cây cầu vượt biển lừng danh",
+        desc_en: "The largest saltwater lagoon in Binh Dinh with its famous sea bridge",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/damthinai.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Cầu+Thị+Nại+Quy+Nhơn"
+    },
+    {
+        name: "Mũi Vi Rồng",
+        desc_vi: "Kiệt tác thiên nhiên hoang sơ với mỏm đá hình con rồng vươn ra biển",
+        desc_en: "Pristine natural masterpiece with a dragon-shaped rock reaching out to sea",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/muivirrong.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Mũi+Vi+Rồng+Bình+Định"
+    },
+    {
+        name: "Khu du lịch Hầm Hô",
+        desc_vi: "Vương quốc đá xanh mát lạnh giữa núi rừng đại ngàn",
+        desc_en: "A cool, green stone kingdom hidden in the deep forest",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/hamho.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Khu+du+lịch+Hầm+Hô+Bình+Định"
+    },
+    {
+        name: "Surf Bar",
+        desc_vi: "Quán bar cực chill nằm ngay trên bãi cát biển Quy Nhơn",
+        desc_en: "An extremely chill bar located right on the sand of Quy Nhon beach",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/surfbar.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Surf+Bar+Quy+Nhơn"
+    },
+    {
+        name: "Bãi biển Quy Hòa",
+        desc_vi: "Bãi biển yên bình tuyệt đẹp, gắn liền với Trại phong và khu vườn tượng nhân danh",
+        desc_en: "A beautiful, peaceful beach associated with the historic Leprosy Hospital and statue garden",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/quyhoa.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Bãi+biển+Quy+Hòa+Quy+Nhơn"
+    },
+    {
+        name: "Chợ Đêm Quy Nhơn",
+        desc_vi: "Thiên đường ăn vặt và mua sắm về đêm ngay trung tâm thành phố",
+        desc_en: "Nighttime snacking and shopping paradise in the city center",
+        img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chodem.jpg",
+        map: "https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn"
+    }
+];
+
         let currentLang = localStorage.getItem('app_lang') || 'vi';
 
         function changeLanguage(lang) {
@@ -433,6 +567,8 @@
             
             if (currentPageId === 'page-gacha') {
                 renderGachaUI();
+            } else if (currentPageId === 'page-map') {
+                renderMapLocations();
             }
         }
 
@@ -490,6 +626,57 @@
             }
             
             closeModal();
+        }
+
+        function openMapPage() {
+            switchPage('page-map', 'home');
+            renderMapLocations();
+        }
+
+        function renderMapLocations() {
+            const container = document.getElementById('map-page-content');
+            const title = currentLang === 'en' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
+            const desc = currentLang === 'en' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
+
+            let html = `
+                <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden mt-4">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
+                    <button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-arrow-left"></i> ${currentLang === 'en' ? 'Back' : 'Quay lại'}
+                    </button>
+                    <h2 class="text-xl md:text-2xl font-black text-white mb-2 uppercase tracking-wider flex items-center gap-3 border-b border-white/10 pb-4">
+                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        ${title}
+                    </h2>
+                    <p class="text-sm text-gray-300 mb-6">${desc}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            `;
+
+            checkinLocations.forEach(loc => {
+                const itemDesc = currentLang === 'en' ? (loc.desc_en || loc.desc) : (loc.desc_vi || loc.desc);
+                html += `
+                    <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                        <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
+                            <img src="${loc.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png'" />
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>${loc.name}</h4>
+                                <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">${itemDesc}</p>
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <a href="${loc.map}" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
+                                <button onclick="showAIReview('${loc.name}')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
         }
 
         function closeModal() { 
@@ -1664,31 +1851,6 @@
         // ==========================================
         // 5. CÁC TÍNH NĂNG PHỤ (GIỮ TRONG MODAL) 
         // ==========================================
-        function getMapContent() {
-            const desc = currentLang === 'en' ? "Encyclopedia of 16 top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư 16 tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
-            return `
-                <div class="space-y-4 pb-4">
-                    <p class="text-sm text-gray-300 text-center">${desc}</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 max-h-[65vh] overflow-y-auto no-scrollbar pr-1 pb-4">
-                        <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
-                            <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
-                                <img src="https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div>
-                                    <h4 class="font-bold text-orange-400 text-sm md:text-base"><i class="fa-solid fa-map-pin text-xs mr-1"></i>Kỳ Co</h4>
-                                    <p class="text-[10px] md:text-xs text-gray-300 mt-1 line-clamp-2">"Maldives của Việt Nam"</p>
-                                </div>
-                                <div class="flex gap-2 mt-2">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                    <button onclick="showAIReview('Kỳ Co')" class="flex-1 bg-white/20 hover:bg-white/30 text-white text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
         function getDictContent() {
             const desc = currentLang === 'en' ? "Enter local Binh Dinh slang, and Uncle Tu will translate it to standard text!" : "Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!";
             const ph = currentLang === 'en' ? "Example: Chu cha..." : "Ví dụ: Chu cha, dữ thần...";
@@ -1775,11 +1937,7 @@
             } else {
                 if(chatArea) chatArea.classList.add('hidden');
                 
-                if(name === 'Bản đồ Khám phá') {
-                    document.getElementById('modal-title').innerText = currentLang === 'en' ? 'Explore Map' : name;
-                    document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-location-dot"></i>';
-                    content.innerHTML = getMapContent();
-                } else if(name === 'Thời Tiết & Đi Đảo') {
+                if(name === 'Thời Tiết & Đi Đảo') {
                     document.getElementById('modal-title').innerText = currentLang === 'en' ? 'Weather & Islands' : name;
                     document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-cloud-sun-rain"></i>';
                     content.innerHTML = getWeatherContent();
@@ -2537,7 +2695,7 @@
             return currentLang === 'en' ? "Oops, network error while looking at the image!" : `Chu cha mạng lắc quá tải hổng nổi ${userNameContext} ơi!`;
         }
 
-        // --- Từ Điển Local (Giữ nguyên) ---
+        // --- Từ Điển Local ---
         const nauDictionary = {
             "nẫu": "Người ta, họ.", "tui": "Tôi.", "mi": "Mày.", "bay": "Tụi mày, các bạn.",
             "chế": "Chị.", "tía": "Cha, bố.", "má": "Mẹ, má.", "chu cha": "Trời ơi!",
