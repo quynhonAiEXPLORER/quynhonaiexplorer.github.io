@@ -1649,7 +1649,7 @@
             
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${currentKey}`;
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${currentKey}`;
                 
                 try {
                     const res = await fetch(API_URL, { 
