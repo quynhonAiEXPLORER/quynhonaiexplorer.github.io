@@ -1824,11 +1824,9 @@
                 ? `Act as "Uncle Tu", a local guide. Reply entirely in ENGLISH. The user's name is "${userName}".`
                 : `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".`;
 
-            const weatherContextString = await getWeatherContent();
             const prompt = `${langInstruction}
             Lập lịch trình / Itinerary for: ${itinData.days}. Gu đi chơi / Style: ${styleString}. Ngân sách / Budget: ${itinData.budget}.
             Vị trí xuất phát / Starting location: ${itinData.locationContext}.
-            ${weatherContextString} 
             
             QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG / STRICT SYSTEM RULES:
             1. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
