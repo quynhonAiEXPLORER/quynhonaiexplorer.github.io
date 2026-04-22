@@ -744,6 +744,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             changeLanguage(currentLang);
+            fetchRealWeather();
         });
 
         // ==========================================
@@ -1039,7 +1040,8 @@
         // ==========================================
         let currentChatSessionId = null;
         let currentChatMessages = [];
-
+        let currentWeatherContext = "Chưa có dữ liệu thời tiết thực tế, hãy khuyên khách tự kiểm tra lại trời có mưa không nhé.";
+        
         let currentUser = {
             isLoggedIn: false,
             uid: null,
@@ -1965,10 +1967,14 @@
             Lập lịch trình / Itinerary for: ${itinData.days}. Gu đi chơi / Style: ${styleString}. Ngân sách / Budget: ${itinData.budget}.
             Vị trí xuất phát / Starting location: ${itinData.locationContext}.
             
+            THỜI TIẾT HIỆN TẠI VÀ DỰ BÁO:
+            "${currentWeatherContext}"
+            
             QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG / STRICT SYSTEM RULES:
             1. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
-            2. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
-            3. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
+            2. ĐIỀU CHỈNH THEO THỜI TIẾT (QUAN TRỌNG): Nếu thời tiết là mưa, dông hoặc biển động, BẮT BUỘC thay thế lịch trình đi đảo/biển bằng các hoạt động trong nhà (Bảo tàng Quang Trung, Tháp Đôi, Tổ hợp không gian khoa học, Food tour, Cafe).
+            3. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
+            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
             {
                 "message": "Lời chào, tóm tắt lịch trình... / Greeting and summary...",
                 "itinerary": [
@@ -2273,6 +2279,7 @@
                     </div>
                 </div>`;
         }
+
         async function fetchRealWeather() {
             try {
                 const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
@@ -2340,6 +2347,9 @@
                 document.getElementById('sea-state').innerHTML = seaState;
                 document.getElementById('cano-state').innerHTML = canoState;
                 document.getElementById('weather-advice').innerHTML = advice;
+                
+                // LƯU BIẾN NGỮ CẢNH THỜI TIẾT ĐỂ ĐẨY VÀO PROMPT AI
+                currentWeatherContext = `Thời tiết hiện tại ở Quy Nhơn: ${temp}°C, ${desc}. Tình trạng biển: ${seaState}. Trạng thái cano đi đảo: ${canoState}. Mẹo: ${advice}`;
 
                 const forecastContainer = document.getElementById('forecast-container');
                 forecastContainer.innerHTML = '';
@@ -2370,6 +2380,7 @@
                 document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
             }
         }
+        
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
@@ -2922,6 +2933,10 @@
                 : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.`;
 
             const prompt = `${personaPrompt}
+
+            THÔNG TIN THỜI TIẾT THỰC TẾ TẠI QUY NHƠN LÚC NÀY:
+            "${currentWeatherContext}"
+            (Lệnh tối thượng: Dựa vào thời tiết này để tư vấn. Nếu trời mưa, dông hoặc cano tạm dừng, TUYỆT ĐỐI KHÔNG khuyên khách đi đảo Kỳ Co, Hòn Khô hay Cù Lao Xanh. Thay vào đó hãy hướng dẫn họ đi ăn uống, đi bảo tàng, hoặc uống cafe).
 
             ${chatContext}
 
