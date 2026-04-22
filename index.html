@@ -1949,7 +1949,7 @@
             
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const currentKey = getNextApiKey();
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`;
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview-preview:generateContent?key=${currentKey}`;
                 
                 try {
                     const res = await fetch(API_URL, { 
@@ -3042,7 +3042,7 @@
                 let resultJson = null;
                 for (let attempt = 0; attempt < 3; attempt++) {
                     const currentKey = getNextApiKey();
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview-preview:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     
@@ -3313,7 +3313,7 @@
             for (let attempt = 0; attempt < 3; attempt++) {
                 const currentKey = getNextApiKey();
                 try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${currentKey}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash-preview-preview:generateContent?key=${currentKey}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
                     });
                     if (res.ok) {
