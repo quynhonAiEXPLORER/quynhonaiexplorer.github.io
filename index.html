@@ -14,7 +14,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* Đã cập nhật phông chữ Plus Jakarta Sans thay cho Inter */
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         body {
@@ -108,9 +107,11 @@
                 <button class="bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl px-3 py-2 flex items-center gap-2 text-sm text-white font-bold transition-all cursor-pointer">
                     <i class="fa-solid fa-globe"></i> <span id="current-lang-display">VI</span>
                 </button>
-                <div class="absolute right-0 mt-2 w-20 glass-panel rounded-xl flex flex-col overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl border border-white/10">
-                    <button onclick="changeLanguage('vi')" class="text-white hover:bg-orange-500 hover:text-white px-4 py-2 text-sm text-center font-bold transition cursor-pointer">VI</button>
-                    <button onclick="changeLanguage('en')" class="text-white hover:bg-orange-500 hover:text-white px-4 py-2 text-sm text-center font-bold transition cursor-pointer">EN</button>
+                <div class="absolute right-0 mt-2 w-24 glass-panel rounded-xl flex flex-col overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl border border-white/10">
+                    <button onclick="changeLanguage('vi')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇻🇳 VI</button>
+                    <button onclick="changeLanguage('en')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇺🇸 EN</button>
+                    <button onclick="changeLanguage('ko')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇰🇷 KR</button>
+                    <button onclick="changeLanguage('zh')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇨🇳 ZH</button>
                 </div>
             </div>
         </div>
@@ -427,6 +428,66 @@
                 "camera_focus": "[ Tap to focus ]",
                 "camera_retake": "Retake",
                 "camera_send": "Send to Tu Nau"
+            },
+            ko: {
+                "nav_explore": '<i class="fa-solid fa-house"></i> 탐색',
+                "nav_diary": '<i class="fa-solid fa-book"></i> AI 일기',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> 챌린지',
+                "nav_profile": '<i class="fa-regular fa-circle-user"></i> 프로필',
+                "hero_title": "꾸이년",
+                "hero_desc": "인공지능의 도움으로 꾸이년의 아름다움을 발견하세요. 제가 도와드릴게요!",
+                "btn_plan_ai": '<i class="fa-solid fa-wand-magic-sparkles"></i> AI 일정 (10초)',
+                "greeting_loading": "로딩 중...",
+                "feat_chat_title": "Tu Nau 어시스턴트",
+                "feat_chat_desc": "연중무휴 Q&A, 맛집 찾기, 현지 일정 계획!",
+                "feat_map_title": "핫스팟",
+                "feat_map_desc": "체크인",
+                "feat_weather_title": "날씨",
+                "feat_weather_desc": "바다와 섬",
+                "feat_dict_title": "현지 속어",
+                "feat_dict_desc": "사전",
+                "footer_text": "© 2026 AI First – BTSX - Bui Thi Xuan 고등학교",
+                "chat_placeholder": "Tu Nau에게 음식, 숙박 등에 대해 물어보세요...",
+                "diary_heading": "나의 여행 일기",
+                "diary_subtext": "Tu Nau 삼촌이 채팅을 요약하여 멋진 여행 일기를 자동으로 작성해 드립니다!",
+                "diary_placeholder": "아래 버튼을 클릭하면 AI가 채팅을 분석하여 일기를 작성합니다...",
+                "btn_generate_diary": "지금 AI 일기 생성하기",
+                "gacha_heading": "꾸이년 가챠",
+                "gacha_points_label": "가챠 포인트:",
+                "camera_title": "AI 카메라",
+                "camera_focus": "[ 탭하여 초점 맞추기 ]",
+                "camera_retake": "다시 찍기",
+                "camera_send": "Tu Nau에게 보내기"
+            },
+            zh: {
+                "nav_explore": '<i class="fa-solid fa-house"></i> 探索',
+                "nav_diary": '<i class="fa-solid fa-book"></i> AI 日记',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> 挑战',
+                "nav_profile": '<i class="fa-regular fa-circle-user"></i> 个人主页',
+                "hero_title": "归仁",
+                "hero_desc": "在人工智能的帮助下探索归仁之美。交给我吧！",
+                "btn_plan_ai": '<i class="fa-solid fa-wand-magic-sparkles"></i> AI 行程 (10秒)',
+                "greeting_loading": "加载中...",
+                "feat_chat_title": "Tu Nau 助手",
+                "feat_chat_desc": "24/7 问答，寻找美食，规划地道行程！",
+                "feat_map_title": "热门打卡",
+                "feat_map_desc": "打卡地图",
+                "feat_weather_title": "天气",
+                "feat_weather_desc": "海滩与岛屿",
+                "feat_dict_title": "方言",
+                "feat_dict_desc": "词典",
+                "footer_text": "© 2026 AI First – BTSX - 裴氏春高中",
+                "chat_placeholder": "问问 Tu Nau 关于美食、住宿和游玩...",
+                "diary_heading": "您的旅行日记",
+                "diary_subtext": "Tu Nau 叔叔会总结你们的聊天记录并自动写一篇很棒的旅行日记！",
+                "diary_placeholder": "点击下方按钮，让 AI 分析聊天记录并起草日记...",
+                "btn_generate_diary": "立即生成 AI 日记",
+                "gacha_heading": "归仁抽卡",
+                "gacha_points_label": "抽卡积分:",
+                "camera_title": "AI 相机",
+                "camera_focus": "[ 点击对焦 ]",
+                "camera_retake": "重拍",
+                "camera_send": "发送给 Tu Nau"
             }
         };
 
@@ -446,6 +507,9 @@
         ];
 
         let currentLang = localStorage.getItem('app_lang') || 'vi';
+
+        // BẢN ĐỒ NGÔN NGỮ CHUẨN ĐỂ AI HIỂU
+        const aiLangMap = { vi: 'VIETNAMESE', en: 'ENGLISH', ko: 'KOREAN', zh: 'CHINESE' };
 
         function changeLanguage(lang) {
             if (!i18n[lang]) return;
@@ -582,7 +646,7 @@
             const originalBtnText = btnTextSpan.innerHTML;
             const btn = btnTextSpan.parentElement;
             
-            const loadTxt = currentLang === 'en' ? 'Scanning...' : 'Đang quét nguồn...';
+            const loadTxt = currentLang !== 'vi' ? 'Scanning...' : 'Đang quét nguồn...';
             btnTextSpan.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}`;
             btn.disabled = true;
 
@@ -629,7 +693,7 @@
                 }, 100);
                 
             } else {
-                alert(currentLang === 'en' ? "Server timeout!" : "Hệ thống đang quá tải, không thể xác thực lúc này!");
+                alert(currentLang !== 'vi' ? "Server timeout!" : "Hệ thống đang quá tải, không thể xác thực lúc này!");
             }
             resetSearchBtn(btnTextSpan, btn, originalBtnText);
         }
@@ -641,17 +705,17 @@
 
         function renderMapLocations(highlightName = null) {
             const container = document.getElementById('map-page-content');
-            const title = currentLang === 'en' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
-            const desc = currentLang === 'en' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
+            const title = currentLang !== 'vi' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
+            const desc = currentLang !== 'vi' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
 
-            const searchPlaceholder = currentLang === 'en' ? 'Search verified places...' : 'Tra cứu địa danh từ nguồn chính thống...';
-            const searchBtnTxt = currentLang === 'en' ? 'Deep Search' : 'Quét Dữ Liệu';
+            const searchPlaceholder = currentLang !== 'vi' ? 'Search verified places...' : 'Tra cứu địa danh từ nguồn chính thống...';
+            const searchBtnTxt = currentLang !== 'vi' ? 'Deep Search' : 'Quét Dữ Liệu';
 
             let html = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden mt-4">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-bl-full blur-3xl pointer-events-none"></div>
                     <button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-                        <i class="fa-solid fa-arrow-left"></i> ${currentLang === 'en' ? 'Back' : 'Quay lại'}
+                        <i class="fa-solid fa-arrow-left"></i> ${currentLang !== 'vi' ? 'Back' : 'Quay lại'}
                     </button>
                     
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
@@ -682,8 +746,8 @@
             `;
 
             checkinLocations.forEach(loc => {
-                const itemDesc = currentLang === 'en' ? (loc.desc_en || loc.desc) : (loc.desc_vi || loc.desc);
-                const btnHist = currentLang === 'en' ? 'History' : 'Lịch sử';
+                const itemDesc = currentLang !== 'vi' ? (loc.desc_en || loc.desc) : (loc.desc_vi || loc.desc);
+                const btnHist = currentLang !== 'vi' ? 'History' : 'Lịch sử';
                 
                 const isNew = loc.name === highlightName;
                 const highlightClass = isNew ? 'border-orange-500/80 shadow-[0_0_20px_rgba(249,115,22,0.4)]' : 'border-white/5';
@@ -768,25 +832,24 @@
         let currentChatSessionId = null;
         let currentChatMessages = [];
         
-        let currentWeatherContext = currentLang === 'en'
+        let currentWeatherContext = currentLang !== 'vi'
             ? "Sunny and clear, perfect for outdoor activities."
             : "Trời nắng đẹp, lý tưởng để hoạt động ngoài trời.";
 
-        // CẬP NHẬT BIẾN currentUser CÓ THÊM ONBOARDING
         let currentUser = {
             isLoggedIn: false,
             uid: null,
-            name: currentLang === 'en' ? 'Guest Traveler' : 'Khách Phương Xa',
+            name: currentLang !== 'vi' ? 'Guest Traveler' : 'Khách Phương Xa',
             avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true',
             chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [],
             preferences: null, onboardingCompleted: false
         };
 
         function getShortName(fullName) {
-            if (!fullName || !currentUser.isLoggedIn || fullName.includes('Khách') || fullName.includes('Guest')) return currentLang === 'en' ? 'friend' : 'bạn';
+            if (!fullName || !currentUser.isLoggedIn || fullName.includes('Khách') || fullName.includes('Guest')) return currentLang !== 'vi' ? 'friend' : 'bạn';
             let cleanName = fullName.replace(/\s*\(.*?\)\s*/g, '').trim();
             let parts = cleanName.split(' ');
-            return parts[0] || (currentLang === 'en' ? 'friend' : 'bạn'); 
+            return parts[0] || (currentLang !== 'vi' ? 'friend' : 'bạn'); 
         }
 
         if (auth) {
@@ -814,14 +877,13 @@
                                 currentUser.onboardingCompleted = data.onboardingCompleted || false;
                             }
                             
-                            // KÍCH HOẠT ONBOARDING LẦN ĐẦU TỪ HÀM MỚI
                             if (!currentUser.onboardingCompleted) {
                                 startOnboarding();
                             }
                         } catch (error) { console.error("Lỗi tải dữ liệu:", error); }
                     }
                 } else {
-                    currentUser = { isLoggedIn: false, uid: null, name: currentLang === 'en' ? 'Guest Traveler' : 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [], preferences: null, onboardingCompleted: false };
+                    currentUser = { isLoggedIn: false, uid: null, name: currentLang !== 'vi' ? 'Guest Traveler' : 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [], preferences: null, onboardingCompleted: false };
                 }
                 
                 updateDynamicGreeting();
@@ -1011,7 +1073,7 @@
             }
 
             document.getElementById('onboarding-modal').classList.add('hidden');
-            alert(currentLang === 'en' ? "Profile saved! Tu Nau is ready." : "Lưu hồ sơ thành công! Trợ lý Tư Nẫu đã ghi nhớ thông tin.");
+            alert(currentLang !== 'vi' ? "Profile saved! Tu Nau is ready." : "Lưu hồ sơ thành công! Trợ lý Tư Nẫu đã ghi nhớ thông tin.");
         }
 
         async function saveUserData() {
@@ -1037,7 +1099,7 @@
             
             const chatLog = session.messages.map(m => `${m.role}: ${m.text || ''}`).join('\n').substring(0, 300);
             
-            const promptInstruction = currentLang === 'en'
+            const promptInstruction = currentLang !== 'vi'
                 ? `Act as a title generator. Summarize this chat log into a VERY SHORT title (Max 3 to 5 words). Do NOT use quotes. Pure text only.`
                 : `Đóng vai hệ thống đặt tên, tóm tắt cuộc trò chuyện sau thành tiêu đề ngắn (Tối đa 3-5 từ). KHÔNG dùng dấu ngoặc kép. CHỈ TRẢ VỀ TEXT THUẦN.`;
 
@@ -1054,7 +1116,7 @@
                     cleanTitle = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
                 }
 
-                session.title = cleanTitle || (currentLang === 'en' ? "New Chat" : "Đoạn chat mới");
+                session.title = cleanTitle || (currentLang !== 'vi' ? "New Chat" : "Đoạn chat mới");
                 saveUserData();
                 
                 if (currentChatSessionId === sessionId) {
@@ -1071,7 +1133,7 @@
             if (!currentUser.isLoggedIn || currentChatMessages.length === 0) return;
             
             let sessionIndex = currentUser.chatSessions.findIndex(s => s.id === currentChatSessionId);
-            let defaultTitle = currentLang === 'en' ? "New Chat" : "Đoạn chat mới";
+            let defaultTitle = currentLang !== 'vi' ? "New Chat" : "Đoạn chat mới";
             let currentTitle = sessionIndex >= 0 ? currentUser.chatSessions[sessionIndex].title : defaultTitle;
 
             const sessionData = {
@@ -1108,9 +1170,9 @@
             if (!list) return;
             list.innerHTML = '';
             
-            const newChatText = currentLang === 'en' ? "New Chat" : "Đoạn chat mới";
-            const recentText = currentLang === 'en' ? "RECENT HISTORY" : "LỊCH SỬ GẦN ĐÂY";
-            const emptyText = currentLang === 'en' ? "No chat history yet." : "Chưa có lịch sử trò chuyện.";
+            const newChatText = currentLang !== 'vi' ? "New Chat" : "Đoạn chat mới";
+            const recentText = currentLang !== 'vi' ? "RECENT HISTORY" : "LỊCH SỬ GẦN ĐÂY";
+            const emptyText = currentLang !== 'vi' ? "No chat history yet." : "Chưa có lịch sử trò chuyện.";
 
             list.innerHTML += `
                 <button onclick="startNewChat()" class="w-full text-left text-sm p-3 mb-4 rounded-xl border border-white/10 bg-white/10 hover:bg-white/20 text-white transition-all flex items-center gap-3 shadow-md cursor-pointer">
@@ -1144,7 +1206,7 @@
         }
 
         function deleteChatSession(id) {
-            const confirmMsg = currentLang === 'en' ? "Are you sure you want to delete this chat?" : "Bạn có chắc chắn muốn xóa đoạn trò chuyện này không?";
+            const confirmMsg = currentLang !== 'vi' ? "Are you sure you want to delete this chat?" : "Bạn có chắc chắn muốn xóa đoạn trò chuyện này không?";
             if(!confirm(confirmMsg)) return;
             currentUser.chatSessions = currentUser.chatSessions.filter(s => s.id !== id);
             saveUserData();
@@ -1160,7 +1222,7 @@
             const titleEl = document.getElementById('current-chat-title');
             if (!titleEl) return;
             const session = currentUser.chatSessions.find(s => s.id === currentChatSessionId);
-            const defaultName = currentLang === 'en' ? "Tu Nau" : "Tư Nẫu";
+            const defaultName = currentLang !== 'vi' ? "Tu Nau" : "Tư Nẫu";
             titleEl.innerText = session && session.title !== "Đoạn chat mới" && session.title !== "New Chat" ? session.title : defaultName;
         }
 
@@ -1191,7 +1253,7 @@
             if (!chatBoxContent) return;
 
             const greetName = getShortName(currentUser.name);
-            const welcomeText = currentLang === 'en' 
+            const welcomeText = currentLang !== 'vi' 
                 ? `Oh wow! Hello ${greetName}. I'm Uncle Tu Nau. I know everything about Quy Nhon. Ask me anything about food, hotels, or fun places to go!`
                 : `Chu cha! Chào ${greetName}. Tui là Anh Tư Nẫu. Tui biết tuốt Quy Nhơn, ${greetName} muốn ăn gì, ngủ khách sạn nào, chơi sao cứ hỏi tui nghen!`;
 
@@ -1225,14 +1287,13 @@
         }
 
         const aiAvatar = "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png";
-        const fallbackImg = "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg";
 
         function updateDynamicGreeting() {
             const hour = new Date().getHours();
             const nameToGreet = getShortName(currentUser.name); 
             let text = "";
             
-            if (currentLang === 'en') {
+            if (currentLang !== 'vi') {
                 if (hour >= 5 && hour < 11) text = `Morning! Put on some nice clothes and head to Eo Gio for great photos, ${nameToGreet}!`;
                 else if (hour >= 11 && hour < 14) text = `It's hot outside! How about a plate of jumping shrimp pancake for lunch, ${nameToGreet}?`;
                 else if (hour >= 14 && hour < 18) text = `Cool afternoon breeze, ${nameToGreet}! Wanna stroll along the beach or grab a sugarcane juice?`;
@@ -1249,7 +1310,7 @@
         }
 
         function deleteItinerary(index) {
-            const confirmMsg = currentLang === 'en' ? "Are you sure you want to delete this item?" : "Bạn có chắc chắn muốn xóa mục này hông?";
+            const confirmMsg = currentLang !== 'vi' ? "Are you sure you want to delete this item?" : "Bạn có chắc chắn muốn xóa mục này hông?";
             if(confirm(confirmMsg)) {
                 currentUser.itineraries.splice(index, 1);
                 saveUserData();
@@ -1273,7 +1334,7 @@
                     let date = isObj ? item.date : "";
 
                     let icon = type === 'itinerary' ? '<i class="fa-solid fa-map-location-dot text-blue-400"></i>' : '<i class="fa-solid fa-book-open text-orange-400"></i>';
-                    let typeName = type === 'itinerary' ? (currentLang === 'en' ? 'AI Itinerary' : 'Lịch trình AI') : (currentLang === 'en' ? 'AI Diary' : 'Nhật ký AI');
+                    let typeName = type === 'itinerary' ? (currentLang !== 'vi' ? 'AI Itinerary' : 'Lịch trình AI') : (currentLang !== 'vi' ? 'AI Diary' : 'Nhật ký AI');
 
                     savedItemsHtml += `
                     <div class="bg-black/30 p-3 rounded-2xl mb-3 text-left border border-white/10 hover:border-orange-500/50 hover:bg-white/5 transition-all relative group flex items-center cursor-pointer shadow-md" onclick="viewSavedItemSPA(${index})">
@@ -1296,13 +1357,13 @@
                 savedItemsHtml = `
                 <div class="flex flex-col items-center justify-center py-6 opacity-50">
                     <i class="fa-solid fa-folder-open text-4xl mb-2 text-gray-500"></i>
-                    <p class="text-xs text-gray-400 italic">${currentLang === 'en' ? 'Inventory is empty.' : 'Túi hành trang đang trống.'}</p>
+                    <p class="text-xs text-gray-400 italic">${currentLang !== 'vi' ? 'Inventory is empty.' : 'Túi hành trang đang trống.'}</p>
                 </div>`;
             }
 
-            const pointsLabel = currentLang === 'en' ? 'Gacha Points' : 'Điểm Gacha';
-            const savedLabel = currentLang === 'en' ? 'Saved Backpack' : 'Hành Trang Đã Lưu';
-            const logoutLabel = currentLang === 'en' ? 'Logout' : 'Đăng xuất';
+            const pointsLabel = currentLang !== 'vi' ? 'Gacha Points' : 'Điểm Gacha';
+            const savedLabel = currentLang !== 'vi' ? 'Saved Backpack' : 'Hành Trang Đã Lưu';
+            const logoutLabel = currentLang !== 'vi' ? 'Logout' : 'Đăng xuất';
 
             content.innerHTML = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden flex flex-col items-center gap-4 py-4 md:py-6 animate-fadeIn w-full">
@@ -1333,13 +1394,13 @@
             let isObj = typeof item === 'object';
             let type = isObj ? item.type : (item.includes("Lịch trình") || item.includes("Itinerary") ? 'itinerary' : 'diary');
             let contentStr = isObj ? item.content : item;
-            let date = isObj ? item.date : (currentLang === 'en' ? "Today" : "Hôm nay");
+            let date = isObj ? item.date : (currentLang !== 'vi' ? "Today" : "Hôm nay");
 
             const content = document.getElementById('profile-container');
-            const backTxt = currentLang === 'en' ? 'Back' : 'Quay lại';
-            const itinTxt = currentLang === 'en' ? 'Explore Itinerary' : 'Lịch Trình Khám Phá';
-            const diaryTxt = currentLang === 'en' ? 'Quy Nhon Memories' : 'Kỷ Niệm Quy Nhơn';
-            const dateTxt = currentLang === 'en' ? 'Date:' : 'Ngày viết:';
+            const backTxt = currentLang !== 'vi' ? 'Back' : 'Quay lại';
+            const itinTxt = currentLang !== 'vi' ? 'Explore Itinerary' : 'Lịch Trình Khám Phá';
+            const diaryTxt = currentLang !== 'vi' ? 'Quy Nhon Memories' : 'Kỷ Niệm Quy Nhơn';
+            const dateTxt = currentLang !== 'vi' ? 'Date:' : 'Ngày viết:';
 
             let detailHtml = `
                 <div class="animate-fadeIn pb-6 flex flex-col h-full w-full max-w-2xl mx-auto">
@@ -1381,13 +1442,13 @@
         }
 
         function renderLoginForm() {
-            const title = currentLang === 'en' ? 'Login' : 'Đăng nhập';
-            const googleBtn = currentLang === 'en' ? 'Continue with Google' : 'Tiếp tục với Google';
-            const orTxt = currentLang === 'en' ? 'or' : 'hoặc';
-            const emailLbl = currentLang === 'en' ? 'Email Address' : 'Địa chỉ email';
-            const passLbl = currentLang === 'en' ? 'Password' : 'Mật khẩu';
-            const noAcc = currentLang === 'en' ? "Don't have an account?" : 'Bạn chưa có tài khoản?';
-            const regTxt = currentLang === 'en' ? 'Register' : 'Đăng ký';
+            const title = currentLang !== 'vi' ? 'Login' : 'Đăng nhập';
+            const googleBtn = currentLang !== 'vi' ? 'Continue with Google' : 'Tiếp tục với Google';
+            const orTxt = currentLang !== 'vi' ? 'or' : 'hoặc';
+            const emailLbl = currentLang !== 'vi' ? 'Email Address' : 'Địa chỉ email';
+            const passLbl = currentLang !== 'vi' ? 'Password' : 'Mật khẩu';
+            const noAcc = currentLang !== 'vi' ? "Don't have an account?" : 'Bạn chưa có tài khoản?';
+            const regTxt = currentLang !== 'vi' ? 'Register' : 'Đăng ký';
 
             document.getElementById('profile-container').innerHTML = `
             <div class="w-full max-w-md mx-auto bg-white rounded-3xl p-6 md:p-8 text-gray-800 shadow-2xl mt-4 animate-fadeIn">
@@ -1419,13 +1480,13 @@
         }
 
         function renderRegisterForm() {
-            const title = currentLang === 'en' ? 'Register' : 'Đăng ký';
-            const googleBtn = currentLang === 'en' ? 'Continue with Google' : 'Tiếp tục với Google';
-            const orTxt = currentLang === 'en' ? 'or' : 'hoặc';
-            const emailLbl = currentLang === 'en' ? 'Email Address' : 'Địa chỉ email';
-            const passLbl = currentLang === 'en' ? 'Password' : 'Mật khẩu';
-            const hasAcc = currentLang === 'en' ? "Already have an account?" : 'Đã có tài khoản?';
-            const logTxt = currentLang === 'en' ? 'Login' : 'Đăng nhập';
+            const title = currentLang !== 'vi' ? 'Register' : 'Đăng ký';
+            const googleBtn = currentLang !== 'vi' ? 'Continue with Google' : 'Tiếp tục với Google';
+            const orTxt = currentLang !== 'vi' ? 'or' : 'hoặc';
+            const emailLbl = currentLang !== 'vi' ? 'Email Address' : 'Địa chỉ email';
+            const passLbl = currentLang !== 'vi' ? 'Password' : 'Mật khẩu';
+            const hasAcc = currentLang !== 'vi' ? "Already have an account?" : 'Đã có tài khoản?';
+            const logTxt = currentLang !== 'vi' ? 'Login' : 'Đăng nhập';
 
             document.getElementById('profile-container').innerHTML = `
             <div class="w-full max-w-md mx-auto bg-white rounded-3xl p-6 md:p-8 text-gray-800 shadow-2xl mt-4 animate-fadeIn">
@@ -1498,17 +1559,17 @@
         // ==========================================
         // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS
         // ==========================================
-        let itinData = { days: '', styles: [], budget: '', locationContext: currentLang === 'en' ? 'Quy Nhon Center' : 'Trung tâm thành phố Quy Nhơn' };
+        let itinData = { days: '', styles: [], budget: '', locationContext: currentLang !== 'vi' ? 'Quy Nhon Center' : 'Trung tâm thành phố Quy Nhơn' };
         let currentItinStep = 1;
 
         function openItineraryPlanner() {
             const modal = document.getElementById('modal');
             const chatArea = document.getElementById('chat-input-area');
-            document.getElementById('modal-title').innerText = currentLang === 'en' ? 'AI Itinerary Planner' : 'Lên Lịch Trình AI';
+            document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'AI Itinerary Planner' : 'Lên Lịch Trình AI';
             document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
             if(chatArea) chatArea.classList.add('hidden'); 
             
-            itinData = { days: '', styles: [], budget: '', locationContext: currentLang === 'en' ? 'Quy Nhon Center' : 'Trung tâm thành phố Quy Nhơn' };
+            itinData = { days: '', styles: [], budget: '', locationContext: currentLang !== 'vi' ? 'Quy Nhon Center' : 'Trung tâm thành phố Quy Nhơn' };
             currentItinStep = 1;
             renderStep(1); 
             modal.classList.remove('hidden');
@@ -1526,7 +1587,7 @@
             const content = document.getElementById('modal-content');
             let stepHtml = '';
 
-            const backTxt = currentLang === 'en' ? 'Back' : 'Quay lại';
+            const backTxt = currentLang !== 'vi' ? 'Back' : 'Quay lại';
             const backButtonHtml = step > 1 && step !== 'loading' ? `
                 <button onclick="goBackItinStep()" class="absolute top-2 left-4 text-gray-400 hover:text-orange-400 transition flex items-center gap-1 text-sm font-bold z-10">
                     <i class="fa-solid fa-chevron-left"></i> ${backTxt}
@@ -1547,14 +1608,14 @@
 
             switch(step) {
                 case 1:
-                    const q1Title = currentLang === 'en' ? "Where are you right now?" : "Bạn đang đứng ở đâu dẫy?";
-                    const q1Desc = currentLang === 'en' ? "AI needs your location to plan the most convenient route." : "Tư Nẫu cần biết vị trí để xếp lịch trình và tìm quán ăn cho tiện đường nhất.";
-                    const btnGps = currentLang === 'en' ? "Use GPS Location" : "Sử dụng định vị (GPS)";
-                    const btnGpsDesc = currentLang === 'en' ? "Auto scan around you" : "Tự động quét quanh chỗ bạn đứng";
-                    const skipText = currentLang === 'en' ? "Skip, just start from City Center" : "Bỏ qua, cứ tính từ trung tâm Quy Nhơn";
-                    const manualPlace = currentLang === 'en' ? "Enter hotel name, street..." : "Nhập tên khách sạn, tên đường...";
-                    const orTxt = currentLang === 'en' ? "OR" : "HOẶC";
-                    const centerCtx = currentLang === 'en' ? "Quy Nhon Center" : "Trung tâm thành phố Quy Nhơn";
+                    const q1Title = currentLang !== 'vi' ? "Where are you right now?" : "Bạn đang đứng ở đâu dẫy?";
+                    const q1Desc = currentLang !== 'vi' ? "AI needs your location to plan the most convenient route." : "Tư Nẫu cần biết vị trí để xếp lịch trình và tìm quán ăn cho tiện đường nhất.";
+                    const btnGps = currentLang !== 'vi' ? "Use GPS Location" : "Sử dụng định vị (GPS)";
+                    const btnGpsDesc = currentLang !== 'vi' ? "Auto scan around you" : "Tự động quét quanh chỗ bạn đứng";
+                    const skipText = currentLang !== 'vi' ? "Skip, just start from City Center" : "Bỏ qua, cứ tính từ trung tâm Quy Nhơn";
+                    const manualPlace = currentLang !== 'vi' ? "Enter hotel name, street..." : "Nhập tên khách sạn, tên đường...";
+                    const orTxt = currentLang !== 'vi' ? "OR" : "HOẶC";
+                    const centerCtx = currentLang !== 'vi' ? "Quy Nhon Center" : "Trung tâm thành phố Quy Nhơn";
 
                     stepHtml = `
                         ${progressBar}
@@ -1591,11 +1652,11 @@
                         </div>`;
                     break;
                 case 2:
-                    const q2Title = currentLang === 'en' ? "How long is your trip?" : "Bạn định ở Quy Nhơn mấy ngày?";
-                    const day1 = currentLang === 'en' ? "1 Day (Quick Tour)" : "1 Ngày (Chớp nhoáng)";
-                    const day2 = currentLang === 'en' ? "2 Days 1 Night (Weekend)" : "2 Ngày 1 Đêm (Cuối tuần)";
-                    const day3 = currentLang === 'en' ? "3 Days 2 Nights (Standard)" : "3 Ngày 2 Đêm (Tiêu chuẩn)";
-                    const custDay = currentLang === 'en' ? "Custom (e.g., Half a day...)" : "Nhập tùy ý (vd: Đi nửa ngày...)";
+                    const q2Title = currentLang !== 'vi' ? "How long is your trip?" : "Bạn định ở Quy Nhơn mấy ngày?";
+                    const day1 = currentLang !== 'vi' ? "1 Day (Quick Tour)" : "1 Ngày (Chớp nhoáng)";
+                    const day2 = currentLang !== 'vi' ? "2 Days 1 Night (Weekend)" : "2 Ngày 1 Đêm (Cuối tuần)";
+                    const day3 = currentLang !== 'vi' ? "3 Days 2 Nights (Standard)" : "3 Ngày 2 Đêm (Tiêu chuẩn)";
+                    const custDay = currentLang !== 'vi' ? "Custom (e.g., Half a day...)" : "Nhập tùy ý (vd: Đi nửa ngày...)";
 
                     stepHtml = `
                         ${progressBar}
@@ -1623,23 +1684,23 @@
                     break;
                 case 3:
                     itinData.styles = []; 
-                    const q3Title = currentLang === 'en' ? "What's your travel style?" : "Gu đi chơi của bạn ra sao?";
-                    const q3Sub = currentLang === 'en' ? "(You can select multiple)" : "(Có thể chọn nhiều mục nhen)";
+                    const q3Title = currentLang !== 'vi' ? "What's your travel style?" : "Gu đi chơi của bạn ra sao?";
+                    const q3Sub = currentLang !== 'vi' ? "(You can select multiple)" : "(Có thể chọn nhiều mục nhen)";
                     
-                    const st1Title = currentLang === 'en' ? "Photography" : "Sống ảo";
-                    const st1Sub = currentLang === 'en' ? "Hot check-in spots" : "Điểm check-in rần rần";
+                    const st1Title = currentLang !== 'vi' ? "Photography" : "Sống ảo";
+                    const st1Sub = currentLang !== 'vi' ? "Hot check-in spots" : "Điểm check-in rần rần";
 
-                    const st2Title = currentLang === 'en' ? "Food Tour" : "Ăn sập Quy Nhơn";
-                    const st2Sub = currentLang === 'en' ? "Local seafood & snacks" : "Bún rạm, bánh xèo, ốc...";
+                    const st2Title = currentLang !== 'vi' ? "Food Tour" : "Ăn sập Quy Nhơn";
+                    const st2Sub = currentLang !== 'vi' ? "Local seafood & snacks" : "Bún rạm, bánh xèo, ốc...";
 
-                    const st3Title = currentLang === 'en' ? "Relax & Chill" : "Chill & Nghỉ dưỡng";
-                    const st3Sub = currentLang === 'en' ? "Peaceful & slow paced" : "Nhẹ nhàng, thư giãn";
+                    const st3Title = currentLang !== 'vi' ? "Relax & Chill" : "Chill & Nghỉ dưỡng";
+                    const st3Sub = currentLang !== 'vi' ? "Peaceful & slow paced" : "Nhẹ nhàng, thư giãn";
 
-                    const st4Title = currentLang === 'en' ? "Culture" : "Văn hóa & Lịch sử";
-                    const st4Sub = currentLang === 'en' ? "Cham towers, museums" : "Tháp Chăm, Bảo tàng";
+                    const st4Title = currentLang !== 'vi' ? "Culture" : "Văn hóa & Lịch sử";
+                    const st4Sub = currentLang !== 'vi' ? "Cham towers, museums" : "Tháp Chăm, Bảo tàng";
 
-                    const custStyle = currentLang === 'en' ? "Other notes (e.g., Nightlife...)" : "Hoặc ghi chú thêm (vd: Thích đi bar...)";
-                    const nextBtn = currentLang === 'en' ? "Continue" : "Tiếp tục";
+                    const custStyle = currentLang !== 'vi' ? "Other notes (e.g., Nightlife...)" : "Hoặc ghi chú thêm (vd: Thích đi bar...)";
+                    const nextBtn = currentLang !== 'vi' ? "Continue" : "Tiếp tục";
 
                     stepHtml = `
                         ${progressBar}
@@ -1678,14 +1739,14 @@
                         </div>`;
                     break;
                 case 4:
-                    const q4Title = currentLang === 'en' ? "What's your budget like?" : "Ví tiền của bạn cỡ nào?";
-                    const b1 = currentLang === 'en' ? "Budget / Student" : "Tiết kiệm, chuẩn sinh viên học sinh";
-                    const b1Txt = currentLang === 'en' ? "Budget-friendly" : "Học sinh / Sinh viên (Tiết kiệm)";
-                    const b2 = currentLang === 'en' ? "Standard / Comfortable" : "Tiêu chuẩn, ăn chơi thoải mái";
-                    const b2Txt = currentLang === 'en' ? "Standard & Comfortable" : "Thoải mái (Tiêu chuẩn)";
-                    const b3 = currentLang === 'en' ? "Luxury / Premium" : "Sang trọng, ưu tiên dịch vụ cao cấp, resort";
-                    const b3Txt = currentLang === 'en' ? "Luxury & Premium" : "Sang chảnh (Dịch vụ cao cấp)";
-                    const custBudget = currentLang === 'en' ? "Enter exact (e.g. 100 USD)" : "Nhập mức cụ thể (vd: 5 triệu 1 người)";
+                    const q4Title = currentLang !== 'vi' ? "What's your budget like?" : "Ví tiền của bạn cỡ nào?";
+                    const b1 = currentLang !== 'vi' ? "Budget / Student" : "Tiết kiệm, chuẩn sinh viên học sinh";
+                    const b1Txt = currentLang !== 'vi' ? "Budget-friendly" : "Học sinh / Sinh viên (Tiết kiệm)";
+                    const b2 = currentLang !== 'vi' ? "Standard / Comfortable" : "Tiêu chuẩn, ăn chơi thoải mái";
+                    const b2Txt = currentLang !== 'vi' ? "Standard & Comfortable" : "Thoải mái (Tiêu chuẩn)";
+                    const b3 = currentLang !== 'vi' ? "Luxury / Premium" : "Sang trọng, ưu tiên dịch vụ cao cấp, resort";
+                    const b3Txt = currentLang !== 'vi' ? "Luxury & Premium" : "Sang chảnh (Dịch vụ cao cấp)";
+                    const custBudget = currentLang !== 'vi' ? "Enter exact (e.g. 100 USD)" : "Nhập mức cụ thể (vd: 5 triệu 1 người)";
 
                     stepHtml = `
                         ${progressBar}
@@ -1715,8 +1776,8 @@
                         </div>`;
                     break;
                 case 'loading':
-                    const loadTitle = currentLang === 'en' ? "SCANNING DATA..." : "Đang quét dữ liệu...";
-                    const loadDesc = currentLang === 'en' ? "Uncle Tu is searching the web for the best spots for you!" : "Anh Tư đang lướt mạng tìm quán ngon, chỗ đẹp nhất cho bạn nhen!";
+                    const loadTitle = currentLang !== 'vi' ? "SCANNING DATA..." : "Đang quét dữ liệu...";
+                    const loadDesc = currentLang !== 'vi' ? "Uncle Tu is searching the web for the best spots for you!" : "Anh Tư đang lướt mạng tìm quán ngon, chỗ đẹp nhất cho bạn nhen!";
                     
                     stepHtml = `
                         <div class="flex flex-col items-center justify-center py-12 text-center h-[50vh]">
@@ -1735,7 +1796,7 @@
 
         function getLocationAndNext() {
             const btn = document.getElementById('btn-location');
-            const loadTxt = currentLang === 'en' ? "Locating..." : "Đang lấy tọa độ...";
+            const loadTxt = currentLang !== 'vi' ? "Locating..." : "Đang lấy tọa độ...";
             btn.innerHTML = `<div class="flex items-center gap-2 text-orange-400"><i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}</div>`;
             
             if (navigator.geolocation) {
@@ -1745,9 +1806,9 @@
                         selectStep(1, itinData.locationContext); 
                     },
                     (error) => {
-                        alert(currentLang === 'en' ? "Location failed! Please enter manually." : "Hổng lấy được vị trí rầu! Bạn nhập thủ công tên đường dzo ô trống bên dưới nhen.");
-                        const errTitle = currentLang === 'en' ? "Error locating" : "Lỗi lấy vị trí";
-                        const errDesc = currentLang === 'en' ? "Please type below" : "Vui lòng nhập tay ở ô bên dưới";
+                        alert(currentLang !== 'vi' ? "Location failed! Please enter manually." : "Hổng lấy được vị trí rầu! Bạn nhập thủ công tên đường dzo ô trống bên dưới nhen.");
+                        const errTitle = currentLang !== 'vi' ? "Error locating" : "Lỗi lấy vị trí";
+                        const errDesc = currentLang !== 'vi' ? "Please type below" : "Vui lòng nhập tay ở ô bên dưới";
                         btn.innerHTML = `
                             <div>
                                 <p class="font-bold text-sm text-red-400">${errTitle}</p>
@@ -1790,7 +1851,7 @@
             if (customInput) itinData.styles.push(customInput);
 
             if (itinData.styles.length === 0) {
-                alert(currentLang === 'en' ? "Please pick at least one style!" : "Bạn chọn ít nhất 1 gu đi chơi để Anh Tư dễ tính nhen!");
+                alert(currentLang !== 'vi' ? "Please pick at least one style!" : "Bạn chọn ít nhất 1 gu đi chơi để Anh Tư dễ tính nhen!");
                 return;
             }
             renderStep(4);
@@ -1864,8 +1925,9 @@
             const userName = getShortName(currentUser.name);
             const styleString = itinData.styles.join(' AND ');
 
-            const langInstruction = currentLang === 'en'
-                ? `Act as "Uncle Tu", a local guide. Reply entirely in ENGLISH. The user's name is "${userName}".`
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const langInstruction = currentLang !== 'vi'
+                ? `Act as "Uncle Tu", a local guide. Reply entirely in ${aiLang}. The user's name is "${userName}".`
                 : `Đóng vai "Anh Tư", thổ địa Quy Nhơn, xưng hô thân thiện với "${userName}".`;
 
             const prompt = `${langInstruction}
@@ -1877,7 +1939,7 @@
             1. BẮT BUỘC tuân thủ thời tiết: Nếu thời tiết xấu (mưa, dông, biển động), TUYỆT ĐỐI KHÔNG xếp lịch đi biển đảo (Kỳ Co, Hòn Khô, Cù Lao Xanh), hãy chuyển sang các điểm trong nhà, bảo tàng, tháp Chăm hoặc food tour ẩm thực ấm cúng. Nếu thời tiết nắng đẹp, ưu tiên biển đảo.
             2. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
             3. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
-            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
+            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${aiLang}:
             {
                 "message": "Lời chào, tóm tắt lịch trình... / Greeting and summary...",
                 "itinerary": [
@@ -1898,12 +1960,12 @@
                     const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
                     const data = JSON.parse(cleanRes);
 
-                    const doneTxt = currentLang === 'en' ? 'Done' : 'Hoàn tất';
-                    const redoTxt = currentLang === 'en' ? 'Redo' : 'Làm lại';
-                    const mTxt = currentLang === 'en' ? 'Morning:' : 'Sáng:';
-                    const nTxt = currentLang === 'en' ? 'Noon:' : 'Trưa:';
-                    const aTxt = currentLang === 'en' ? 'Afternoon:' : 'Chiều:';
-                    const eTxt = currentLang === 'en' ? 'Evening:' : 'Tối:';
+                    const doneTxt = currentLang !== 'vi' ? 'Done' : 'Hoàn tất';
+                    const redoTxt = currentLang !== 'vi' ? 'Redo' : 'Làm lại';
+                    const mTxt = currentLang !== 'vi' ? 'Morning:' : 'Sáng:';
+                    const nTxt = currentLang !== 'vi' ? 'Noon:' : 'Trưa:';
+                    const aTxt = currentLang !== 'vi' ? 'Afternoon:' : 'Chiều:';
+                    const eTxt = currentLang !== 'vi' ? 'Evening:' : 'Tối:';
 
                     let htmlContent = `
                         <div class="pb-6">
@@ -1946,7 +2008,7 @@
                     if (currentUser.isLoggedIn) {
                         currentUser.itineraries.unshift({
                             type: 'itinerary',
-                            title: (currentLang === 'en' ? `Itinerary ${itinData.days} - Style: ${itinData.styles[0]}` : `Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}`),
+                            title: (currentLang !== 'vi' ? `Itinerary ${itinData.days} - Style: ${itinData.styles[0]}` : `Lịch trình ${itinData.days} - Gu: ${itinData.styles[0]}`),
                             content: htmlContent,
                             date: new Date().toLocaleDateString('vi-VN')
                         });
@@ -1962,8 +2024,8 @@
         }
 
         function renderFallback(content) {
-            const errTxt = currentLang === 'en' ? 'Network issue! Here is a sample itinerary instead.' : 'Mạng chập chờn xíu, gửi tạm bạn lịch trình chuẩn này tham khảo trước nhen!';
-            const btnTxt = currentLang === 'en' ? 'Try generating again' : 'Thử tạo lại lịch trình AI';
+            const errTxt = currentLang !== 'vi' ? 'Network issue! Here is a sample itinerary instead.' : 'Mạng chập chờn xíu, gửi tạm bạn lịch trình chuẩn này tham khảo trước nhen!';
+            const btnTxt = currentLang !== 'vi' ? 'Try generating again' : 'Thử tạo lại lịch trình AI';
 
             content.innerHTML = `
                 <div class="pb-6">
@@ -1971,7 +2033,7 @@
                         ${errTxt}
                     </div>
                     <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
-                        <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">${currentLang === 'en' ? 'Day 1: Beautiful Ocean' : 'Ngày 1: Biển xanh vẫy gọi'}</h3>
+                        <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">${currentLang !== 'vi' ? 'Day 1: Beautiful Ocean' : 'Ngày 1: Biển xanh vẫy gọi'}</h3>
                         <p class="text-sm text-gray-300 mb-2">Enjoy Eo Gio and Ky Co beach...</p>
                         <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Eo+Gio,+Quy+Nhon&output=embed"></iframe>
                     </div>
@@ -2013,7 +2075,7 @@
             document.getElementById('review-place-img').src = imgSrc;
             document.getElementById('review-place-name').innerText = placeName;
 
-            const drivingTxt = currentLang === 'en' ? "Uncle Tu is driving there to check..." : "Anh Tư đang chạy xe đi hỏi thăm thực tế...";
+            const drivingTxt = currentLang !== 'vi' ? "Uncle Tu is driving there to check..." : "Anh Tư đang chạy xe đi hỏi thăm thực tế...";
             document.getElementById('review-content').innerHTML = `
                 <div class="flex flex-col items-center justify-center py-4 gap-3">
                     <div class="relative w-14 h-14 flex items-center justify-center">
@@ -2035,13 +2097,13 @@
                 };
                 
                 if (locationData) {
-                    if (currentLang === 'en' && locationData.review_en) reviewData = locationData.review_en;
+                    if (currentLang !== 'vi' && locationData.review_en) reviewData = locationData.review_en;
                     else if (locationData.review_vi) reviewData = locationData.review_vi;
                 }
                 
-                const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
-                const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
-                const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
+                const prosTxt = currentLang !== 'vi' ? "Pros" : "Điểm ưng ý";
+                const consTxt = currentLang !== 'vi' ? "Cons" : "Điểm trừ";
+                const sumTxt = currentLang !== 'vi' ? "Summary" : "Chốt lại";
 
                 finalHtml = `
                     <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[300px] pr-3 pb-6 animate-fadeIn">
@@ -2102,14 +2164,14 @@
             const fallbackVi = "Tư Nẫu đang thu thập thêm tư liệu lịch sử cho địa điểm này. Bạn quay lại sau nhen!";
             const fallbackEn = "Uncle Tu is gathering more historical documents for this place. Come back later!";
             
-            const historyText = currentLang === 'en' 
+            const historyText = currentLang !== 'vi' 
                 ? (locationData.history_en || fallbackEn) 
                 : (locationData.history_vi || fallbackVi);
                 
-            const sourceText = locationData.source || (currentLang === 'en' ? "Local Archives" : "Tài liệu địa phương");
+            const sourceText = locationData.source || (currentLang !== 'vi' ? "Local Archives" : "Tài liệu địa phương");
             
-            const originTxt = currentLang === 'en' ? "Historical Information" : "Thông Tin Lịch Sử";
-            const sourceLbl = currentLang === 'en' ? "Source" : "Nguồn tham khảo";
+            const originTxt = currentLang !== 'vi' ? "Historical Information" : "Thông Tin Lịch Sử";
+            const sourceLbl = currentLang !== 'vi' ? "Source" : "Nguồn tham khảo";
 
             document.getElementById('history-content').innerHTML = `
                 <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[350px] pr-3 pb-6 animate-fadeIn">
@@ -2131,10 +2193,10 @@
         // 5. CÁC TÍNH NĂNG PHỤ (GIỮ TRONG MODAL) 
         // ==========================================
         function getDictContent() {
-            const desc = currentLang === 'en' ? "Enter local Binh Dinh slang, and Uncle Tu will translate it to standard text!" : "Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!";
-            const ph = currentLang === 'en' ? "Example: Chu cha..." : "Ví dụ: Chu cha, dữ thần...";
-            const btn = currentLang === 'en' ? "Translate to Standard" : "Dịch sang tiếng Phổ Thông";
-            const outText = currentLang === 'en' ? "Translation will appear here..." : "Kết quả dịch sẽ hiện ra ở đây...";
+            const desc = currentLang !== 'vi' ? "Enter local Binh Dinh slang, and Uncle Tu will translate it to standard text!" : "Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!";
+            const ph = currentLang !== 'vi' ? "Example: Chu cha..." : "Ví dụ: Chu cha, dữ thần...";
+            const btn = currentLang !== 'vi' ? "Translate to Standard" : "Dịch sang tiếng Phổ Thông";
+            const outText = currentLang !== 'vi' ? "Translation will appear here..." : "Kết quả dịch sẽ hiện ra ở đây...";
             
             return `
                 <div class="space-y-4">
@@ -2165,16 +2227,16 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 flex flex-col items-center">
-                            <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">${currentLang === 'en' ? 'Sea Status' : 'Tình trạng biển'}</span>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">${currentLang !== 'vi' ? 'Sea Status' : 'Tình trạng biển'}</span>
                             <span id="sea-state" class="text-sm font-bold text-blue-300">...</span>
                         </div>
                         <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-3 flex flex-col items-center">
-                            <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">${currentLang === 'en' ? 'Island Speedboat' : 'Cano đi đảo'}</span>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold mb-1">${currentLang !== 'vi' ? 'Island Speedboat' : 'Cano đi đảo'}</span>
                             <span id="cano-state" class="text-sm font-bold text-green-400">...</span>
                         </div>
                     </div>
                     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left relative overflow-hidden">
-                        <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> ${currentLang === 'en' ? "Uncle Tu's Advice:" : "Lời khuyên Anh Tư:"}</h4>
+                        <h4 class="font-bold text-orange-400 text-sm mb-1 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> ${currentLang !== 'vi' ? "Uncle Tu's Advice:" : "Lời khuyên Anh Tư:"}</h4>
                         <p id="weather-advice" class="text-xs text-gray-300 leading-relaxed italic">...</p>
                     </div>
 
@@ -2200,51 +2262,51 @@
                 document.getElementById('temp-display').innerText = temp + '°C';
                 
                 let icon = '<i class="fa-solid fa-sun"></i>';
-                let desc = currentLang === 'en' ? 'Sunny & Clear' : 'Nắng đẹp, trời trong';
+                let desc = currentLang !== 'vi' ? 'Sunny & Clear' : 'Nắng đẹp, trời trong';
                 let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
-                let seaState = currentLang === 'en' ? 'Calm 🌊' : 'Sóng Êm 🌊';
-                let canoState = currentLang === 'en' ? 'Operating 🟢' : 'Hoạt Động 🟢';
+                let seaState = currentLang !== 'vi' ? 'Calm 🌊' : 'Sóng Êm 🌊';
+                let canoState = currentLang !== 'vi' ? 'Operating 🟢' : 'Hoạt Động 🟢';
                 let advice = '';
 
                 if (weatherCode >= 51 && weatherCode <= 67) {
-                    desc = currentLang === 'en' ? 'Rainy' : 'Trời có mưa';
+                    desc = currentLang !== 'vi' ? 'Rainy' : 'Trời có mưa';
                     icon = '<i class="fa-solid fa-cloud-rain"></i>';
                     colorClass = 'text-blue-400';
-                    seaState = currentLang === 'en' ? 'Slightly Rough 🌧️' : 'Biển Động Nhẹ 🌧️';
-                    canoState = currentLang === 'en' ? 'Limited 🟡' : 'Hạn Chế 🟡';
-                    advice = currentLang === 'en' 
+                    seaState = currentLang !== 'vi' ? 'Slightly Rough 🌧️' : 'Biển Động Nhẹ 🌧️';
+                    canoState = currentLang !== 'vi' ? 'Limited 🟡' : 'Hạn Chế 🟡';
+                    advice = currentLang !== 'vi' 
                         ? 'It is raining. Going to the island might be cold. Stay in the city center or hit a cozy cafe!'
                         : 'Trời đang có mưa, ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
                 } else if (weatherCode >= 95 || windSpeed > 30) {
-                    desc = currentLang === 'en' ? 'Thunderstorms' : 'Mưa dông / Gió lớn';
+                    desc = currentLang !== 'vi' ? 'Thunderstorms' : 'Mưa dông / Gió lớn';
                     icon = '<i class="fa-solid fa-cloud-bolt"></i>';
                     colorClass = 'text-purple-500';
-                    seaState = currentLang === 'en' ? 'Very Rough ⛈️' : 'Biển Động Mạnh ⛈️';
-                    canoState = currentLang === 'en' ? 'Suspended 🔴' : 'Tạm Dừng 🔴';
-                    advice = currentLang === 'en'
+                    seaState = currentLang !== 'vi' ? 'Very Rough ⛈️' : 'Biển Động Mạnh ⛈️';
+                    canoState = currentLang !== 'vi' ? 'Suspended 🔴' : 'Tạm Dừng 🔴';
+                    advice = currentLang !== 'vi'
                         ? 'Bad weather! Speedboats are suspended. Grab some warm local food instead.'
                         : 'Thời tiết xấu quá! Cano cấm xuất bến rồi. Kiếm quán bánh xèo tôm nhảy ăn cho ấm bụng nhen!';
                 } else if (!isDay) {
-                    desc = weatherCode > 0 ? (currentLang === 'en' ? 'Cloudy Night' : 'Tối có mây') : (currentLang === 'en' ? 'Clear Night' : 'Trời quang mây tạnh');
+                    desc = weatherCode > 0 ? (currentLang !== 'vi' ? 'Cloudy Night' : 'Tối có mây') : (currentLang !== 'vi' ? 'Clear Night' : 'Trời quang mây tạnh');
                     icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
                     colorClass = 'text-yellow-200';
-                    advice = currentLang === 'en' ? 'Nighttime! Perfect for hitting the night market and grabbing some street food!' : 'Tối rầu, lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
+                    advice = currentLang !== 'vi' ? 'Nighttime! Perfect for hitting the night market and grabbing some street food!' : 'Tối rầu, lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
                 } else {
                     if (weatherCode >= 1 && weatherCode <= 3) {
-                        desc = currentLang === 'en' ? 'Partly Cloudy' : 'Có mây rải rác';
+                        desc = currentLang !== 'vi' ? 'Partly Cloudy' : 'Có mây rải rác';
                         icon = '<i class="fa-solid fa-cloud-sun"></i>';
                         colorClass = 'text-gray-300';
                     }
                     if (temp >= 32) {
-                        advice = currentLang === 'en' ? `It's very hot (${temp}°C)! Stay hydrated and prefer indoor places during noon.` : `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng.`;
+                        advice = currentLang !== 'vi' ? `It's very hot (${temp}°C)! Stay hydrated and prefer indoor places during noon.` : `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng.`;
                     } else if (temp >= 30) {
-                        advice = currentLang === 'en' ? `Quite warm today (${temp}°C). Wear sunscreen if you go to the beach!` : `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co nhớ trùm kín mít, bôi kem chống nắng kỹ.`;
+                        advice = currentLang !== 'vi' ? `Quite warm today (${temp}°C). Wear sunscreen if you go to the beach!` : `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co nhớ trùm kín mít, bôi kem chống nắng kỹ.`;
                     } else {
-                        advice = currentLang === 'en' ? `Perfect weather (${temp}°C). Highly recommended to visit Ky Co or Eo Gio today!` : `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co hay Eo Gió nhen!`;
+                        advice = currentLang !== 'vi' ? `Perfect weather (${temp}°C). Highly recommended to visit Ky Co or Eo Gio today!` : `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co hay Eo Gió nhen!`;
                     }
                 }
 
-                currentWeatherContext = currentLang === 'en'
+                currentWeatherContext = currentLang !== 'vi'
                     ? `Current weather: ${temp}°C, ${desc}. Sea state: ${seaState}. Speedboats: ${canoState}.`
                     : `Thời tiết hiện tại: ${temp}°C, ${desc}. Biển: ${seaState}. Tàu thuyền: ${canoState}.`;
 
@@ -2257,7 +2319,7 @@
 
                 const forecastContainer = document.getElementById('forecast-container');
                 forecastContainer.innerHTML = '';
-                const days = currentLang === 'en' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                const days = currentLang !== 'vi' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
                 
                 for (let i = 1; i <= 5; i++) {
                     const date = new Date(data.daily.time[i]);
@@ -2278,10 +2340,10 @@
             } catch (error) {
                 console.error("Lỗi lấy thời tiết:", error);
                 document.getElementById('temp-display').innerText = '30°C';
-                document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Offline Data' : 'Dữ liệu offline';
+                document.getElementById('weather-desc').innerText = currentLang !== 'vi' ? 'Offline Data' : 'Dữ liệu offline';
                 document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
-                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
+                document.getElementById('weather-advice').innerText = currentLang !== 'vi' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
+                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang !== 'vi' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
             }
         }
 
@@ -2291,7 +2353,7 @@
             const chatArea = document.getElementById('chat-input-area');
             
             if (name === 'Chatbot Thổ Địa') {
-                document.getElementById('modal-title').innerText = currentLang === 'en' ? 'Tu Nau Assistant' : 'Trợ Lý Tư Nẫu';
+                document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Tu Nau Assistant' : 'Trợ Lý Tư Nẫu';
                 document.getElementById('modal-icon').innerHTML = '<i class="fa-regular fa-comments"></i>';
                 
                 if (!document.getElementById('chat-container')) {
@@ -2319,12 +2381,12 @@
                 if(chatArea) chatArea.classList.add('hidden');
                 
                 if(name === 'Thời Tiết & Đi Đảo') {
-                    document.getElementById('modal-title').innerText = currentLang === 'en' ? 'Weather & Islands' : name;
+                    document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Weather & Islands' : name;
                     document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-cloud-sun-rain"></i>';
                     content.innerHTML = getWeatherContent();
                     fetchRealWeather();
                 } else if(name === 'Từ Điển Tiếng Nẫu') {
-                    document.getElementById('modal-title').innerText = currentLang === 'en' ? 'Local Slang Dictionary' : name;
+                    document.getElementById('modal-title').innerText = currentLang !== 'vi' ? 'Local Slang Dictionary' : name;
                     document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-language"></i>';
                     content.innerHTML = getDictContent();
                 }
@@ -2336,19 +2398,20 @@
             const btn = event.currentTarget;
             
             if (currentChatMessages.length === 0) {
-                alert(currentLang === 'en' ? "You haven't chatted with Uncle Tu yet!" : "Chu cha! Bạn chưa trò chuyện gì với Anh Tư hết!");
+                alert(currentLang !== 'vi' ? "You haven't chatted with Uncle Tu yet!" : "Chu cha! Bạn chưa trò chuyện gì với Anh Tư hết!");
                 return;
             }
 
-            btn.innerHTML = currentLang === 'en' ? '<i class="fa-solid fa-spinner fa-spin"></i> Writing diary...' : '<i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang nhớ lại lịch trình...';
+            btn.innerHTML = currentLang !== 'vi' ? '<i class="fa-solid fa-spinner fa-spin"></i> Writing diary...' : '<i class="fa-solid fa-spinner fa-spin"></i> Anh Tư đang nhớ lại lịch trình...';
             btn.disabled = true;
 
             const userNameContext = getShortName(currentUser.name);
             const currentDate = new Date().toLocaleDateString('vi-VN');
             const chatLog = currentChatMessages.map(m => `${m.role === 'user' ? 'Khách' : 'Anh Tư'}: ${m.text || m.rawText || ''}`).join("\n").substring(0, 1500); 
 
-            const langInstruction = currentLang === 'en'
-                ? `Reply entirely in ENGLISH. Write an energetic travel diary entry (80-120 words) based on the chat. Start with "Date: ${currentDate}".`
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const langInstruction = currentLang !== 'vi'
+                ? `Reply entirely in ${aiLang}. Write an energetic travel diary entry (80-120 words) based on the chat. Start with "Date: ${currentDate}".`
                 : `Giọng điệu Gen Z, có từ địa phương Quy Nhơn. Bắt đầu bằng: "Ngày ${currentDate}".`;
 
             const prompt = `Bạn là trợ lý viết nhật ký du lịch. Dựa vào Lịch sử trò chuyện dưới đây giữa ${userNameContext} và thổ địa Anh Tư, hãy viết một đoạn nhật ký hành trình.
@@ -2361,10 +2424,10 @@
             const res = await fetchSpecialAI(prompt, 3, false);
             const contentDiv = document.getElementById('journal-content');
             
-            let finalContent = res || (currentLang === 'en' ? "Great day in Quy Nhon! Can't wait to come back. 🌊✨" : "Hôm nay ở Quy Nhơn vui ác liệt luôn! Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨");
+            let finalContent = res || (currentLang !== 'vi' ? "Great day in Quy Nhon! Can't wait to come back. 🌊✨" : "Hôm nay ở Quy Nhơn vui ác liệt luôn! Nhất định sẽ lưu lại để lần sau đi tiếp nhen! 🌊✨");
             
-            const btnSaveTxt = currentLang === 'en' ? 'Save to Profile' : 'Lưu vào Hồ sơ';
-            const btnRewriteTxt = currentLang === 'en' ? 'Generate Again' : 'Tạo Lại Nhật Ký Khác';
+            const btnSaveTxt = currentLang !== 'vi' ? 'Save to Profile' : 'Lưu vào Hồ sơ';
+            const btnRewriteTxt = currentLang !== 'vi' ? 'Generate Again' : 'Tạo Lại Nhật Ký Khác';
 
             contentDiv.innerHTML = `
                 <div class="animate-fadeIn w-full max-w-xl mx-auto flex flex-col h-[60vh] md:h-[50vh]">
@@ -2395,9 +2458,9 @@
                 });
                 await saveUserData(); 
                 
-                const title = currentLang === 'en' ? 'Saved Successfully!' : 'Đã cất cẩn thận vào Hồ sơ!';
-                const sub = currentLang === 'en' ? 'Check your Profile to view it again.' : 'Bấm vào mục "Cá nhân" để đọc lại nhen.';
-                const btn = currentLang === 'en' ? 'View Profile' : 'Xem Hồ Sơ';
+                const title = currentLang !== 'vi' ? 'Saved Successfully!' : 'Đã cất cẩn thận vào Hồ sơ!';
+                const sub = currentLang !== 'vi' ? 'Check your Profile to view it again.' : 'Bấm vào mục "Cá nhân" để đọc lại nhen.';
+                const btn = currentLang !== 'vi' ? 'View Profile' : 'Xem Hồ Sơ';
 
                 document.getElementById('journal-content').innerHTML = `
                     <div class="flex flex-col items-center justify-center py-6 animate-fadeIn text-center">
@@ -2407,7 +2470,7 @@
                         <button onclick="switchPage('page-profile', 'profile')" class="mt-4 bg-white/10 px-4 py-2 rounded-xl text-orange-400 text-sm font-bold hover:bg-white/20 transition flex items-center gap-1.5"><i class="fa-regular fa-circle-user"></i> ${btn}</button>
                     </div>`;
             } else {
-                alert(currentLang === 'en' ? "Please login to save!" : "Bạn cần đăng nhập để lưu giữ kỷ niệm này nhen!");
+                alert(currentLang !== 'vi' ? "Please login to save!" : "Bạn cần đăng nhập để lưu giữ kỷ niệm này nhen!");
                 switchPage('page-profile', 'profile');
             }
         }
@@ -2422,8 +2485,8 @@
             if (!currentUser.isLoggedIn) {
                 pointsEl.innerText = '0';
                 area.innerHTML = `
-                    <p class="text-sm text-gray-300 mb-4 mt-4">${currentLang === 'en' ? 'Login to save your Gacha points and challenge progress!' : 'Tư Nẫu cần bạn đăng nhập để có thể lưu điểm thưởng và tiến độ!'}</p>
-                    <button onclick="switchPage('page-profile', 'profile')" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95">${currentLang === 'en' ? 'Login Now' : 'Đăng Nhập Ngay'}</button>
+                    <p class="text-sm text-gray-300 mb-4 mt-4">${currentLang !== 'vi' ? 'Login to save your Gacha points and challenge progress!' : 'Tư Nẫu cần bạn đăng nhập để có thể lưu điểm thưởng và tiến độ!'}</p>
+                    <button onclick="switchPage('page-profile', 'profile')" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95">${currentLang !== 'vi' ? 'Login Now' : 'Đăng Nhập Ngay'}</button>
                 `;
                 return;
             }
@@ -2434,9 +2497,9 @@
             
             if (activeChallenges.length === 0 && activeTrivia.length === 0) {
                 area.innerHTML = `
-                    <p class="text-sm text-gray-300 mb-4 mt-4">${currentLang === 'en' ? 'Draw your exclusive Quy Nhon challenges and quizzes!' : 'Rút thẻ để nhận bộ Thử Thách Thực Tế & Câu Hỏi Trắc Nghiệm độc quyền.'}</p>
+                    <p class="text-sm text-gray-300 mb-4 mt-4">${currentLang !== 'vi' ? 'Draw your exclusive Quy Nhon challenges and quizzes!' : 'Rút thẻ để nhận bộ Thử Thách Thực Tế & Câu Hỏi Trắc Nghiệm độc quyền.'}</p>
                     <button id="btn-roll-gacha" onclick="rollGacha(event)" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Draw Challenges' : 'Bốc Nhiệm Vụ'}
+                        <i class="fa-solid fa-rotate"></i> ${currentLang !== 'vi' ? 'Draw Challenges' : 'Bốc Nhiệm Vụ'}
                     </button>
                 `;
             } else {
@@ -2449,14 +2512,14 @@
                     const cooldown = 3 * 60 * 60 * 1000; 
                     const canRefresh = timeSinceRefresh >= cooldown;
                     
-                    const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
-                    const factText = currentLang === 'en' ? (chal.fact_en || chal.fact_vi || '') : (chal.fact_vi || chal.fact_en || '');
-                    const typeLabel = currentLang === 'en' ? '📷 PHOTO TASK' : '📷 THỬ THÁCH CHỤP ẢNH';
+                    const displayText = currentLang !== 'vi' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+                    const factText = currentLang !== 'vi' ? (chal.fact_en || chal.fact_vi || '') : (chal.fact_vi || chal.fact_en || '');
+                    const typeLabel = currentLang !== 'vi' ? '📷 PHOTO TASK' : '📷 THỬ THÁCH CHỤP ẢNH';
                     
                     let refreshBtnHtml = '';
                     if (!isCompleted) {
                         if (canRefresh) {
-                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 hover:text-white text-blue-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
+                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 hover:text-white text-blue-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang !== 'vi' ? 'Reroll' : 'Đổi'}</button>`;
                         } else {
                             const remainingMins = Math.ceil((cooldown - timeSinceRefresh) / 60000);
                             refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded"><i class="fa-solid fa-clock text-orange-400/70"></i> ${remainingMins}m</span>`;
@@ -2482,7 +2545,7 @@
                             </div>
                             ${factText && !isCompleted ? `
                             <div class="mt-3 bg-blue-500/10 border border-blue-500/20 p-2.5 rounded-xl">
-                                <p class="text-[11px] md:text-xs text-blue-200 leading-relaxed italic"><i class="fa-solid fa-lightbulb text-yellow-400 mr-1 animate-pulse"></i><strong class="text-blue-300 font-bold">${currentLang === 'en' ? 'Did you know:' : 'Góc Khám Phá:'}</strong> ${factText}</p>
+                                <p class="text-[11px] md:text-xs text-blue-200 leading-relaxed italic"><i class="fa-solid fa-lightbulb text-yellow-400 mr-1 animate-pulse"></i><strong class="text-blue-300 font-bold">${currentLang !== 'vi' ? 'Did you know:' : 'Góc Khám Phá:'}</strong> ${factText}</p>
                             </div>` : ''}
                         </div>
                     `;
@@ -2490,9 +2553,9 @@
 
                 activeTrivia.forEach((quiz, idx) => {
                     const isCompleted = quiz.isCompleted;
-                    const qText = currentLang === 'en' ? quiz.question_en : quiz.question_vi;
-                    const options = currentLang === 'en' ? quiz.options_en : quiz.options_vi;
-                    const typeLabel = currentLang === 'en' ? '🧠 CULTURAL QUIZ' : '🧠 TRẮC NGHIỆM VĂN HÓA';
+                    const qText = currentLang !== 'vi' ? quiz.question_en : quiz.question_vi;
+                    const options = currentLang !== 'vi' ? quiz.options_en : quiz.options_vi;
+                    const typeLabel = currentLang !== 'vi' ? '🧠 CULTURAL QUIZ' : '🧠 TRẮC NGHIỆM VĂN HÓA';
                     
                     const timeSinceRefresh = now - (quiz.lastRefreshed || 0);
                     const cooldown = 3 * 60 * 60 * 1000; 
@@ -2501,7 +2564,7 @@
                     let refreshBtnHtml = '';
                     if (!isCompleted) {
                         if (canRefresh) {
-                            refreshBtnHtml = `<button onclick="refreshSingleTrivia(${idx})" class="text-xs bg-white/10 hover:bg-cyan-500/40 hover:text-white text-cyan-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
+                            refreshBtnHtml = `<button onclick="refreshSingleTrivia(${idx})" class="text-xs bg-white/10 hover:bg-cyan-500/40 hover:text-white text-cyan-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang !== 'vi' ? 'Reroll' : 'Đổi'}</button>`;
                         } else {
                             const remainingMins = Math.ceil((cooldown - timeSinceRefresh) / 60000);
                             refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded"><i class="fa-solid fa-clock text-cyan-400/70"></i> ${remainingMins}m</span>`;
@@ -2522,8 +2585,8 @@
 
                     let explanationHtml = '';
                     if (isCompleted) {
-                        const expText = currentLang === 'en' ? quiz.explanation_en : quiz.explanation_vi;
-                        explanationHtml = `<div class="mt-3 bg-cyan-500/10 border border-cyan-500/20 p-2.5 rounded-xl text-xs text-cyan-200 italic leading-relaxed"><i class="fa-solid fa-graduation-cap text-yellow-400 mr-1"></i> <strong>${currentLang === 'en' ? 'Explanation:' : 'Giải thích:'}</strong> ${expText}</div>`;
+                        const expText = currentLang !== 'vi' ? quiz.explanation_en : quiz.explanation_vi;
+                        explanationHtml = `<div class="mt-3 bg-cyan-500/10 border border-cyan-500/20 p-2.5 rounded-xl text-xs text-cyan-200 italic leading-relaxed"><i class="fa-solid fa-graduation-cap text-yellow-400 mr-1"></i> <strong>${currentLang !== 'vi' ? 'Explanation:' : 'Giải thích:'}</strong> ${expText}</div>`;
                     }
 
                     html += `
@@ -2552,7 +2615,7 @@
                 if (tasksDone && triviaDone && (activeChallenges.length > 0 || activeTrivia.length > 0)) {
                     html += `
                         <button onclick="clearAndRollGacha(event)" class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-check-double"></i> ${currentLang === 'en' ? 'All done! Draw a new set' : 'Đã làm hết! Rút thẻ mới nhen'}
+                            <i class="fa-solid fa-check-double"></i> ${currentLang !== 'vi' ? 'All done! Draw a new set' : 'Đã làm hết! Rút thẻ mới nhen'}
                         </button>`;
                 }
 
@@ -2571,9 +2634,9 @@
 
             if (optionIndex === quiz.correct_index) {
                 currentUser.points = (currentUser.points || 0) + quiz.points;
-                alert(currentLang === 'en' ? "🎉 Correct! +" + quiz.points + " Points" : "🎉 Giỏi quá! Đáp án chính xác. Bạn được cộng " + quiz.points + " điểm");
+                alert(currentLang !== 'vi' ? "🎉 Correct! +" + quiz.points + " Points" : "🎉 Giỏi quá! Đáp án chính xác. Bạn được cộng " + quiz.points + " điểm");
             } else {
-                alert(currentLang === 'en' ? "❌ Incorrect! Check the explanation below." : "❌ Sai rầu! Hãy đọc phần giải thích bên dưới để nhớ lâu hơn nhen.");
+                alert(currentLang !== 'vi' ? "❌ Incorrect! Check the explanation below." : "❌ Sai rầu! Hãy đọc phần giải thích bên dưới để nhớ lâu hơn nhen.");
             }
             
             await saveUserData();
@@ -2657,7 +2720,7 @@
             } catch(e) {
                 btn.innerHTML = originalHtml;
                 btn.disabled = false;
-                alert(currentLang === 'en' ? "AI is busy, please try again!" : "Tư Nẫu đang bận nặn câu hỏi, bạn bấm rút lại nhen!");
+                alert(currentLang !== 'vi' ? "AI is busy, please try again!" : "Tư Nẫu đang bận nặn câu hỏi, bạn bấm rút lại nhen!");
             }
         }
 
@@ -2666,9 +2729,9 @@
             const chal = currentUser.challenges[index];
             if (chal.isCompleted) return;
             
-            const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+            const displayText = currentLang !== 'vi' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
             
-            const confirmMsg = currentLang === 'en' 
+            const confirmMsg = currentLang !== 'vi' 
                 ? `Task: "${displayText}"\n\nUncle Tu needs a photo to verify this! Open AI Camera now?`
                 : `Nhiệm vụ: "${displayText}"\n\nAnh Tư cần bạn chụp ảnh để làm bằng chứng nghen! Bật Mắt Thần AI lên quét liền hông?`;
                 
@@ -2789,7 +2852,7 @@
                 finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiData.text}</div>`;
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
-                    const btnMap = currentLang === 'en' ? "View on Map" : "Xem Bản đồ";
+                    const btnMap = currentLang !== 'vi' ? "View on Map" : "Xem Bản đồ";
                     aiData.places.forEach(place => {
                         const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
                         const autoMapLink = `https://maps.google.com/maps?q=${query}`;
@@ -2826,7 +2889,7 @@
             let personalContext = "";
             if (currentUser.isLoggedIn && currentUser.preferences) {
                 const pref = currentUser.preferences;
-                personalContext = currentLang === 'en' 
+                personalContext = currentLang !== 'vi' 
                     ? `\nUSER PROFILE: Gender: ${pref.gender}. Age: ${pref.age}. Hobbies: ${pref.hobbies}. Adapt your communication style based on their age and weave their hobbies into your travel suggestions logically.`
                     : `\nTHÔNG TIN CÁ NHÂN HÓA BẮT BUỘC: 
                     1. XƯNG HÔ LINH HOẠT: Dựa vào Giới tính (${pref.gender}) và Độ tuổi (${pref.age}) để xưng hô cho mượt (VD: Nếu khách dưới 18 tuổi thì xưng "Anh Tư - em"; Khách lớn tuổi hơn thì xưng "em - anh/chị").
@@ -2844,8 +2907,9 @@
                 });
             }
             
-            const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const personaPrompt = currentLang !== 'vi' 
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ${aiLang}. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
                 : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}.${personalContext}`;
 
             const prompt = `${personaPrompt}
@@ -2856,7 +2920,7 @@
 
             HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG / SYSTEM INSTRUCTIONS:
             1. KHÔNG SỬ DỤNG bộ database mặc định.
-            2. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json). The JSON keys MUST remain exactly as shown, only translate the values inside into ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
+            2. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json). The JSON keys MUST remain exactly as shown, only translate the values inside into ${aiLang}:
             {
               "type": "location",
               "text": "Câu trả lời của bạn / Your answer here...",
@@ -2870,18 +2934,18 @@
             const res = await fetchSpecialAI(prompt);
             return res || JSON.stringify({
                 "type": "text",
-                "text": currentLang === 'en' ? `Oops, the network is down! I'll be back shortly, ${userNameContext}!` : `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
+                "text": currentLang !== 'vi' ? `Oops, the network is down! I'll be back shortly, ${userNameContext}!` : `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
             });
         }
 
         async function verifyChallengeWithAI(base64Data, index) {
             const chal = currentUser.challenges[index];
-            const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
+            const displayText = currentLang !== 'vi' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
             
             switchPage('page-gacha', 'gacha'); 
             
             const area = document.getElementById('gacha-content-area');
-            const verifyTxt = currentLang === 'en' ? "Uncle Tu is verifying your photo..." : "Anh Tư đang soi hình coi có chuẩn không nhen...";
+            const verifyTxt = currentLang !== 'vi' ? "Uncle Tu is verifying your photo..." : "Anh Tư đang soi hình coi có chuẩn không nhen...";
             area.innerHTML = `
                 <div class="py-12 text-center text-orange-400 flex flex-col items-center animate-fadeIn">
                     <div class="relative w-32 h-32 mb-4">
@@ -2892,8 +2956,9 @@
                 </div>
             `;
 
-            const langInstruction = currentLang === 'en'
-                ? 'Reply entirely in ENGLISH.'
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const langInstruction = currentLang !== 'vi'
+                ? `Reply entirely in ${aiLang}.`
                 : 'Trả lời bằng TIẾNG VIỆT, dùng từ địa phương Quy Nhơn (chu cha, nghen...).';
 
             const promptText = `Nhiệm vụ / Challenge: "${displayText}".
@@ -2929,7 +2994,7 @@
                 }
 
                 if (resultJson && resultJson.verified) {
-                    alert((currentLang === 'en' ? "🎉 SUCCESS!\n" : "🎉 DUYỆT TRÚNG PHÓC!\n") + resultJson.message);
+                    alert((currentLang !== 'vi' ? "🎉 SUCCESS!\n" : "🎉 DUYỆT TRÚNG PHÓC!\n") + resultJson.message);
                     currentUser.challenges[index].isCompleted = true;
                     currentUser.points = (currentUser.points || 0) + chal.points; 
                     await saveUserData();
@@ -2937,7 +3002,7 @@
                     alert("❌ " + (resultJson ? resultJson.message : "Ảnh này hổng ăn nhập gì với nhiệm vụ miếng nào hết trơn!"));
                 }
             } catch (e) {
-                alert(currentLang === 'en' ? "Network weak, please take photo again!" : "Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
+                alert(currentLang !== 'vi' ? "Network weak, please take photo again!" : "Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
             }
             renderGachaUI(); 
         }
@@ -2978,7 +3043,7 @@
                 video.srcObject = cameraStream;
             } catch (err) {
                 console.error("Lỗi Camera:", err);
-                const errMsg = currentLang === 'en' ? "Cannot open Camera! Please check your browser permissions." : "Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh của trình duyệt nhen.";
+                const errMsg = currentLang !== 'vi' ? "Cannot open Camera! Please check your browser permissions." : "Không mở được Camera rầu! Bạn kiểm tra lại quyền truy cập máy ảnh của trình duyệt nhen.";
                 alert(errMsg);
                 closeCamera();
             }
@@ -3010,7 +3075,7 @@
                         flashBtn.classList.add('text-white');
                     }
                 } else {
-                    const msg = currentLang === 'en' ? "Flash is not supported on this device/browser!" : "Trình duyệt hoặc máy của bạn hổng hỗ trợ bật Flash trên web rầu!";
+                    const msg = currentLang !== 'vi' ? "Flash is not supported on this device/browser!" : "Trình duyệt hoặc máy của bạn hổng hỗ trợ bật Flash trên web rầu!";
                     alert(msg);
                 }
             } catch (e) {
@@ -3142,8 +3207,9 @@
 
         async function getGeminiVisionResponse(base64Data) {
             const userNameContext = getShortName(currentUser.name);
-            const langInstruction = currentLang === 'en' 
-                ? `Reply entirely in ENGLISH. If the image is a place or food NOT in Quy Nhon/Binh Dinh, playfully reject it and invite them to visit Quy Nhon instead.`
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const langInstruction = currentLang !== 'vi' 
+                ? `Reply entirely in ${aiLang}. If the image is a place or food NOT in Quy Nhon/Binh Dinh, playfully reject it and invite them to visit Quy Nhon instead.`
                 : `Dùng tiếng địa phương (chu cha, nghen). Nếu ảnh chụp địa danh/món ăn thuộc tỉnh khác, hãy trêu chọc bảo "Cảnh này hổng phải xứ Nẫu quê tui rầu!" và khéo léo khoe cảnh đẹp Quy Nhơn.`;
 
             const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi một bức ảnh.
@@ -3169,7 +3235,7 @@
                     }
                 } catch (e) { }
             }
-            return currentLang === 'en' ? "Oops, network error while looking at the image!" : `Chu cha mạng lắc quá tải hổng nổi ${userNameContext} ơi!`;
+            return currentLang !== 'vi' ? "Oops, network error while looking at the image!" : `Chu cha mạng lắc quá tải hổng nổi ${userNameContext} ơi!`;
         }
 
         const nauDictionary = {
@@ -3195,7 +3261,7 @@
             const outputDiv = document.getElementById('nau-output');
 
             if (!input) {
-                outputDiv.innerHTML = currentLang === 'en' ? '<span class="text-red-400">Please enter text to translate!</span>' : '<span class="text-red-400">Nhập chữ dzo rồi mới dịch được chớ!</span>';
+                outputDiv.innerHTML = currentLang !== 'vi' ? '<span class="text-red-400">Please enter text to translate!</span>' : '<span class="text-red-400">Nhập chữ dzo rồi mới dịch được chớ!</span>';
                 return;
             }
 
@@ -3221,8 +3287,9 @@
 
             outputDiv.innerHTML = '<span class="text-blue-400 animate-pulse text-base flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin"></i> Loading AI...</span>';
 
-            const langInstruction = currentLang === 'en' 
-                ? 'Translate the following Binh Dinh slang into ENGLISH.' 
+            const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            const langInstruction = currentLang !== 'vi' 
+                ? `Translate the following Binh Dinh slang into ${aiLang}.` 
                 : 'Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông.';
 
             const prompt = `${langInstruction} Text: "${input}"
