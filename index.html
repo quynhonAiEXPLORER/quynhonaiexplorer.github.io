@@ -14,10 +14,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600;700&display=swap');
+        /* Đã cập nhật phông chữ Plus Jakarta Sans thay cho Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
                         url('https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/R.png') no-repeat center center fixed;
             background-size: cover;
@@ -352,55 +353,13 @@
     </div>
 
     <div id="onboarding-modal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 transition-opacity">
-        <div class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/50 shadow-[0_0_30px_rgba(249,115,22,0.3)] rounded-3xl w-full max-w-md p-6 text-center transform transition-all modal-slide-up">
-            <div class="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-400 text-3xl shadow-inner">
+        <div class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/50 shadow-[0_0_30px_rgba(249,115,22,0.3)] rounded-3xl w-full max-w-md p-6 text-center transform transition-all modal-slide-up relative min-h-[400px] flex flex-col">
+            <div class="w-14 h-14 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 text-orange-400 text-2xl shadow-inner shrink-0">
                 <i class="fa-solid fa-clipboard-user"></i>
             </div>
-            <h2 class="text-2xl font-black text-white mb-2 uppercase tracking-wide">Hồ sơ Du Lịch</h2>
-            <p class="text-sm text-gray-400 mb-6">Trợ lý Tư Nẫu cần biết một chút về bạn để tư vấn chuẩn xác nhất nhen!</p>
-
-            <form id="onboarding-form" onsubmit="submitOnboarding(event)" class="space-y-5 text-left">
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[13px] font-bold text-orange-400 mb-2">1. Giới tính</label>
-                        <select id="ob-gender" required class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 appearance-none">
-                            <option value="" disabled selected class="text-gray-900">Chọn...</option>
-                            <option value="Nam" class="text-gray-900">Nam</option>
-                            <option value="Nữ" class="text-gray-900">Nữ</option>
-                            <option value="Khác" class="text-gray-900">Khác</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[13px] font-bold text-orange-400 mb-2">2. Độ tuổi</label>
-                        <select id="ob-age" required class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 appearance-none">
-                            <option value="" disabled selected class="text-gray-900">Chọn...</option>
-                            <option value="Dưới 18 tuổi" class="text-gray-900">Dưới 18 tuổi</option>
-                            <option value="18 - 25 tuổi" class="text-gray-900">18 - 25 tuổi</option>
-                            <option value="26 - 35 tuổi" class="text-gray-900">26 - 35 tuổi</option>
-                            <option value="Trên 35 tuổi" class="text-gray-900">Trên 35 tuổi</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[13px] font-bold text-orange-400 mb-2">3. Sở thích của bạn (Chọn nhiều)</label>
-                    <div id="hobbies-container" class="flex flex-wrap gap-2 mb-3">
-                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Công nghệ</button>
-                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Chế tạo DIY</button>
-                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Nhiếp ảnh</button>
-                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Nghe nhạc Rap</button>
-                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Chơi Game</button>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="custom-hobby-input" placeholder="Nhập sở thích khác..." class="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors">
-                        <button type="button" onclick="addCustomHobby()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-bold transition active:scale-95">Thêm</button>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition-all">
-                    Hoàn tất <i class="fa-solid fa-arrow-right ml-1"></i>
-                </button>
-            </form>
+            <h2 class="text-xl font-black text-white mb-1 uppercase tracking-wide">Hồ sơ Du Lịch</h2>
+            <p class="text-xs text-gray-400 mb-2">Trợ lý Tư Nẫu cần biết một chút về bạn để tư vấn chuẩn xác nhất nhen!</p>
+            <div id="ob-step-container" class="flex-1 flex flex-col justify-center"></div>
         </div>
     </div>
 
@@ -855,9 +814,9 @@
                                 currentUser.onboardingCompleted = data.onboardingCompleted || false;
                             }
                             
-                            // KÍCH HOẠT ONBOARDING LẦN ĐẦU
+                            // KÍCH HOẠT ONBOARDING LẦN ĐẦU TỪ HÀM MỚI
                             if (!currentUser.onboardingCompleted) {
-                                document.getElementById('onboarding-modal').classList.remove('hidden');
+                                startOnboarding();
                             }
                         } catch (error) { console.error("Lỗi tải dữ liệu:", error); }
                     }
@@ -874,51 +833,169 @@
         }
 
         // ==========================================
-        // CÁC HÀM XỬ LÝ KHẢO SÁT ONBOARDING TÍCH HỢP
+        // CÁC HÀM XỬ LÝ KHẢO SÁT ONBOARDING CHIA BƯỚC
         // ==========================================
-        let selectedHobbies = [];
+        let obData = { gender: '', age: '', hobbies: [] };
+        let currentObStep = 1;
 
-        function toggleHobby(btn) {
-            const hobby = btn.innerText.trim();
-            if (selectedHobbies.includes(hobby)) {
-                selectedHobbies = selectedHobbies.filter(h => h !== hobby);
-                btn.classList.remove('bg-orange-500/20', 'border-orange-500', 'text-orange-400');
-                btn.classList.add('border-white/20', 'text-gray-300');
-            } else {
-                selectedHobbies.push(hobby);
-                btn.classList.add('bg-orange-500/20', 'border-orange-500', 'text-orange-400');
-                btn.classList.remove('border-white/20', 'text-gray-300');
+        function startOnboarding() {
+            obData = { gender: '', age: '', hobbies: [] };
+            currentObStep = 1;
+            document.getElementById('onboarding-modal').classList.remove('hidden');
+            renderObStep(1);
+        }
+
+        function renderObStep(step) {
+            currentObStep = step;
+            const container = document.getElementById('ob-step-container');
+            
+            const backBtn = step > 1 
+                ? `<button onclick="renderObStep(${step - 1})" class="absolute top-5 left-5 text-gray-400 hover:text-orange-400 flex items-center gap-1 text-sm font-bold transition"><i class="fa-solid fa-chevron-left"></i></button>` 
+                : '';
+                
+            const progress = `
+                <div class="flex justify-center gap-2 mb-5">
+                    <div class="h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-orange-500 shadow-[0_0_8px_#f97316]' : 'bg-white/10'} transition-all"></div>
+                    <div class="h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-orange-500 shadow-[0_0_8px_#f97316]' : 'bg-white/10'} transition-all"></div>
+                    <div class="h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-orange-500 shadow-[0_0_8px_#f97316]' : 'bg-white/10'} transition-all"></div>
+                </div>
+            `;
+
+            let html = `${backBtn} ${progress}`;
+
+            if (step === 1) {
+                html += `
+                    <div class="animate-fadeIn text-left">
+                        <h3 class="text-[15px] font-bold text-orange-400 mb-4">1. Giới tính của bạn là gì?</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <button onclick="saveObStep('gender', 'Nam', 2)" class="glass-card p-4 rounded-2xl border ${obData.gender === 'Nam' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 text-lg"><i class="fa-solid fa-mars"></i></div>
+                                <span class="font-bold text-white">Nam</span>
+                            </button>
+                            <button onclick="saveObStep('gender', 'Nữ', 2)" class="glass-card p-4 rounded-2xl border ${obData.gender === 'Nữ' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex items-center gap-4">
+                                <div class="w-10 h-10 bg-pink-500/20 rounded-xl flex items-center justify-center text-pink-400 text-lg"><i class="fa-solid fa-venus"></i></div>
+                                <span class="font-bold text-white">Nữ</span>
+                            </button>
+                            <button onclick="saveObStep('gender', 'Khác', 2)" class="glass-card p-4 rounded-2xl border ${obData.gender === 'Khác' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex items-center gap-4">
+                                <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400 text-lg"><i class="fa-solid fa-transgender"></i></div>
+                                <span class="font-bold text-white">Khác</span>
+                            </button>
+                        </div>
+                    </div>`;
+            } 
+            else if (step === 2) {
+                html += `
+                    <div class="animate-fadeIn text-left">
+                        <h3 class="text-[15px] font-bold text-orange-400 mb-4">2. Bạn thuộc nhóm tuổi nào?</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="saveObStep('age', 'Dưới 18 tuổi', 3)" class="glass-card p-4 rounded-2xl border ${obData.age === 'Dưới 18 tuổi' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex flex-col items-center text-center gap-2">
+                                <span class="text-2xl">🎒</span>
+                                <span class="font-bold text-white text-sm">Dưới 18</span>
+                            </button>
+                            <button onclick="saveObStep('age', '18 - 25 tuổi', 3)" class="glass-card p-4 rounded-2xl border ${obData.age === '18 - 25 tuổi' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex flex-col items-center text-center gap-2">
+                                <span class="text-2xl">🎓</span>
+                                <span class="font-bold text-white text-sm">18 - 25 tuổi</span>
+                            </button>
+                            <button onclick="saveObStep('age', '26 - 35 tuổi', 3)" class="glass-card p-4 rounded-2xl border ${obData.age === '26 - 35 tuổi' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex flex-col items-center text-center gap-2">
+                                <span class="text-2xl">💼</span>
+                                <span class="font-bold text-white text-sm">26 - 35 tuổi</span>
+                            </button>
+                            <button onclick="saveObStep('age', 'Trên 35 tuổi', 3)" class="glass-card p-4 rounded-2xl border ${obData.age === 'Trên 35 tuổi' ? 'border-orange-500 bg-orange-500/20' : 'border-white/10 hover:border-orange-500/50'} transition flex flex-col items-center text-center gap-2">
+                                <span class="text-2xl">☕</span>
+                                <span class="font-bold text-white text-sm">Trên 35 tuổi</span>
+                            </button>
+                        </div>
+                    </div>`;
+            } 
+            else if (step === 3) {
+                html += `
+                    <div class="animate-fadeIn text-left">
+                        <h3 class="text-[15px] font-bold text-orange-400 mb-2">3. Trải nghiệm du lịch yêu thích?</h3>
+                        <p class="text-xs text-gray-400 mb-4">(Có thể chọn nhiều mục nhen)</p>
+                        
+                        <div id="ob-hobbies-wrapper" class="flex flex-wrap gap-2 mb-4">
+                            </div>
+                        
+                        <div class="flex gap-2">
+                            <input type="text" id="ob-custom-hobby" placeholder="Nhập sở thích khác..." class="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors">
+                            <button onclick="addObHobby()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition active:scale-95 flex items-center justify-center">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <button onclick="finishOnboarding()" class="w-full mt-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition-all">
+                            Hoàn tất <i class="fa-solid fa-check ml-1"></i>
+                        </button>
+                    </div>`;
+            }
+
+            container.innerHTML = html;
+
+            if (step === 3) {
+                renderHobbiesTags();
             }
         }
 
-        function addCustomHobby() {
-            const input = document.getElementById('custom-hobby-input');
-            const hobby = input.value.trim();
-            if (hobby && !selectedHobbies.includes(hobby)) {
-                selectedHobbies.push(hobby);
-                const container = document.getElementById('hobbies-container');
-                const btn = document.createElement('button');
-                btn.type = "button";
-                btn.className = "hobby-btn border border-orange-500 bg-orange-500/20 rounded-full px-3 py-1.5 text-xs text-orange-400 transition-colors";
-                btn.innerText = hobby;
-                btn.onclick = function() { toggleHobby(this); };
-                container.appendChild(btn);
+        function saveObStep(key, value, nextStep) {
+            obData[key] = value;
+            renderObStep(nextStep);
+        }
+
+        const defaultTravelHobbies = [
+            "Khám phá ẩm thực", "Chụp ảnh check-in", 
+            "Nghỉ dưỡng chữa lành", "Văn hóa & Lịch sử", 
+            "Trekking/Mạo hiểm", "Cắm trại (Camping)"
+        ];
+
+        function renderHobbiesTags() {
+            const wrapper = document.getElementById('ob-hobbies-wrapper');
+            if (!wrapper) return;
+            
+            const allTags = [...new Set([...defaultTravelHobbies, ...obData.hobbies])];
+            
+            let tagsHtml = '';
+            allTags.forEach(tag => {
+                const isSelected = obData.hobbies.includes(tag);
+                const activeClass = isSelected ? 'bg-orange-500/20 border-orange-500 text-orange-400 font-bold' : 'border-white/20 text-gray-300 hover:border-orange-400/50';
+                tagsHtml += `
+                    <button onclick="toggleObHobby('${tag}')" class="border rounded-full px-3 py-1.5 text-xs transition-colors ${activeClass}">
+                        ${tag} ${isSelected ? '<i class="fa-solid fa-check ml-1"></i>' : ''}
+                    </button>
+                `;
+            });
+            wrapper.innerHTML = tagsHtml;
+        }
+
+        function toggleObHobby(tag) {
+            if (obData.hobbies.includes(tag)) {
+                obData.hobbies = obData.hobbies.filter(h => h !== tag);
+            } else {
+                obData.hobbies.push(tag);
+            }
+            renderHobbiesTags();
+        }
+
+        function addObHobby() {
+            const input = document.getElementById('ob-custom-hobby');
+            const val = input.value.trim();
+            if (val && !obData.hobbies.includes(val)) {
+                obData.hobbies.push(val);
+                renderHobbiesTags();
                 input.value = '';
             }
         }
 
-        async function submitOnboarding(event) {
-            event.preventDefault();
-            if (selectedHobbies.length === 0) {
-                alert("Bạn chọn ít nhất 1 sở thích để Anh Tư dễ tư vấn nghen!");
+        async function finishOnboarding() {
+            if (obData.hobbies.length === 0) {
+                alert("Anh Tư cần biết ít nhất 1 sở thích của bạn để thiết kế lịch trình nghen!");
                 return;
             }
 
-            const gender = document.getElementById('ob-gender').value;
-            const age = document.getElementById('ob-age').value;
-            const hobbiesString = selectedHobbies.join(', ');
-
-            currentUser.preferences = { gender, age, hobbies: hobbiesString };
+            currentUser.preferences = {
+                gender: obData.gender,
+                age: obData.age,
+                hobbies: obData.hobbies.join(', ')
+            };
             currentUser.onboardingCompleted = true;
 
             if (currentUser.uid && db) {
@@ -928,11 +1005,13 @@
                         onboardingCompleted: true,
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
-                } catch (error) { console.error("Lỗi lưu hồ sơ:", error); }
+                } catch (error) {
+                    console.error("Lỗi lưu hồ sơ:", error);
+                }
             }
 
             document.getElementById('onboarding-modal').classList.add('hidden');
-            alert(currentLang === 'en' ? "Profile saved!" : "Đã cập nhật hồ sơ cá nhân!");
+            alert(currentLang === 'en' ? "Profile saved! Tu Nau is ready." : "Lưu hồ sơ thành công! Trợ lý Tư Nẫu đã ghi nhớ thông tin.");
         }
 
         async function saveUserData() {
@@ -2766,8 +2845,8 @@
             }
             
             const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}. (Important: Strongly favor recommendations that suit this exact weather condition).${personalContext}`
-                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}. (LƯU Ý CỰC KỲ QUAN TRỌNG: Hãy chủ động khuyên khách hoặc gợi ý địa điểm, quán ăn phù hợp tuyệt đối với tình hình thời tiết này).${personalContext}`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}.${personalContext}`;
 
             const prompt = `${personaPrompt}
 
