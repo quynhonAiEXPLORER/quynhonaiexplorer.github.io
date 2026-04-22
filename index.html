@@ -419,6 +419,9 @@
     </div>
 
     <script>
+        // ==========================================
+        // HIỆU ỨNG GÕ CHỮ (TYPEWRITER) CHO CHATBOT
+        // ==========================================
         function typeWriterEffect(elementId, text, speed = 8) {
             return new Promise(resolve => {
                 const el = document.getElementById(elementId);
@@ -448,6 +451,9 @@
             });
         }
 
+        // ==========================================
+        // 0. BỘ TỪ ĐIỂN ĐA NGÔN NGỮ (i18n) & DỮ LIỆU BẢN ĐỒ
+        // ==========================================
         const i18n = {
             vi: {
                 "nav_explore": '<i class="fa-solid fa-house"></i> Khám phá',
@@ -897,6 +903,9 @@
             changeLanguage(currentLang);
         });
 
+        // ==========================================
+        // UI HELPERS (SPA NAVIGATION)
+        // ==========================================
         let currentPageId = 'page-home';
 
         function switchPage(targetPageId, navTabName) {
@@ -980,6 +989,9 @@
             ` + getDictContent();
         }
 
+        // ==========================================
+        // HÀM TẠO DỮ LIỆU BẰNG AI VÀ SEARCH BAR (FACT-CHECKED)
+        // ==========================================
         async function fetchLocationDataWithAI(placeName) {
             const prompt = `Bạn là HỆ THỐNG KIỂM CHỨNG SỰ THẬT (Fact-Checker) trực thuộc ứng dụng du lịch Quy Nhơn.
             Người dùng muốn truy xuất thông tin về địa danh: "${placeName}".
@@ -1160,6 +1172,9 @@
             document.getElementById('modal').classList.add('hidden'); 
         }
 
+        // ==========================================
+        // 1. CẤU HÌNH FIREBASE AUTHENTICATION & FIRESTORE
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDqGxQYtmt3fH3RmIalBzW-7lH9O6W5cjk",
             authDomain: "quynhonaiexplorer.firebaseapp.com",
@@ -1203,6 +1218,9 @@
             });
         }
 
+        // ==========================================
+        // 2. DỮ LIỆU NGƯỜI DÙNG & ĐỒNG BỘ FIRESTORE
+        // ==========================================
         let currentChatSessionId = null;
         let currentChatMessages = [];
         
@@ -1278,6 +1296,9 @@
             });
         }
 
+        // ==========================================
+        // CÁC HÀM XỬ LÝ KHẢO SÁT ONBOARDING CHIA BƯỚC
+        // ==========================================
         let obData = { gender: '', age: '', hobbies: [] };
         let currentObStep = 1;
 
@@ -1670,7 +1691,7 @@
             setTimeout(() => { chatBoxContent.scrollTop = chatBoxContent.scrollHeight; }, 50);
         }
 
-        const GEMINI_API_KEY = 'AIzaSyD8eg4uqb-PlAJHA7YCFM7UmAWzeiEGplw'; 
+        const GEMINI_API_KEY = 'AIzaSyAy3SsCY6eJi10JN2WL1G-ybYEqEKDG4CU'; 
 
         function getNextApiKey() {
             return GEMINI_API_KEY;
@@ -1707,6 +1728,9 @@
             }
         }
 
+        // ==========================================
+        // 3. UI ĐĂNG NHẬP, ĐĂNG KÝ VÀ HỒ SƠ 
+        // ==========================================
         function renderProfile() {
             const content = document.getElementById('profile-container');
             
@@ -2018,6 +2042,9 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             });
         }
 
+        // ==========================================
+        // MODULE: LÊN LỊCH TRÌNH AI KẾT HỢP VỊ TRÍ & GOOGLE MAPS
+        // ==========================================
         let itinData = { days: '', styles: [], budget: '', locationContext: currentLang !== 'vi' ? 'Quy Nhon Center' : 'Trung tâm thành phố Quy Nhơn' };
         let currentItinStep = 1;
 
@@ -2398,18 +2425,18 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             
             QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG / STRICT SYSTEM RULES:
             1. BẮT BUỘC tuân thủ thời tiết: Nếu thời tiết xấu (mưa, dông, biển động), TUYỆT ĐỐI KHÔNG xếp lịch đi biển đảo (Kỳ Co, Hòn Khô, Cù Lao Xanh), hãy chuyển sang các điểm trong nhà, bảo tàng, tháp Chăm hoặc food tour ẩm thực ấm cúng. Nếu thời tiết nắng đẹp, ưu tiên biển đảo.
-            2. ZERO HALLUCINATION (KHÔNG BỊA ĐẶT): Tất cả các địa danh, nhà hàng, quán ăn được đề xuất PHẢI CÓ THẬT 100% tại Bình Định và hoạt động dựa trên dữ liệu tra cứu internet thực tế.
-            3. DỮ LIỆU CHÍNH THỐNG: Mọi thông tin mô tả đính kèm phải được đối chiếu với cổng thông tin du lịch chính thống.
-            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${aiLang} (KHÔNG BỌC TRONG \`\`\`json):
+            2. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
+            3. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
+            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${aiLang}:
             {
                 "message": "Lời chào, tóm tắt lịch trình... / Greeting and summary...",
                 "itinerary": [
                     {
                         "day": "Day 1 / Ngày 1", "title": "Chủ đề / Title",
-                        "morning": "Nội dung sáng...", "morning_place": "Tên địa danh/quán CÓ THẬT",
+                        "morning": "Nội dung sáng...", "morning_place": "Tên địa danh/quán",
                         "noon": "Nội dung trưa...",
-                        "afternoon": "Nội dung chiều...", "afternoon_place": "Tên địa danh CÓ THẬT",
-                        "evening": "Nội dung tối...", "evening_place": "Tên quán ăn tối CÓ THẬT"
+                        "afternoon": "Nội dung chiều...", "afternoon_place": "Tên địa danh",
+                        "evening": "Nội dung tối...", "evening_place": "Tên quán ăn tối"
                     }
                 ]
             }`;
@@ -2650,6 +2677,9 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             historyPopup.classList.remove('hidden');
         }
 
+        // ==========================================
+        // 5. CÁC TÍNH NĂNG PHỤ 
+        // ==========================================
         function getDictContent() {
             const desc = currentLang !== 'vi' ? "Enter local Binh Dinh slang, and Uncle Tu will translate it to standard text!" : "Nhập từ lóng hoặc câu tiếng Bình Định bạn nghe được, Anh Tư dịch ra tiếng phổ thông cho nhen!";
             const ph = currentLang !== 'vi' ? "Example: Chu cha..." : "Ví dụ: Chu cha, dữ thần...";
@@ -3037,8 +3067,9 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
                     }
 
                     html += `
-                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? (quiz.user_answer === quiz.correct_index ? 'border-green-500/40 bg-green-500/5' : 'border-red-500/40 bg-red-500/5') : 'border-white/10'}
-                        <p class="text-sm md:text-base text-white font-medium leading-snug">${qText}</p>
+                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? (quiz.user_answer === quiz.correct_index ? 'border-green-500/40 bg-green-500/5' : 'border-red-500/40 bg-red-500/5') : 'border-white/10'} transition-all shadow-lg">
+                            <div class="flex-1 mb-3">
+                                <p class="text-sm md:text-base text-white font-medium leading-snug">${qText}</p>
                                 <div class="flex items-center justify-between mt-2">
                                     <div class="flex items-center gap-2">
                                         <span class="text-[10px] md:text-xs bg-cyan-500/20 text-cyan-400 font-bold px-2 py-0.5 rounded border border-cyan-500/20">+${quiz.points} 💎</span>
@@ -3354,9 +3385,9 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
                 personalContext = currentLang !== 'vi' 
                     ? `\nUSER PROFILE: Gender: ${pref.gender}. Age: ${pref.age}. Hobbies: ${pref.hobbies}. Adapt your communication style based on their age and weave their hobbies into your travel suggestions logically.`
                     : `\nTHÔNG TIN CÁ NHÂN HÓA BẮT BUỘC: 
-                    1. XƯNG HÔ LINH HOẠT: Dựa vào Giới tính (${pref.gender}) và Độ tuổi (${pref.age}).
-                    2. TONE GIỌNG: Khách trẻ -> năng động; Khách lớn tuổi -> lịch sự, thân thiện.
-                    3. SỞ THÍCH: [${pref.hobbies}]. Liên kết khéo léo sở thích vào gợi ý.`;
+                    1. XƯNG HÔ LINH HOẠT: Dựa vào Giới tính (${pref.gender}) và Độ tuổi (${pref.age}) để xưng hô cho mượt (VD: Nếu khách dưới 18 tuổi thì xưng "Anh Tư - em"; Khách lớn tuổi hơn thì xưng "em - anh/chị").
+                    2. TONE GIỌNG: Nếu khách trẻ, dùng văn phong năng động, bắt trend. Nếu khách lớn tuổi, dùng văn phong lịch sự, thân thiện.
+                    3. SỞ THÍCH: Khách có sở thích [${pref.hobbies}]. Hãy luôn tìm cách liên kết khéo léo các điểm du lịch, quán cafe hoặc trải nghiệm tại Quy Nhơn với các sở thích này để tạo hứng thú.`;
             }
             
             let chatContext = "";
@@ -3371,18 +3402,12 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             
             const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
             
+            // ĐÃ THÊM LỆNH ÉP BUỘC TRẢ LỜI NGẮN GỌN (MAX 2-3 CÂU) VÀO PERSONA PROMPT
             const personaPrompt = currentLang !== 'vi' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ${aiLang}. 
-                STRICT RULE 1: Keep answers EXTREMELY SHORT (Max 2-3 sentences). 
-                STRICT RULE 2: SUGGESTIONS MUST STRICTLY FOLLOW CURRENT WEATHER (${currentWeatherContext}). 
-                STRICT RULE 3: You ONLY know about Quy Nhon/Binh Dinh. 
-                STRICT RULE 4: MANDATORY FACT-CHECKING. Only use 100% verified information from official government portals, state media, or local archives. ABSOLUTELY NO hallucination of facts, places, or restaurants. If unsure, admit you don't know and ask for clarification.\n${personalContext}`
-                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Khách là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen). 
-                QUY TẮC 1: TRẢ LỜI SIÊU NGẮN GỌN (Tối đa 2-3 câu). 
-                QUY TẮC 2: GỢI Ý BÁM SÁT THỜI TIẾT HIỆN TẠI (${currentWeatherContext}). 
-                QUY TẮC 3: Nếu hỏi ngoài Bình Định, hãy từ chối khéo. 
-                QUY TẮC TỐI THƯỢNG 4: BẮT BUỘC KIỂM CHỨNG SỰ THẬT (FACT-CHECK). Mọi thông tin lịch sử, địa danh, quán ăn cung cấp PHẢI lấy từ nguồn chính thống (Cổng TTĐT, báo chí nhà nước, tài liệu địa phương). TUYỆT ĐỐI KHÔNG tự bịa đặt (hallucinate). Nếu thông tin không chắc chắn, BẮT BUỘC phải thừa nhận không biết.\n${personalContext}`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ${aiLang}. STRICT RULE: Keep your answers EXTREMELY SHORT, CONCISE, and TO THE POINT (Maximum 2-3 sentences). You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG 1: TRẢ LỜI CỰC KỲ NGẮN GỌN, SÚC TÍCH, VÀ ĐÚNG TRỌNG TÂM (Tối đa 2-3 câu). KHÔNG giải thích dài dòng. QUY TẮC TỐI THƯỢNG 2: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}.${personalContext}`;
 
+            // ĐÃ NHẤN MẠNH YÊU CẦU NGẮN GỌN VÀO KHUÔN JSON
             const prompt = `${personaPrompt}
 
             ${chatContext}
@@ -3408,7 +3433,6 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
                 "text": currentLang !== 'vi' ? `Oops, the network is down! I'll be back shortly, ${userNameContext}!` : `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
             });
         }
-
         async function verifyChallengeWithAI(base64Data, index) {
             const chal = currentUser.challenges[index];
             const displayText = currentLang !== 'vi' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
