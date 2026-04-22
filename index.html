@@ -112,6 +112,8 @@
                     <button onclick="changeLanguage('en')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇺🇸 EN</button>
                     <button onclick="changeLanguage('ko')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇰🇷 KR</button>
                     <button onclick="changeLanguage('zh')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇨🇳 ZH</button>
+                    <button onclick="changeLanguage('ja')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇯🇵 JA</button>
+                    <button onclick="changeLanguage('th')" class="text-white hover:bg-orange-500 hover:text-white px-3 py-2 text-sm text-left font-bold transition cursor-pointer flex items-center gap-2">🇹🇭 TH</button>
                 </div>
             </div>
         </div>
@@ -488,6 +490,66 @@
                 "camera_focus": "[ 点击对焦 ]",
                 "camera_retake": "重拍",
                 "camera_send": "发送给 Tu Nau"
+            },
+            ja: {
+                "nav_explore": '<i class="fa-solid fa-house"></i> 探検',
+                "nav_diary": '<i class="fa-solid fa-book"></i> AI日記',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> 挑戦',
+                "nav_profile": '<i class="fa-regular fa-circle-user"></i> プロフィール',
+                "hero_title": "クイニョン",
+                "hero_desc": "人工知能のサポートでクイニョンの美しさを発見しましょう。私に任せて！",
+                "btn_plan_ai": '<i class="fa-solid fa-wand-magic-sparkles"></i> AI 旅程 (10秒)',
+                "greeting_loading": "読み込み中...",
+                "feat_chat_title": "Tu Nau アシスタント",
+                "feat_chat_desc": "24時間対応Q&A、本格的な旅程を計画！",
+                "feat_map_title": "ホットスポット",
+                "feat_map_desc": "チェックイン",
+                "feat_weather_title": "天気",
+                "feat_weather_desc": "海と島",
+                "feat_dict_title": "地元の方言",
+                "feat_dict_desc": "辞書",
+                "footer_text": "© 2026 AI First – BTSX - Bui Thi Xuan 高校",
+                "chat_placeholder": "Tu Nau に食べ物や遊び場について聞いてください...",
+                "diary_heading": "あなたの旅行日記",
+                "diary_subtext": "Tu Nauおじさんがチャットを分析し、素晴らしい旅行日記を自動で作成します！",
+                "diary_placeholder": "下のボタンをクリックしてAIに日記を作成させてください...",
+                "btn_generate_diary": "AI日記を今すぐ作成",
+                "gacha_heading": "クイニョン ガチャ",
+                "gacha_points_label": "ガチャポイント:",
+                "camera_title": "AIカメラ",
+                "camera_focus": "[ タップしてフォーカス ]",
+                "camera_retake": "撮り直す",
+                "camera_send": "Tu Nauに送信"
+            },
+            th: {
+                "nav_explore": '<i class="fa-solid fa-house"></i> สำรวจ',
+                "nav_diary": '<i class="fa-solid fa-book"></i> ไดอารี่ AI',
+                "nav_gacha": '<i class="fa-solid fa-dice"></i> ความท้าทาย',
+                "nav_profile": '<i class="fa-regular fa-circle-user"></i> โปรไฟล์',
+                "hero_title": "กวีเญิน",
+                "hero_desc": "ค้นพบความงามของกวีเญินด้วยความช่วยเหลือของ AI ฉันจัดการให้เอง!",
+                "btn_plan_ai": '<i class="fa-solid fa-wand-magic-sparkles"></i> แผน AI (10วิ)',
+                "greeting_loading": "กำลังโหลด...",
+                "feat_chat_title": "ผู้ช่วย Tu Nau",
+                "feat_chat_desc": "ถามตอบ 24 ชม. หาของกิน จัดแผนเที่ยวท้องถิ่น!",
+                "feat_map_title": "จุดเช็คอิน",
+                "feat_map_desc": "ยอดนิยม",
+                "feat_weather_title": "สภาพอากาศ",
+                "feat_weather_desc": "ทะเลและเกาะ",
+                "feat_dict_title": "ภาษาถิ่น",
+                "feat_dict_desc": "พจนานุกรม",
+                "footer_text": "© 2026 AI First – BTSX - โรงเรียนมัธยม Bui Thi Xuan",
+                "chat_placeholder": "ถาม Tu Nau เรื่องของกิน ที่พัก และที่เที่ยว...",
+                "diary_heading": "ไดอารี่การเดินทางของคุณ",
+                "diary_subtext": "ลุง Tu Nau จะสรุปแชทและเขียนไดอารี่การเดินทางสุดเจ๋งให้โดยอัตโนมัติ!",
+                "diary_placeholder": "คลิกปุ่มด้านล่างเพื่อให้ AI วิเคราะห์แชทและร่างไดอารี่...",
+                "btn_generate_diary": "สร้างไดอารี่ AI ตอนนี้",
+                "gacha_heading": "กาชา กวีเญิน",
+                "gacha_points_label": "คะแนนกาชา:",
+                "camera_title": "กล้อง AI",
+                "camera_focus": "[ แตะเพื่อโฟกัส ]",
+                "camera_retake": "ถ่ายใหม่",
+                "camera_send": "ส่งให้ Tu Nau"
             }
         };
 
@@ -509,7 +571,7 @@
         let currentLang = localStorage.getItem('app_lang') || 'vi';
 
         // BẢN ĐỒ NGÔN NGỮ CHUẨN ĐỂ AI HIỂU
-        const aiLangMap = { vi: 'VIETNAMESE', en: 'ENGLISH', ko: 'KOREAN', zh: 'CHINESE' };
+        const aiLangMap = { vi: 'VIETNAMESE', en: 'ENGLISH', ko: 'KOREAN', zh: 'CHINESE', ja: 'JAPANESE', th: 'THAI' };
 
         function changeLanguage(lang) {
             if (!i18n[lang]) return;
