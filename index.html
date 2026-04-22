@@ -2273,7 +2273,103 @@
                     </div>
                 </div>`;
         }
-        async function fetchRealWeather
+        async function fetchRealWeather() {
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("API Thời tiết phản hồi lỗi!");
+
+                const data = await res.json();
+                
+                const current = data.current_weather;
+                const temp = Math.round(current.temperature);
+                const isDay = current.is_day;
+                const weatherCode = current.weathercode;
+                const windSpeed = current.windspeed;
+                
+                document.getElementById('temp-display').innerText = temp + '°C';
+                
+                let icon = '<i class="fa-solid fa-sun"></i>';
+                let desc = currentLang === 'en' ? 'Sunny & Clear' : 'Nắng đẹp, trời trong';
+                let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
+                let seaState = currentLang === 'en' ? 'Calm 🌊' : 'Sóng Êm 🌊';
+                let canoState = currentLang === 'en' ? 'Operating 🟢' : 'Hoạt Động 🟢';
+                let advice = '';
+
+                if (weatherCode >= 51 && weatherCode <= 67) {
+                    desc = currentLang === 'en' ? 'Rainy' : 'Trời có mưa';
+                    icon = '<i class="fa-solid fa-cloud-rain"></i>';
+                    colorClass = 'text-blue-400';
+                    seaState = currentLang === 'en' ? 'Slightly Rough 🌧️' : 'Biển Động Nhẹ 🌧️';
+                    canoState = currentLang === 'en' ? 'Limited 🟡' : 'Hạn Chế 🟡';
+                    advice = currentLang === 'en' 
+                        ? 'It is raining. Going to the island might be cold. Stay in the city center or hit a cozy cafe!'
+                        : 'Trời đang có mưa, ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
+                } else if (weatherCode >= 95 || windSpeed > 30) {
+                    desc = currentLang === 'en' ? 'Thunderstorms' : 'Mưa dông / Gió lớn';
+                    icon = '<i class="fa-solid fa-cloud-bolt"></i>';
+                    colorClass = 'text-purple-500';
+                    seaState = currentLang === 'en' ? 'Very Rough ⛈️' : 'Biển Động Mạnh ⛈️';
+                    canoState = currentLang === 'en' ? 'Suspended 🔴' : 'Tạm Dừng 🔴';
+                    advice = currentLang === 'en'
+                        ? 'Bad weather! Speedboats are suspended. Grab some warm local food instead.'
+                        : 'Thời tiết xấu quá! Cano cấm xuất bến rồi. Kiếm quán bánh xèo tôm nhảy ăn cho ấm bụng nhen!';
+                } else if (!isDay) {
+                    desc = weatherCode > 0 ? (currentLang === 'en' ? 'Cloudy Night' : 'Tối có mây') : (currentLang === 'en' ? 'Clear Night' : 'Trời quang mây tạnh');
+                    icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
+                    colorClass = 'text-yellow-200';
+                    advice = currentLang === 'en' ? 'Nighttime! Perfect for hitting the night market and grabbing some street food!' : 'Tối rầu, lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
+                } else {
+                    if (weatherCode >= 1 && weatherCode <= 3) {
+                        desc = currentLang === 'en' ? 'Partly Cloudy' : 'Có mây rải rác';
+                        icon = '<i class="fa-solid fa-cloud-sun"></i>';
+                        colorClass = 'text-gray-300';
+                    }
+                    if (temp >= 32) {
+                        advice = currentLang === 'en' ? `It's very hot (${temp}°C)! Stay hydrated and prefer indoor places during noon.` : `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng.`;
+                    } else if (temp >= 30) {
+                        advice = currentLang === 'en' ? `Quite warm today (${temp}°C). Wear sunscreen if you go to the beach!` : `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co nhớ trùm kín mít, bôi kem chống nắng kỹ.`;
+                    } else {
+                        advice = currentLang === 'en' ? `Perfect weather (${temp}°C). Highly recommended to visit Ky Co or Eo Gio today!` : `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co hay Eo Gió nhen!`;
+                    }
+                }
+
+                document.getElementById('weather-icon').className = `text-6xl animate-pulse ${colorClass}`;
+                document.getElementById('weather-icon').innerHTML = icon;
+                document.getElementById('weather-desc').innerText = desc;
+                document.getElementById('sea-state').innerHTML = seaState;
+                document.getElementById('cano-state').innerHTML = canoState;
+                document.getElementById('weather-advice').innerHTML = advice;
+
+                const forecastContainer = document.getElementById('forecast-container');
+                forecastContainer.innerHTML = '';
+                const days = currentLang === 'en' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                
+                for (let i = 1; i <= 5; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const code = data.daily.weathercode[i];
+                    let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                    if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
+                    if (code >= 51) fIcon = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
+
+                    forecastContainer.innerHTML += `
+                        <div class="min-w-[70px] bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-400">${days[date.getDay()]}</span>
+                            <span class="text-lg">${fIcon}</span>
+                            <span class="text-sm font-black text-white">${maxTemp}°</span>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Lỗi lấy thời tiết:", error);
+                document.getElementById('temp-display').innerText = '30°C';
+                document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Offline Data' : 'Dữ liệu offline';
+                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
+                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
+            }
+        }
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
