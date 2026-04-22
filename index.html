@@ -2905,28 +2905,31 @@
         }
 
         async function getAIResponse(userText) {
-            const userNameContext = getShortName(currentUser.name);
-            
-            let chatContext = "";
-            if (currentChatMessages.length > 0) {
-                const recentMessages = currentChatMessages.slice(-5);
-                chatContext = "LỊCH SỬ TRÒ CHUYỆN GẦN ĐÂY / RECENT CHAT LOG:\n";
-                recentMessages.forEach(msg => {
-                    if (msg.role === 'user' && msg.text && !msg.text.includes("[")) chatContext += `User: ${msg.text}\n`;
-                    else if (msg.role === 'ai' && msg.rawText) chatContext += `AI: ${msg.rawText}\n`;
-                });
-            }
-            
-            const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.`
-                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.`;
+    const userNameContext = getShortName(currentUser.name);
+    
+    // 1. Lấy dữ liệu thời tiết (MỚI)
+    const weatherContextString = await getWeatherContextForAI();
+    
+    let chatContext = "";
+    if (currentChatMessages.length > 0) {
+        const recentMessages = currentChatMessages.slice(-5);
+        chatContext = "LỊCH SỬ TRÒ CHUYỆN GẦN ĐÂY / RECENT CHAT LOG:\n";
+        recentMessages.forEach(msg => {
+            if (msg.role === 'user' && msg.text && !msg.text.includes("[")) chatContext += `User: ${msg.text}\n`;
+            else if (msg.role === 'ai' && msg.rawText) chatContext += `AI: ${msg.rawText}\n`;
+        });
+    }
+    
+    // 2. Chèn thời tiết vào Prompt (MỚI)
+    const personaPrompt = currentLang === 'en' 
+        ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation. \n${weatherContextString}`
+        : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời. \n${weatherContextString}`;
 
-            const prompt = `${personaPrompt}
+    const prompt = `${personaPrompt}
 
-            ${chatContext}
+    ${chatContext}
 
-            Khách hỏi tiếp / The user asks: "${userText}"
-
+    Khách hỏi tiếp / The user asks: "${userText}"
             HƯỚNG DẪN TƯ DUY TỪ HỆ THỐNG / SYSTEM INSTRUCTIONS:
             1. KHÔNG SỬ DỤNG bộ database mặc định.
             2. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json). The JSON keys MUST remain exactly as shown, only translate the values inside into ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
