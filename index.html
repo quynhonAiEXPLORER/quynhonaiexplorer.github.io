@@ -2273,7 +2273,62 @@
                     </div>
                 </div>`;
         }
+        async function fetchRealWeather() {
+            // Lấy ngôn ngữ hiện tại để AI trả về đúng tiếng
+            const langInstruction = currentLang === 'en' 
+                ? 'Reply entirely in ENGLISH.' 
+                : 'Trả lời bằng TIẾNG VIỆT, dùng văn phong thổ địa Quy Nhơn (chu cha, nghen...).';
 
+            // Prompt nhờ AI đóng vai chuyên gia thời tiết Quy Nhơn
+            const prompt = `Đóng vai chuyên gia khí tượng và thổ địa biển đảo Quy Nhơn. 
+            Hãy dự báo thời tiết Quy Nhơn (ngẫu nhiên nhưng hợp lý với thực tế) và đưa ra lời khuyên du lịch.
+            ${langInstruction}
+            
+            TRẢ VỀ ĐÚNG CẤU TRÚC JSON (Không bọc \`\`\`json):
+            {
+                "temp": "29", 
+                "icon": "<i class=\\"fa-solid fa-sun\\"></i>", 
+                "desc": "Nắng ráo, gió mát",
+                "sea": "Biển êm, nước trong",
+                "cano": "Cano hoạt động tốt",
+                "advice": "Chu cha thời tiết này ra Kỳ Co lặn ngắm san hô là hết sẩy rầu!"
+            }`;
+
+            try {
+                // Gọi hàm AI đã có sẵn của bạn
+                const res = await fetchSpecialAI(prompt, 3, true);
+                
+                if (res) {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+                    
+                    // Cập nhật UI
+                    document.getElementById('temp-display').innerText = data.temp + '°C';
+                    
+                    const iconEl = document.getElementById('weather-icon');
+                    iconEl.innerHTML = data.icon;
+                    iconEl.classList.remove('animate-pulse'); // Tắt hiệu ứng giật giật khi đã load xong
+                    
+                    document.getElementById('weather-desc').innerText = data.desc;
+                    document.getElementById('sea-state').innerText = data.sea;
+                    document.getElementById('cano-state').innerText = data.cano;
+                    document.getElementById('weather-advice').innerText = data.advice;
+                } else {
+                    throw new Error("AI Timeout");
+                }
+            } catch (e) {
+                // Dữ liệu dự phòng (Fallback) nếu mạng yếu AI không trả lời kịp
+                document.getElementById('temp-display').innerText = '30°C';
+                const iconEl = document.getElementById('weather-icon');
+                iconEl.innerHTML = '<i class="fa-solid fa-cloud-sun"></i>';
+                iconEl.classList.remove('animate-pulse');
+                
+                document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Sunny with clouds' : 'Nắng đẹp, có mây';
+                document.getElementById('sea-state').innerText = currentLang === 'en' ? 'Calm waves' : 'Sóng êm';
+                document.getElementById('cano-state').innerText = currentLang === 'en' ? 'Operating normally' : 'Hoạt động bình thường';
+                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network is slow, but the weather is great for going out!' : 'Mạng đang hơi lắc xíu, nhưng trời đẹp cứ xách xe đi dạo nhen!';
+            }
+        }
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
