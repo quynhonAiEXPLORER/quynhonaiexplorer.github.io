@@ -27,10 +27,7 @@
             overflow: hidden; 
         }
 
-        .font-handwriting {
-            font-family: 'Great Vibes', cursive;
-        }
-
+        .font-handwriting { font-family: 'Great Vibes', cursive; }
         .glass-nav { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-bottom-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: env(safe-area-inset-bottom); }
         .glass-panel { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -42,7 +39,6 @@
         .top-nav-active { color: #f97316 !important; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1) !important; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.4); border-radius: 4px; }
@@ -355,6 +351,59 @@
         </div>
     </div>
 
+    <div id="onboarding-modal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-gradient-to-br from-gray-900 to-black border border-orange-500/50 shadow-[0_0_30px_rgba(249,115,22,0.3)] rounded-3xl w-full max-w-md p-6 text-center transform transition-all modal-slide-up">
+            <div class="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-400 text-3xl shadow-inner">
+                <i class="fa-solid fa-clipboard-user"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-2 uppercase tracking-wide">Hồ sơ Du Lịch</h2>
+            <p class="text-sm text-gray-400 mb-6">Trợ lý Tư Nẫu cần biết một chút về bạn để tư vấn chuẩn xác nhất nhen!</p>
+
+            <form id="onboarding-form" onsubmit="submitOnboarding(event)" class="space-y-5 text-left">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[13px] font-bold text-orange-400 mb-2">1. Giới tính</label>
+                        <select id="ob-gender" required class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 appearance-none">
+                            <option value="" disabled selected class="text-gray-900">Chọn...</option>
+                            <option value="Nam" class="text-gray-900">Nam</option>
+                            <option value="Nữ" class="text-gray-900">Nữ</option>
+                            <option value="Khác" class="text-gray-900">Khác</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-bold text-orange-400 mb-2">2. Độ tuổi</label>
+                        <select id="ob-age" required class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 appearance-none">
+                            <option value="" disabled selected class="text-gray-900">Chọn...</option>
+                            <option value="Dưới 18 tuổi" class="text-gray-900">Dưới 18 tuổi</option>
+                            <option value="18 - 25 tuổi" class="text-gray-900">18 - 25 tuổi</option>
+                            <option value="26 - 35 tuổi" class="text-gray-900">26 - 35 tuổi</option>
+                            <option value="Trên 35 tuổi" class="text-gray-900">Trên 35 tuổi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-bold text-orange-400 mb-2">3. Sở thích của bạn (Chọn nhiều)</label>
+                    <div id="hobbies-container" class="flex flex-wrap gap-2 mb-3">
+                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Công nghệ</button>
+                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Chế tạo DIY</button>
+                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Nhiếp ảnh</button>
+                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Nghe nhạc Rap</button>
+                        <button type="button" class="hobby-btn border border-white/20 rounded-full px-3 py-1.5 text-xs text-gray-300 hover:border-orange-500 transition-colors" onclick="toggleHobby(this)">Chơi Game</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="custom-hobby-input" placeholder="Nhập sở thích khác..." class="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors">
+                        <button type="button" onclick="addCustomHobby()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-bold transition active:scale-95">Thêm</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.4)] active:scale-95 transition-all">
+                    Hoàn tất <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // 0. BỘ TỪ ĐIỂN ĐA NGÔN NGỮ (i18n) & DỮ LIỆU BẢN ĐỒ
@@ -423,7 +472,6 @@
         };
 
         const checkinLocations = [
-            // (Giữ nguyên mảng checkinLocations như cũ, đã rút gọn để dễ nhìn, bạn có thể copy mảng cũ vào đây)
             {
                 name: "Kỳ Co",
                 desc_vi: '"Maldives của Việt Nam" với làn nước trong xanh ngọc bích',
@@ -436,7 +484,6 @@
                 review_vi: { pros: "Nước biển trong xanh...", cons: "Thời tiết có thể nắng gắt...", summary: "Điểm đến không thể bỏ qua..." },
                 review_en: { pros: "The sea water here...", cons: "The sun is extremely harsh...", summary: "A absolute must-visit..." }
             }
-            // ... (thêm đầy đủ các địa điểm còn lại)
         ];
 
         let currentLang = localStorage.getItem('app_lang') || 'vi';
@@ -537,21 +584,21 @@
             BỘ QUY TẮC BẢO VỆ BIÊN GIỚI VÀ KIỂM DUYỆT TỐI CAO:
             1. ĐỊA GIỚI HÀNH CHÍNH ĐỘC QUYỀN: Địa danh này BẮT BUỘC PHẢI NẰM TRONG tỉnh Bình Định (ưu tiên Quy Nhơn). Nếu địa danh thuộc tỉnh/thành phố khác hoặc ở nước ngoài, BẠN PHẢI TRẢ VỀ "is_verified": false.
             2. KHÔNG BỊA ĐẶT TIN GIẢ: Nếu địa danh hư cấu, trả về "is_verified": false.
-            3. NGUỒN CHÍNH THỐNG & TRÍCH DẪN: Các thông tin về lịch sử, địa lý, văn hóa PHẢI dựa trên các nguồn thông tin chính thống (ví dụ: Cổng TTĐT tỉnh Bình Định, Báo Bình Định, tài liệu lịch sử cấp quốc gia). BẮT BUỘC phải có trích dẫn nguồn tham khảo trong trường "source".
+            3. NGUỒN CHÍNH THỐNG & TRÍCH DẪN: Các thông tin về lịch sử, địa lý, văn hóa PHẢI dựa trên các nguồn thông tin chính thống.
             4. Trả về ĐÚNG cấu trúc JSON sau (KHÔNG bọc trong \`\`\`json):
             
             {
                 "is_verified": true hoặc false,
-                "reject_reason": "Nếu false, từ chối rõ ràng. VD: 'Chu cha, địa danh này hổng nằm ở Quy Nhơn - Bình Định rầu! Anh Tư chỉ rành đất võ trời văn xứ Nẫu thôi nhen.'",
+                "reject_reason": "Nếu false, từ chối rõ ràng. VD: 'Chu cha, địa danh này hổng nằm ở Quy Nhơn - Bình Định rầu!'",
                 "data": {
                     "name": "Tên chuẩn hóa",
                     "desc_vi": "Mô tả chuẩn xác (1 câu)",
                     "desc_en": "Short description",
                     "img": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png",
                     "map": "https://www.google.com/maps/search/?api=1&query=$${encodeURIComponent(placeName)}+Quy+Nhon,+Binh+Dinh",
-                    "history_vi": "Lịch sử chi tiết, chính xác. BẮT BUỘC ghi kèm nguồn thông tin chính thống (nếu có).",
-                    "history_en": "Detailed history. MUST include official source citation (if any).",
-                    "source": "Ghi rõ nguồn thông tin chính thống đã sử dụng (VD: Cổng TTĐT tỉnh Bình Định, Báo Bình Định...)",
+                    "history_vi": "Lịch sử chi tiết, chính xác.",
+                    "history_en": "Detailed history.",
+                    "source": "Ghi rõ nguồn thông tin chính thống",
                     "review_vi": { "pros": "Điểm mạnh", "cons": "Điểm yếu", "summary": "Tổng kết" },
                     "review_en": { "pros": "Pros", "cons": "Cons", "summary": "Summary" }
                 }
@@ -600,7 +647,6 @@
                 }
 
                 const aiGeneratedLocation = aiResponse.data;
-
                 aiGeneratedLocation.desc_vi = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Đã xác minh</span> • ` + aiGeneratedLocation.desc_vi;
                 aiGeneratedLocation.desc_en = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Verified</span> • ` + aiGeneratedLocation.desc_en;
 
@@ -763,21 +809,18 @@
         let currentChatSessionId = null;
         let currentChatMessages = [];
         
-        // THÊM BIẾN LƯU TRỮ THỜI TIẾT TOÀN CỤC
         let currentWeatherContext = currentLang === 'en'
             ? "Sunny and clear, perfect for outdoor activities."
             : "Trời nắng đẹp, lý tưởng để hoạt động ngoài trời.";
 
+        // CẬP NHẬT BIẾN currentUser CÓ THÊM ONBOARDING
         let currentUser = {
             isLoggedIn: false,
             uid: null,
             name: currentLang === 'en' ? 'Guest Traveler' : 'Khách Phương Xa',
             avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true',
-            chatSessions: [],
-            itineraries: [],
-            points: 0,
-            challenges: [],
-            trivia: []
+            chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [],
+            preferences: null, onboardingCompleted: false
         };
 
         function getShortName(fullName) {
@@ -792,15 +835,10 @@
                 if (user) {
                     const displayName = user.displayName || user.email.split('@')[0];
                     currentUser = {
-                        isLoggedIn: true,
-                        uid: user.uid,
-                        name: displayName,
+                        isLoggedIn: true, uid: user.uid, name: displayName,
                         avatar: user.photoURL || `https://ui-avatars.com/api/?name=${displayName.charAt(0)}&background=f97316&color=fff&rounded=true`,
-                        chatSessions: [],
-                        itineraries: [],
-                        points: 0,
-                        challenges: [],
-                        trivia: []
+                        chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [],
+                        preferences: null, onboardingCompleted: false
                     };
 
                     if (db) {
@@ -813,22 +851,88 @@
                                 currentUser.points = data.points || 0;
                                 currentUser.challenges = data.challenges || [];
                                 currentUser.trivia = data.trivia || [];
+                                currentUser.preferences = data.preferences || null;
+                                currentUser.onboardingCompleted = data.onboardingCompleted || false;
                             }
-                        } catch (error) {
-                            console.error("Lỗi tải dữ liệu từ Cloud:", error);
-                        }
+                            
+                            // KÍCH HOẠT ONBOARDING LẦN ĐẦU
+                            if (!currentUser.onboardingCompleted) {
+                                document.getElementById('onboarding-modal').classList.remove('hidden');
+                            }
+                        } catch (error) { console.error("Lỗi tải dữ liệu:", error); }
                     }
                 } else {
-                    currentUser = { isLoggedIn: false, uid: null, name: currentLang === 'en' ? 'Guest Traveler' : 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [] };
+                    currentUser = { isLoggedIn: false, uid: null, name: currentLang === 'en' ? 'Guest Traveler' : 'Khách Phương Xa', avatar: 'https://ui-avatars.com/api/?name=K&background=334155&color=fff&rounded=true', chatSessions: [], itineraries: [], points: 0, challenges: [], trivia: [], preferences: null, onboardingCompleted: false };
                 }
                 
                 updateDynamicGreeting();
-                
                 if (currentPageId === 'page-profile') {
                     if (currentUser.isLoggedIn) renderProfile();
                     else renderLoginForm();
                 }
             });
+        }
+
+        // ==========================================
+        // CÁC HÀM XỬ LÝ KHẢO SÁT ONBOARDING TÍCH HỢP
+        // ==========================================
+        let selectedHobbies = [];
+
+        function toggleHobby(btn) {
+            const hobby = btn.innerText.trim();
+            if (selectedHobbies.includes(hobby)) {
+                selectedHobbies = selectedHobbies.filter(h => h !== hobby);
+                btn.classList.remove('bg-orange-500/20', 'border-orange-500', 'text-orange-400');
+                btn.classList.add('border-white/20', 'text-gray-300');
+            } else {
+                selectedHobbies.push(hobby);
+                btn.classList.add('bg-orange-500/20', 'border-orange-500', 'text-orange-400');
+                btn.classList.remove('border-white/20', 'text-gray-300');
+            }
+        }
+
+        function addCustomHobby() {
+            const input = document.getElementById('custom-hobby-input');
+            const hobby = input.value.trim();
+            if (hobby && !selectedHobbies.includes(hobby)) {
+                selectedHobbies.push(hobby);
+                const container = document.getElementById('hobbies-container');
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = "hobby-btn border border-orange-500 bg-orange-500/20 rounded-full px-3 py-1.5 text-xs text-orange-400 transition-colors";
+                btn.innerText = hobby;
+                btn.onclick = function() { toggleHobby(this); };
+                container.appendChild(btn);
+                input.value = '';
+            }
+        }
+
+        async function submitOnboarding(event) {
+            event.preventDefault();
+            if (selectedHobbies.length === 0) {
+                alert("Bạn chọn ít nhất 1 sở thích để Anh Tư dễ tư vấn nghen!");
+                return;
+            }
+
+            const gender = document.getElementById('ob-gender').value;
+            const age = document.getElementById('ob-age').value;
+            const hobbiesString = selectedHobbies.join(', ');
+
+            currentUser.preferences = { gender, age, hobbies: hobbiesString };
+            currentUser.onboardingCompleted = true;
+
+            if (currentUser.uid && db) {
+                try {
+                    await db.collection('users').doc(currentUser.uid).set({
+                        preferences: currentUser.preferences,
+                        onboardingCompleted: true,
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                } catch (error) { console.error("Lỗi lưu hồ sơ:", error); }
+            }
+
+            document.getElementById('onboarding-modal').classList.add('hidden');
+            alert(currentLang === 'en' ? "Profile saved!" : "Đã cập nhật hồ sơ cá nhân!");
         }
 
         async function saveUserData() {
@@ -1443,19 +1547,15 @@
                     const q3Title = currentLang === 'en' ? "What's your travel style?" : "Gu đi chơi của bạn ra sao?";
                     const q3Sub = currentLang === 'en' ? "(You can select multiple)" : "(Có thể chọn nhiều mục nhen)";
                     
-                    const st1 = currentLang === 'en' ? "Photography & Sightseeing" : "Chụp ảnh sống ảo";
                     const st1Title = currentLang === 'en' ? "Photography" : "Sống ảo";
                     const st1Sub = currentLang === 'en' ? "Hot check-in spots" : "Điểm check-in rần rần";
 
-                    const st2 = currentLang === 'en' ? "Food Tour" : "Khám phá ẩm thực, ăn sập Quy Nhơn";
                     const st2Title = currentLang === 'en' ? "Food Tour" : "Ăn sập Quy Nhơn";
                     const st2Sub = currentLang === 'en' ? "Local seafood & snacks" : "Bún rạm, bánh xèo, ốc...";
 
-                    const st3 = currentLang === 'en' ? "Relaxing & Chill" : "Nghỉ dưỡng, ngắm biển";
                     const st3Title = currentLang === 'en' ? "Relax & Chill" : "Chill & Nghỉ dưỡng";
                     const st3Sub = currentLang === 'en' ? "Peaceful & slow paced" : "Nhẹ nhàng, thư giãn";
 
-                    const st4 = currentLang === 'en' ? "Culture & History" : "Khám phá Văn hóa Lịch sử";
                     const st4Title = currentLang === 'en' ? "Culture" : "Văn hóa & Lịch sử";
                     const st4Sub = currentLang === 'en' ? "Cham towers, museums" : "Tháp Chăm, Bảo tàng";
 
@@ -1469,22 +1569,22 @@
                             <p class="text-xs text-gray-400 mb-4">${q3Sub}</p>
                             
                             <div class="grid grid-cols-1 gap-3">
-                                <button onclick="toggleStyle(this, '${st1}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                <button onclick="toggleItinStyle(this, '${st1Title}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400"><i class="fa-solid fa-camera"></i></div>
                                     <div class="flex-1"><p class="font-bold text-sm">${st1Title}</p><p class="text-[10px] text-gray-400">${st1Sub}</p></div>
                                     <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="toggleStyle(this, '${st2}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                <button onclick="toggleItinStyle(this, '${st2Title}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fa-solid fa-utensils"></i></div>
                                     <div class="flex-1"><p class="font-bold text-sm">${st2Title}</p><p class="text-[10px] text-gray-400">${st2Sub}</p></div>
                                     <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="toggleStyle(this, '${st3}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                <button onclick="toggleItinStyle(this, '${st3Title}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400"><i class="fa-solid fa-umbrella-beach"></i></div>
                                     <div class="flex-1"><p class="font-bold text-sm">${st3Title}</p><p class="text-[10px] text-gray-400">${st3Sub}</p></div>
                                     <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
                                 </button>
-                                <button onclick="toggleStyle(this, '${st4}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
+                                <button onclick="toggleItinStyle(this, '${st4Title}')" class="style-btn glass-card p-4 rounded-2xl border border-white/10 transition text-left flex items-center gap-4">
                                     <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400"><i class="fa-solid fa-landmark"></i></div>
                                     <div class="flex-1"><p class="font-bold text-sm">${st4Title}</p><p class="text-[10px] text-gray-400">${st4Sub}</p></div>
                                     <i class="check-icon fa-solid fa-circle-check text-orange-500 hidden text-xl"></i>
@@ -1592,7 +1692,7 @@
             }
         }
 
-        function toggleStyle(btn, styleValue) {
+        function toggleItinStyle(btn, styleValue) {
             btn.classList.toggle('border-orange-500');
             btn.classList.toggle('bg-orange-500/10');
             
@@ -2643,6 +2743,18 @@
         async function getAIResponse(userText) {
             const userNameContext = getShortName(currentUser.name);
             
+            // TÍCH HỢP NGỮ CẢNH CÁ NHÂN HÓA LÊN PROMPT
+            let personalContext = "";
+            if (currentUser.isLoggedIn && currentUser.preferences) {
+                const pref = currentUser.preferences;
+                personalContext = currentLang === 'en' 
+                    ? `\nUSER PROFILE: Gender: ${pref.gender}. Age: ${pref.age}. Hobbies: ${pref.hobbies}. Adapt your communication style based on their age and weave their hobbies into your travel suggestions logically.`
+                    : `\nTHÔNG TIN CÁ NHÂN HÓA BẮT BUỘC: 
+                    1. XƯNG HÔ LINH HOẠT: Dựa vào Giới tính (${pref.gender}) và Độ tuổi (${pref.age}) để xưng hô cho mượt (VD: Nếu khách dưới 18 tuổi thì xưng "Anh Tư - em"; Khách lớn tuổi hơn thì xưng "em - anh/chị").
+                    2. TONE GIỌNG: Nếu khách trẻ, dùng văn phong năng động, bắt trend. Nếu khách lớn tuổi, dùng văn phong lịch sự, thân thiện.
+                    3. SỞ THÍCH: Khách có sở thích [${pref.hobbies}]. Hãy luôn tìm cách liên kết khéo léo các điểm du lịch, quán cafe hoặc trải nghiệm tại Quy Nhơn với các sở thích này để tạo hứng thú.`;
+            }
+            
             let chatContext = "";
             if (currentChatMessages.length > 0) {
                 const recentMessages = currentChatMessages.slice(-5);
@@ -2654,8 +2766,8 @@
             }
             
             const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}. (Important: Strongly favor recommendations that suit this exact weather condition).`
-                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}. (LƯU Ý CỰC KỲ QUAN TRỌNG: Hãy chủ động khuyên khách hoặc gợi ý địa điểm, quán ăn phù hợp tuyệt đối với tình hình thời tiết này).`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}. (Important: Strongly favor recommendations that suit this exact weather condition).${personalContext}`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}. (LƯU Ý CỰC KỲ QUAN TRỌNG: Hãy chủ động khuyên khách hoặc gợi ý địa điểm, quán ăn phù hợp tuyệt đối với tình hình thời tiết này).${personalContext}`;
 
             const prompt = `${personaPrompt}
 
