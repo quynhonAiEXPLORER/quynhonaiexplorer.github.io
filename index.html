@@ -3377,4 +3377,40 @@
             const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
             const langInstruction = currentLang !== 'vi' 
                 ? `Translate the following Binh Dinh slang into ${aiLang}.` 
-                : 'Dịch từ/câu tiếng Bình Định sau
+                : 'Dịch từ/câu tiếng Bình Định sau đây sang tiếng Phổ thông.';
+
+            const prompt = `${langInstruction} Text: "${input}"
+            TRẢ VỀ ĐÚNG ĐỊNH DẠNG JSON SAU (Không bọc trong \`\`\`json). The keys must remain "nghia" and "vi_du":
+            {
+                "nghia": "Explanation",
+                "vi_du": "1 context example"
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    const data = JSON.parse(cleanRes);
+                    outputDiv.innerHTML = `
+                        <div class="mb-4 text-[11px] font-bold text-blue-400 bg-blue-500/10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full">
+                            <i class="fa-solid fa-robot"></i> Gemini AI
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white/5 border-l-4 border-orange-500 p-3.5 rounded-r-xl shadow-sm">
+                                <h5 class="text-[11px] font-bold text-orange-400 uppercase mb-1.5"><i class="fa-solid fa-book"></i> Meaning</h5>
+                                <p class="text-white text-sm">${data.nghia}</p>
+                            </div>
+                            <div class="bg-white/5 border-l-4 border-blue-500 p-3.5 rounded-r-xl shadow-sm">
+                                <h5 class="text-[11px] font-bold text-blue-400 uppercase mb-1.5"><i class="fa-solid fa-quote-left"></i> Example</h5>
+                                <p class="text-gray-300 text-sm italic">"${data.vi_du}"</p>
+                            </div>
+                        </div>
+                    `;
+                } catch (err) {
+                    outputDiv.innerHTML = res;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
