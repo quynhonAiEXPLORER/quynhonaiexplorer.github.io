@@ -422,7 +422,7 @@
         // ==========================================
         // HIỆU ỨNG GÕ CHỮ (TYPEWRITER) CHO CHATBOT
         // ==========================================
-        function typeWriterEffect(elementId, text, speed = 15) {
+        function typeWriterEffect(elementId, text, speed = 8) {
             return new Promise(resolve => {
                 const el = document.getElementById(elementId);
                 if (!el) return resolve();
@@ -3401,10 +3401,13 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             }
             
             const aiLang = aiLangMap[currentLang] || 'VIETNAMESE';
+            
+            // ĐÃ THÊM LỆNH ÉP BUỘC TRẢ LỜI NGẮN GỌN (MAX 2-3 CÂU) VÀO PERSONA PROMPT
             const personaPrompt = currentLang !== 'vi' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ${aiLang}. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
-                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}.${personalContext}`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ${aiLang}. STRICT RULE: Keep your answers EXTREMELY SHORT, CONCISE, and TO THE POINT (Maximum 2-3 sentences). You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}.${personalContext}`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG 1: TRẢ LỜI CỰC KỲ NGẮN GỌN, SÚC TÍCH, VÀ ĐÚNG TRỌNG TÂM (Tối đa 2-3 câu). KHÔNG giải thích dài dòng. QUY TẮC TỐI THƯỢNG 2: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}.${personalContext}`;
 
+            // ĐÃ NHẤN MẠNH YÊU CẦU NGẮN GỌN VÀO KHUÔN JSON
             const prompt = `${personaPrompt}
 
             ${chatContext}
@@ -3416,13 +3419,13 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
             2. Output JSON theo cấu trúc sau (KHÔNG BỌC TRONG \`\`\`json). The JSON keys MUST remain exactly as shown, only translate the values inside into ${aiLang}:
             {
               "type": "location",
-              "text": "Câu trả lời của bạn / Your answer here...",
+              "text": "Câu trả lời của bạn (ngắn gọn tối đa 3 câu) / Your extremely short answer here...",
               "places": [
                 { "name": "Tên / Name", "address": "Địa chỉ / Address", "price": "Giá tham khảo / Price", "image_keyword": "keyword" }
               ]
             }
             Nếu không cần hiển thị thêm địa điểm mới lên bản đồ (If no new map locations needed): 
-            { "type": "text", "text": "Câu trả lời / Answer..." }`;
+            { "type": "text", "text": "Câu trả lời siêu ngắn gọn / Extremely short answer..." }`;
 
             const res = await fetchSpecialAI(prompt);
             return res || JSON.stringify({
@@ -3430,7 +3433,6 @@ Trả về JSON song ngữ Anh/Việt cấu trúc chuẩn (tasks, trivia).</pre>
                 "text": currentLang !== 'vi' ? `Oops, the network is down! I'll be back shortly, ${userNameContext}!` : `Chu cha, đứt mạng rầu ${userNameContext} ơi, Anh Tư đang nghẽn sóng chút xíu nhen!`
             });
         }
-
         async function verifyChallengeWithAI(base64Data, index) {
             const chal = currentUser.challenges[index];
             const displayText = currentLang !== 'vi' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
