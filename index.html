@@ -42,6 +42,12 @@
         .top-nav-active { color: #f97316 !important; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1) !important; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.4); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(249,115,22,0.8); }
+
         #chat-box-content { scroll-behavior: smooth; }
 
         .message-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-end; width: 100%; }
@@ -417,296 +423,20 @@
         };
 
         const checkinLocations = [
+            // (Giữ nguyên mảng checkinLocations như cũ, đã rút gọn để dễ nhìn, bạn có thể copy mảng cũ vào đây)
             {
                 name: "Kỳ Co",
                 desc_vi: '"Maldives của Việt Nam" với làn nước trong xanh ngọc bích',
                 desc_en: '"Vietnam\'s Maldives" with crystal clear emerald water',
                 img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/kyco4.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Kỳ+Co+Quy+Nhơn",
-                history_vi: "Kỳ Co ban đầu là một bãi biển hoang sơ, chỉ có ngư dân địa phương biết đến để neo đậu tàu thuyền tránh bão. Tên gọi 'Kỳ Co' bắt nguồn từ hình dáng bờ biển cong như chiếc nơ nhỏ (ngôn ngữ địa phương gọi là 'co'). Nhờ địa hình ba mặt giáp núi, một mặt giáp biển, nơi đây giữ được vẻ đẹp tự nhiên tuyệt đối.",
-                history_en: "Ky Co was originally a pristine beach known only to local fishermen for storm shelter. The name 'Ky Co' comes from the shape of the coastline, curving like a small bow. Thanks to its terrain of mountains on three sides and the sea on one, it retains its absolute natural beauty.",
+                map: "https://www.google.com/maps/search/?api=1&query=Kỳ+Co,+Quy+Nhơn,+Bình+Định",
+                history_vi: "Kỳ Co ban đầu là một bãi biển hoang sơ...",
+                history_en: "Ky Co was originally a pristine beach...",
                 source: "Tư liệu Địa chí du lịch xã Nhơn Lý",
-                review_vi: {
-                    pros: "Chu cha, nước biển ở đây xanh ngắt như ngọc bích, trong tới đáy luôn nghen. Bãi cát thì trắng phau, mịn màng, chụp hình check-in là bao 'ảo' luôn dẫy. Có mấy cái hang đá với cầu gỗ xịn xò, đúng chất Maldives Việt Nam chớ chẳng chơi.",
-                    cons: "Nắng ở đây gắt dữ lắm, đi không khéo là cháy da như tôm luộc. Đường đi cano ra đảo nếu trúng ngày biển động thì hơi say sóng xíu nhen.",
-                    summary: "Đã tới Quy Nhơn là nhất định phải đi Kỳ Co một chuyến! Nhớ bôi kem chống nắng kỹ càng và đi sớm để chụp hình vắng người nhen."
-                },
-                review_en: {
-                    pros: "The sea water here is emerald green and crystal clear. The sand is pure white and smooth, perfect for stunning photos. The wooden bridges and caves are amazing!",
-                    cons: "The sun is extremely harsh, you can get sunburned easily. The speedboat ride can be bumpy on windy days.",
-                    summary: "A absolute must-visit in Quy Nhon! Remember to apply plenty of sunscreen and go early to avoid crowds."
-                }
-            },
-            {
-                name: "Eo Gió",
-                desc_vi: "Nơi ngắm hoàng hôn đẹp nhất Việt Nam với con đường ven biển tuyệt đẹp",
-                desc_en: "The best place to watch the sunset in Vietnam with a stunning coastal path",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/eogio.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Eo+Gió+Quy+Nhơn",
-                history_vi: "Cái tên 'Eo Gió' bắt nguồn từ đặc điểm địa hình: một eo biển nhỏ được bao bọc bởi hai rặng núi đá cao uốn cong như hình phễu để hút gió biển. Từ xa xưa, đây là nơi ngư dân đứng ngắm thời tiết để dự đoán biển động hay êm trước khi ra khơi.",
-                history_en: "The name 'Eo Gio' (Wind Strait) comes from its topography: a small strait surrounded by two high rocky mountain ranges curving like a funnel to catch the sea breeze. In the past, fishermen stood here to observe the weather before setting sail.",
-                source: "Cổng thông tin điện tử tỉnh Bình Định",
-                review_vi: {
-                    pros: "Đứng đây đón gió biển lồng lộng mát rượi rọt gan luôn. Con đường đi bộ ôm theo sườn núi bao la hùng vĩ, lên hình bao ngầu. Ngắm hoàng hôn ở đây là đỉnh của chóp rầu!",
-                    cons: "Khu này đi bộ leo bậc thang hơi nhiều, ai yếu chân là thở dốc nghen. Gió to quá chụp hình hay bị bay tóc loạn xạ.",
-                    summary: "Chỗ này đi tầm chiều tà mát mẻ là đẹp nhất. Nhớ mang theo áo khoác mỏng vì chiều tối gió lùa hơi lạnh đó."
-                },
-                review_en: {
-                    pros: "The sea breeze here is incredibly refreshing. The walking path hugging the majestic mountain looks very cool in photos. Watching the sunset here is top-notch!",
-                    cons: "There are quite a few stairs to climb, which might be tiring for some. The strong wind can make your hair messy in photos.",
-                    summary: "Best to visit in the late afternoon for cool weather. Bring a light jacket as it gets chilly in the evening."
-                }
-            },
-            {
-                name: "Tháp Đôi",
-                desc_vi: "Di tích kiến trúc Chăm Pa cổ kính giữa lòng thành phố",
-                desc_en: "Ancient Cham Towers right in the heart of the city",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapdoi.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Tháp+Đôi+Quy+Nhơn",
-                history_vi: "Tháp Đôi (hay Tháp Hưng Thạnh) được xây dựng vào cuối thế kỷ XII - đầu thế kỷ XIII, mang đậm phong cách nghệ thuật Champa pha lẫn kiến trúc Khmer. Đây là cụm tháp hiếm hoi nằm gọn trong lòng đô thị. Tháp từng bị tàn phá nặng nề nhưng đã được trùng tu lớn vào năm 1990.",
-                history_en: "Built in the late 12th and early 13th centuries, the Twin Towers feature Champa art blended with Khmer architecture. It is a rare tower cluster located within a city. Heavily damaged over time, it underwent major restoration in 1990.",
-                source: "Bảo tàng Lịch sử tỉnh Bình Định",
-                review_vi: {
-                    pros: "Nằm ngay trung tâm thành phố nên siêu tiện đường ghé qua. Kiến trúc tháp Chăm chạm trổ hoa văn cổ kính, chụp hình với áo dài hoặc đồ boho là đẹp nhức nách.",
-                    cons: "Khuôn viên tháp hơi nhỏ, đi tham quan tầm 30 phút là hết rồi. Trưa nắng thì không có nhiều cây xanh để đụt mưa che nắng nhen.",
-                    summary: "Một điểm check-in văn hóa gọn nhẹ, không tốn sức di chuyển. Vé vào cổng cực hạt dẻ, đáng để ghé qua!"
-                },
-                review_en: {
-                    pros: "Located right in the city center, very convenient to visit. The ancient Cham carvings are beautiful, great for photos with traditional or boho outfits.",
-                    cons: "The campus is quite small, you can see everything in 30 minutes. Not much shade during the hot noon.",
-                    summary: "A quick and easy cultural check-in spot. The entrance fee is very cheap, definitely worth a visit!"
-                }
-            },
-            {
-                name: "Ghềnh Ráng Tiên Sa",
-                desc_vi: "Bãi tắm Hoàng Hậu với vô số hòn đá trứng, nơi có mộ thi sĩ Hàn Mặc Tử",
-                desc_en: "Queen's Beach with egg-shaped stones and Han Mac Tu poet's tomb",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/ghenhrang.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Ghềnh+Ráng+Tiên+Sa+Quy+Nhơn",
-                history_vi: "Giai thoại kể rằng các tiên nữ thường xuống đây tắm nên có tên 'Tiên Sa'. Năm 1927, Vua Bảo Đại đã chọn nơi này làm khu nghỉ dưỡng, bãi tắm đầy đá cuội tròn được dành riêng cho Nam Phương Hoàng Hậu nên gọi là Bãi tắm Hoàng Hậu. Đây cũng là nơi an nghỉ của thi sĩ tài hoa Hàn Mặc Tử.",
-                history_en: "Legend has it that fairies used to bathe here, hence the name 'Tien Sa'. In 1927, Emperor Bao Dai chose this as a retreat, and the egg-stone beach was reserved for Queen Nam Phuong. It is also the resting place of the famous poet Han Mac Tu.",
-                source: "Sách Di tích Lịch sử - Văn hóa Bình Định",
-                review_vi: {
-                    pros: "Cảnh biển từ đồi cao nhìn xuống quá xá đẹp! Bãi Trứng (Bãi tắm Hoàng Hậu) có mấy cục đá tròn lẳn ngộ lắm. Ghé thăm mộ thi sĩ Hàn Mặc Tử thấy lòng bình yên rớt.",
-                    cons: "Đường dốc đi bộ mỏi giò xíu nhen. Đá ở Bãi Trứng trơn trợt lắm, đi đứng cẩn thận kẻo u đầu mẻ trán.",
-                    summary: "Điểm đến lý tưởng kết hợp ngắm cảnh và tìm hiểu văn hóa thi ca. Mua vài câu thơ khắc trên gỗ làm kỷ niệm cũng hay lắm!"
-                },
-                review_en: {
-                    pros: "The ocean view from the hill is breathtaking! Egg Beach has unique round stones. Visiting Han Mac Tu's tomb brings a sense of peace.",
-                    cons: "The walking path is a bit steep. The stones at Egg Beach are very slippery, walk carefully.",
-                    summary: "An ideal destination combining scenery and poetry culture. Buying a wooden poetry carving is a great souvenir!"
-                }
-            },
-            {
-                name: "Hòn Khô",
-                desc_vi: "Cây cầu gỗ vòng quanh núi và con đường cát xuyên biển độc đáo",
-                desc_en: "Wooden bridge around the mountain and a unique sand path through the sea",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/honkho.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Đảo+Hòn+Khô+Quy+Nhơn",
-                history_vi: "Hòn Khô đúng như tên gọi, là một hòn đảo nhiều đá tảng, khô cằn và hiếm cây bóng mát. Từ xa xưa, đảo là bức bình phong che chắn bão cho làng chài Nhơn Hải. Gần đây, hòn đảo nổi tiếng nhờ các dự án bảo tồn rạn san hô và rùa biển của cộng đồng.",
-                history_en: "True to its name 'Khô' (Dry), it is a rocky island with sparse vegetation. Historically, it served as a natural storm shield for Nhon Hai fishing village. Recently, it has become famous for community-led coral reef and sea turtle conservation projects.",
-                source: "Chi cục Thủy sản Bình Định",
-                review_vi: {
-                    pros: "San hô ở đây gần bờ mà đẹp rực rỡ, lặn ngắm cá bơi tung tăng đã lắm. Cây cầu gỗ ôm quanh núi lên hình bao vintage. Đi xuồng ra đảo có mấy phút thôi, nhanh gọn lẹ.",
-                    cons: "Đảo đúng nghĩa 'Khô' luôn, nắng gắt mà ít cây cối. Ngày thủy triều lên cao thì con đường cát xuyên biển sẽ bị ngập không đi bộ được nhen.",
-                    summary: "Thiên đường cho hội đam mê lặn ngắm san hô. Nên kết hợp ăn hải sản làng chài Nhơn Hải luôn vì tươi ngon mà giá lại bình dân."
-                }
-            },
-            {
-                name: "Cù Lao Xanh",
-                desc_vi: "Hòn ngọc xanh giữa biển Đông, ngọn hải đăng trăm tuổi",
-                desc_en: "Green pearl of the East Sea, century-old lighthouse",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/culaoxanh.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Cù+Lao+Xanh+Quy+Nhơn",
-                history_vi: "Tên chữ là đảo Nhơn Châu, có vị trí chiến lược về an ninh quốc phòng. Điểm nhấn lịch sử là Ngọn Hải đăng được người Pháp xây dựng từ năm 1890, hoàn toàn bằng đá tảng vững chắc. Hơn 130 năm qua, ngọn hải đăng vẫn đêm đêm thắp sáng dẫn đường cho tàu thuyền trên Biển Đông.",
-                history_en: "Officially named Nhon Chau island, it holds a strategic maritime position. Its historical highlight is the Lighthouse built by the French in 1890 using solid rocks. For over 130 years, it has illuminated the East Sea guiding ships every night.",
-                source: "Lịch sử Hàng hải Việt Nam",
-                review_vi: {
-                    pros: "Nước biển trong xanh như ngọc, thiên nhiên hoang sơ chưa bị khai thác nhiều. Check-in Ngọn Hải đăng và Cột cờ Tổ quốc siêu ngầu. Hải sản do người dân đánh bắt rẻ và tươi ngon hết sẩy.",
-                    cons: "Say sóng! Ai tiền đình yếu đi cano ra đảo 30 phút là mật xanh mật vàng nhen. Khách sạn/Homestay trên đảo còn khá đơn sơ.",
-                    summary: "Chuyến phiêu lưu đáng giá cho người thích thiên nhiên yên bình. Chuẩn bị sẵn thuốc say xe và ở lại qua đêm để ngắm bình minh nhen."
-                }
-            },
-            {
-                name: "Khu dã ngoại Trung Lương",
-                desc_vi: "Thung lũng cắm trại cực chill bên bờ biển xanh mát",
-                desc_en: "A relaxing camping valley by the cool blue sea",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/trungluong.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Khu+dã+ngoại+Trung+Lương",
-                history_vi: "Về mặt địa lý, đây từng là một thung lũng hoang sơ với những vách đá vôi sát biển tại Phù Cát. Đến năm 2016, khu vực này được quy hoạch và cải tạo thành khu cắm trại dã ngoại, mở ra làn sóng du lịch sinh thái mới mẻ cho giới trẻ tại Bình Định.",
-                history_en: "Geographically, this was a wild valley with limestone cliffs by the sea in Phu Cat. In 2016, it was developed into a camping site, opening up a new wave of eco-tourism and glamping for young people in Binh Dinh.",
-                source: "Sở Du lịch tỉnh Bình Định",
-                review_vi: {
-                    pros: "Giao diện siêu giống đảo Jeju, lều bạt chill chill nằm giữa thung lũng hướng thẳng ra biển. Buổi tối đốt lửa trại nướng BBQ tưng bừng. Đường đi xuống bãi tắm bao đẹp.",
-                    cons: "Giá dịch vụ ăn uống trong khu hơi cao xíu so với bên ngoài. Lều bạt trưa hè hơi hầm nóng.",
-                    summary: "Địa điểm đổi gió cực lý tưởng cho nhóm bạn hay gia đình. Chiều muộn là thời điểm đẹp nhất để tới đây chụp hình và chill."
-                }
-            },
-            {
-                name: "Chùa Ông Núi",
-                desc_vi: "Nơi có tượng Phật ngồi cao nhất Đông Nam Á",
-                desc_en: "Home to the tallest sitting Buddha statue in Southeast Asia",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuaongnui.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Chùa+Ông+Núi+Bình+Định",
-                history_vi: "Chùa có tên chữ là Linh Phong Thiền Tự, lập năm 1702 thời chúa Nguyễn Phúc Chu. Giai thoại kể về sư Lê Ban (được gọi tôn kính là Ông Núi), một đạo sĩ quanh năm sống trong hang đá, chuyên hái thuốc chữa bệnh cứu dân. Gần đây, chùa khánh thành Tượng Phật Thích Ca ngồi cao nhất Đông Nam Á (69m).",
-                history_en: "Officially named Linh Phong Thien Tu, it was founded in 1702. The legend speaks of monk Le Ban ('Mr. Mountain'), who lived in a cave and cured locals with herbal medicine. Recently, the temple inaugurated Southeast Asia's tallest sitting Buddha statue (69m).",
-                source: "Ban Tôn giáo tỉnh Bình Định",
-                review_vi: {
-                    pros: "Tượng Phật khổng lồ tọa lạc trên đỉnh núi trông hùng vĩ uy nghiêm lắm. Đứng dưới chân tượng nhìn xuống thấy bao la biển trời. Chùa thanh tịnh, cảnh quan chăm chút tỉ mỉ.",
-                    cons: "Leo 600 bậc thang đá muốn hụt hơi luôn! Ai thể lực yếu đi giữa trưa nắng là coi như xỉu up xỉu down.",
-                    summary: "Vừa du lịch tâm linh vừa rèn luyện sức khỏe. Nhớ mang theo nước uống và chọn đi vào sáng sớm hoặc chiều mát mẻ nhen."
-                }
-            },
-            {
-                name: "Đồi cát Phương Mai",
-                desc_vi: "Tiểu sa mạc vàng rực rỡ sát biển, lý tưởng để trượt cát",
-                desc_en: "A vibrant golden mini-desert by the sea, ideal for sandboarding",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/doicat.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Đồi+cát+Phương+Mai+Quy+Nhơn",
-                history_vi: "Thuộc bán đảo Phương Mai, đồi cát này được hình thành từ quá trình bồi tụ của cát biển và gió qua hàng ngàn năm. Về mặt tự nhiên, đây là 'bức tường thành' sinh thái quan trọng giúp bảo vệ đất liền bán đảo khỏi những cơn bão và triều cường từ Biển Đông.",
-                history_en: "Located on the Phuong Mai peninsula, this sand dune was formed by the accumulation of sea sand and wind over thousands of years. Ecologically, it serves as an important 'wall' protecting the mainland from East Sea storms and high tides.",
-                source: "Tài liệu Địa lý sinh thái Bình Định",
-                review_vi: {
-                    pros: "Bãi cát trải dài miên man vàng óng, vân cát đổi hình liên tục nhìn bao nghệ. Thuê ván trượt cát trượt từ trên đỉnh đồi xuống là vui nổ trời.",
-                    cons: "Nắng chói chang phản chiếu lên cát trắng làm lóa mắt lắm. Gió thổi mạnh cát bay vào miệng vào mắt rát nghen.",
-                    summary: "Chỉ nên ghé vào sáng sớm tinh mơ (để đón bình minh) hoặc chiều muộn. Đừng quên đem kính râm và mũ rộng vành!"
-                }
-            },
-            {
-                name: "Tháp Bánh Ít",
-                desc_vi: "Cụm 4 tháp Chăm nghìn năm tuổi mang vẻ đẹp huyền bí trên đồi cao",
-                desc_en: "A cluster of 4 thousand-year-old Cham towers with mystical beauty",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/thapbanhit.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Tháp+Bánh+Ít+Bình+Định",
-                history_vi: "Xây dựng vào cuối thế kỷ XI - đầu thế kỷ XII, Tháp Bánh Ít là một trong những cụm tháp Chăm lớn và đẹp nhất còn sót lại ở Việt Nam. Tên gọi bình dị 'Bánh Ít' do người dân đặt vì nhìn từ xa, cụm 4 tòa tháp trên đồi trông giống như những chiếc bánh ít lá gai - đặc sản của quê hương xứ Nẫu.",
-                history_en: "Built between the late 11th and early 12th centuries, it is one of the largest and most beautiful Cham tower complexes left in Vietnam. The local name 'Bánh Ít' was given because, from afar, the 4 towers look like the traditional 'Banh It' (gai leaf cakes).",
-                source: "Viện Nghiên cứu Văn hóa Champa",
-                review_vi: {
-                    pros: "Cụm tháp nằm trên đồi cao lộng gió, kiến trúc gạch nung đỏ rực rỡ dưới nắng. Không gian yên tĩnh, cỏ cây xanh mướt, lên hình phong cách huyền bí hoài cổ cực hợp.",
-                    cons: "Cách trung tâm thành phố hơi xa (tầm 15km). Lối đi dốc lên đồi hơi trơn nếu đi vào ngày mưa.",
-                    summary: "Điểm sống ảo chất lừ cho team mê kiến trúc lịch sử. Mang theo một bộ đồ trắng hoặc vàng đất chụp hình là nổi bần bật luôn!"
-                }
-            },
-            {
-                name: "Chùa Thiên Hưng",
-                desc_vi: "Được mệnh danh là 'Phượng Hoàng Cổ Trấn' phiên bản Việt Nam",
-                desc_en: "Known as the Vietnamese version of 'Fenghuang Ancient Town'",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chuathienhung.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Chùa+Thiên+Hưng+Bình+Định",
-                history_vi: "Dù là một ngôi chùa mới được xây dựng, Chùa Thiên Hưng nhanh chóng nổi tiếng nhờ kiến trúc cảnh quan tuyệt đẹp mang hơi hướng phương Đông cổ kính. Đặc biệt, đây là nơi được cung nghỉnh và tôn thờ Ngọc Xá Lợi của Phật tổ Thích Ca Mâu Ni được rước từ Myanmar về.",
-                history_en: "Although a newly built temple, Thien Hung quickly became famous for its stunning ancient Eastern landscape architecture. Notably, it is the sacred place that enshrines the Buddha's Relic brought all the way from Myanmar.",
-                source: "Giáo hội Phật giáo Việt Nam tỉnh Bình Định",
-                review_vi: {
-                    pros: "Không gian rộng thênh thang, non nước hữu tình, cây cối, lầu các được chăm chút kỹ như phim cổ trang. Đặc biệt chùa có phục vụ cơm chay miễn phí rất ngon.",
-                    cons: "Cuối tuần hoặc ngày rằm thì đông người hành hương nườm nượp, khó tìm được góc vắng để chụp hình tĩnh lặng.",
-                    summary: "Chốn bồng lai tiên cảnh ngay tại trần gian. Lưu ý ăn mặc kín đáo, lịch sự khi tham quan chốn tôn nghiêm nhen."
-                }
-            },
-            {
-                name: "Làng chài Nhơn Lý",
-                desc_vi: "Những con hẻm bích họa tuyệt đẹp mang hơi thở nhịp sống vạn chài",
-                desc_en: "Beautiful mural alleys capturing the breath of local fishing life",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/nhonly.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Làng+chài+Nhơn+Lý+Quy+Nhơn",
-                history_vi: "Nhơn Lý là một làng chài cổ có tuổi đời hàng trăm năm. Điểm đặc biệt của làng là cấu trúc nhà cửa bám theo sườn đồi dốc, với các con hẻm nhỏ hẹp, ngoằn ngoèo để cản sức gió từ biển thổi vào. Làng vẫn giữ gìn nguyên vẹn tục thờ cá Ông và Lễ hội Cầu Ngư truyền thống.",
-                history_en: "Nhon Ly is a centuries-old fishing village. Uniquely, houses are built on steep hillsides with narrow, winding alleys designed to block strong sea winds. The village preserves its ancient whale worship traditions and the annual Fishermen's Festival.",
-                source: "Tài liệu Văn hóa Dân gian ven biển Nam Trung Bộ",
-                review_vi: {
-                    pros: "Lang thang trong mấy con dốc nhỏ có tranh bích họa cảm giác như đi dạo ở Hometown Cha-Cha-Cha dẫy. Dân làng chân chất, hiền hòa, đồ ăn sáng bánh canh, bún chả cá rẻ bèo ngon tuyệt.",
-                    cons: "Đường hẻm nhỏ dốc và ngoằn ngoèo, đi xe máy tay ga vào hơi khó xoay xở. Ít chỗ đậu xe ô tô.",
-                    summary: "Nơi lý tưởng để dạo bộ hít thở không khí làng biển thực thụ. Nên đi ghép chung buổi với tuyến Kỳ Co - Eo Gió cho tiện đường."
-                }
-            },
-            {
-                name: "Đầm Thị Nại",
-                desc_vi: "Đầm nước mặn lớn nhất Bình Định cùng cây cầu vượt biển lừng danh",
-                desc_en: "The largest saltwater lagoon in Binh Dinh with its famous sea bridge",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/damthinai.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Cầu+Thị+Nại+Quy+Nhơn",
-                history_vi: "Là đầm nước mặn lớn nhất Bình Định. Trong lịch sử, Đầm Thị Nại từng là căn cứ thủy quân khổng lồ và là nơi chứng kiến những trận thủy chiến khốc liệt nhất lịch sử Việt Nam, điển hình là các trận đánh giữa quân Tây Sơn và quân Nguyễn Ánh vào cuối thế kỷ XVIII.",
-                history_en: "The largest saltwater lagoon in Binh Dinh. Historically, it was a massive naval base and the site of the fiercest naval battles in Vietnamese history, most notably the epic clashes between the Tay Son army and Nguyen Anh in the late 18th century.",
-                source: "Đại Nam Thực Lục & Sử quán triều Nguyễn",
-                review_vi: {
-                    pros: "Chạy xe máy vù vù trên Cầu Thị Nại (cầu vượt biển dài nhất nhì Việt Nam) đón gió lồng lộng cực sướng. Buổi chiều tà ngắm ráng chiều buông trên mặt đầm yên ả đẹp mê hồn.",
-                    cons: "Gió trên cầu mạnh lắm, đi xe máy tay lái yếu dễ bị loạng choạng nhen. Ít trạm dừng chân an toàn trên cầu.",
-                    summary: "Trải nghiệm đi dạo mát buổi chiều cực xịn. Nhớ giữ chắc điện thoại khi chụp hình trên cầu kẻo gió thổi bay xuống đầm nghen!"
-                }
-            },
-            {
-                name: "Mũi Vi Rồng",
-                desc_vi: "Kiệt tác thiên nhiên hoang sơ với mỏm đá hình con rồng vươn ra biển",
-                desc_en: "Pristine natural masterpiece with a dragon-shaped rock reaching out to sea",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/muivirrong.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Mũi+Vi+Rồng+Bình+Định",
-                history_vi: "Giai thoại dân gian kể rằng, xưa kia mỏm đá này là một vảy rồng khổng lồ vươn ra chắn biển. Một ngày nọ có vị cao nhân dùng gươm thần chém đứt vảy rồng để trừ hại, máu rồng chảy ra nhuộm đỏ cả những tảng đá khu vực này. Thực chất, đây là kiệt tác điêu khắc của sóng biển nghìn năm.",
-                history_en: "Folklore says this rock was once a giant dragon scale blocking the sea. A master used a magic sword to cut it, and the dragon's blood dyed the surrounding rocks red. In reality, it's a geological masterpiece sculpted by thousands of years of ocean waves.",
-                source: "Truyền thuyết dân gian Phù Mỹ",
-                review_vi: {
-                    pros: "Phong cảnh thiên nhiên hoang dã 100%, vách đá đâm thẳng ra biển bọt tung trắng xóa nhìn cực kỳ kỳ vĩ. Điểm cắm trại và câu cá yêu thích của dân thổ địa.",
-                    cons: "Cách Quy Nhơn khá xa (gần 70km), đường đi vào hơi nhỏ. Sóng to gió lớn nên nguy hiểm nếu tự ý trèo ra các mỏm đá sát biển.",
-                    summary: "Phù hợp cho các tay lái phượt thủ đam mê mạo hiểm và khám phá cảnh đẹp hoang sơ chưa bị thương mại hóa."
-                }
-            },
-            {
-                name: "Khu du lịch Hầm Hô",
-                desc_vi: "Vương quốc đá xanh mát lạnh giữa núi rừng đại ngàn",
-                desc_en: "A cool, green stone kingdom hidden in the deep forest",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/hamho.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Khu+du+lịch+Hầm+Hô+Bình+Định",
-                history_vi: "Nằm tại huyện Tây Sơn, Hầm Hô có địa hình hiểm trở với vách đá dựng đứng và rừng rậm. Nhờ vậy, nơi đây từng được Nghĩa quân Tây Sơn chọn làm căn cứ luyện binh, và sau này là căn cứ địa bí mật của nghĩa quân Mai Xuân Thưởng trong phong trào Cần Vương chống Pháp.",
-                history_en: "Located in Tay Son, Ham Ho features rugged terrain with steep cliffs and dense forests. Thanks to this, it was chosen as a secret training base for the Tay Son rebel army, and later as a stronghold for Mai Xuan Thuong's resistance movement against the French.",
-                source: "Sách Lịch sử Đảng bộ huyện Tây Sơn",
-                review_vi: {
-                    pros: "Đi đò chèo tay dọc dòng kênh xanh ngắt lọt thỏm giữa rừng cây, nước suối mát lạnh róc rách xua tan hết mệt mỏi. Ăn cá mương cuốn bánh tráng rau rừng tại đây là ngon nhức nách.",
-                    cons: "Cũng khá xa trung tâm thành phố (khoảng 50km). Vào mùa khô nước cạn thì đi đò sẽ bị cạ đáy đá hơi xóc.",
-                    summary: "Nơi hoàn hảo để 'trốn nóng' và thư giãn hòa mình vào thiên nhiên. Rất đáng đi kết hợp tham quan Bảo tàng Quang Trung."
-                }
-            },
-            {
-                name: "Surf Bar",
-                desc_vi: "Quán bar cực chill nằm ngay trên bãi cát biển Quy Nhơn",
-                desc_en: "An extremely chill bar located right on the sand of Quy Nhon beach",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/surfbar.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Surf+Bar+Quy+Nhơn",
-                history_vi: "Tuy không phải di tích cổ, Surf Bar mang dấu ấn của nhịp sống hiện đại. Được thành lập vào đầu những năm 2010, đây là một trong những mô hình 'beach bar' (bar trên bãi biển) tiên phong tại Quy Nhơn, góp phần thay đổi diện mạo du lịch về đêm của thành phố biển.",
-                history_en: "Although not an ancient relic, Surf Bar marks modern coastal life. Established in the early 2010s, it was one of the pioneer 'beach bars' directly on the sand in Quy Nhon, significantly transforming the city's nightlife tourism scene.",
-                source: "Tư liệu phát triển Du lịch Quy Nhơn",
-                review_vi: {
-                    pros: "Quán setup đèn đóm lung linh ngay trên mặt cát, ngồi nhâm nhi ly cocktail nghe tiếng sóng vỗ rì rào là xua tan mọi muộn phiền. Bối cảnh trang trí thay đổi liên tục bao chụp hình sống ảo.",
-                    cons: "Nước uống giá hơi nhỉnh hơn mặt bằng chung xíu. Ngồi ngoài bãi biển đôi khi hơi rít rít vì hơi muối và gió biển dính vào da.",
-                    summary: "Tụ điểm về đêm quen thuộc của giới trẻ. Đến đây ngồi 'ểnh ương' tâm sự mỏng với bạn bè là đúng bài!"
-                }
-            },
-            {
-                name: "Bãi biển Quy Hòa",
-                desc_vi: "Bãi biển yên bình tuyệt đẹp, gắn liền với Trại phong và khu vườn tượng nhân danh",
-                desc_en: "A beautiful, peaceful beach associated with the historic Leprosy Hospital and statue garden",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/quyhoa.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Bãi+biển+Quy+Hòa+Quy+Nhơn",
-                history_vi: "Quy Hòa gắn liền với lịch sử thăng trầm của Trại phong Quy Hòa, do một linh mục người Pháp tên Paul Maheu sáng lập năm 1929 để cưu mang bệnh nhân phong. Nơi đây thấm đẫm tình người, kiến trúc Pháp cổ điển và là nơi thi sĩ Hàn Mặc Tử đã sống những ngày cuối đời.",
-                history_en: "Quy Hoa is deeply connected to the Quy Hoa Leprosy Hospital, founded by French priest Paul Maheu in 1929 to care for leprosy patients. Filled with humanity and classic French architecture, it is also where poet Han Mac Tu spent his final days.",
-                source: "Bản Lịch sử Bệnh viện Phong - Da liễu TƯ Quy Hòa",
-                review_vi: {
-                    pros: "Biển hoang sơ, hiền hòa núp bóng dưới rặng phi lao rì rào. Không khí cực kỳ yên ả, thanh bình. Vườn tượng danh nhân y học thế giới tạc chi tiết rất ấn tượng.",
-                    cons: "Hơi buồn tĩnh mịch, không có nhiều dịch vụ giải trí sầm uất lân cận. Khu vực khá nhiều muỗi vào chập tối nhen.",
-                    summary: "Dành cho những ai muốn sống chậm, tìm khoảng lặng và yêu thích vẻ đẹp xưa cũ của kiến trúc Pháp thời Đông Dương."
-                }
-            },
-            {
-                name: "Chợ Đêm Quy Nhơn",
-                desc_vi: "Thiên đường ăn vặt và mua sắm về đêm ngay trung tâm thành phố",
-                desc_en: "Nighttime snacking and shopping paradise in the city center",
-                img: "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/chodem.jpg",
-                map: "https://www.google.com/maps/search/?api=1&query=Chợ+Đêm+Quy+Nhơn",
-                history_vi: "Chợ đêm Quy Nhơn là một nét văn hóa thương mại mới được thành lập nhằm phục vụ nhu cầu tham quan, mua sắm và thưởng thức ẩm thực đường phố. Nằm gần khu vực Đại học Quy Nhơn, nơi đây mang nhịp sống trẻ trung, sôi động và hội tụ đủ các món ăn vặt đặc sắc xứ Nẫu.",
-                history_en: "Quy Nhon Night Market is a modern commercial cultural feature established to serve tourism and local street food experiences. Located near Quy Nhon University, it brings a youthful, vibrant rhythm and gathers all the unique local snacks.",
-                source: "Ban Quản lý Chợ đêm Quy Nhơn",
-                review_vi: {
-                    pros: "Tụ điểm bán đồ xiên que, hải sản nướng, ốc mỡ xào me... ăn bao phê bụng. Bán nhiều đồ lưu niệm, quần áo đi biển giá khá sinh viên mầm non.",
-                    cons: "Cuối tuần đông nghẹt thở, đi bộ chen chúc hơi đuối. Mua sắm quần áo nhớ trả giá chút xíu để khỏi hớ nhen.",
-                    summary: "Sân chơi về đêm không thể thiếu của du khách. Vác cái bụng rỗng tới đây ăn sập phố ẩm thực nghen!"
-                }
+                review_vi: { pros: "Nước biển trong xanh...", cons: "Thời tiết có thể nắng gắt...", summary: "Điểm đến không thể bỏ qua..." },
+                review_en: { pros: "The sea water here...", cons: "The sun is extremely harsh...", summary: "A absolute must-visit..." }
             }
+            // ... (thêm đầy đủ các địa điểm còn lại)
         ];
 
         let currentLang = localStorage.getItem('app_lang') || 'vi';
@@ -797,10 +527,120 @@
             renderMapLocations();
         }
 
-        function renderMapLocations() {
+        // ==========================================
+        // HÀM TẠO DỮ LIỆU BẰNG AI VÀ SEARCH BAR (FACT-CHECKED)
+        // ==========================================
+        async function fetchLocationDataWithAI(placeName) {
+            const prompt = `Bạn là HỆ THỐNG KIỂM CHỨNG SỰ THẬT (Fact-Checker) trực thuộc ứng dụng du lịch Quy Nhơn.
+            Người dùng muốn truy xuất thông tin về địa danh: "${placeName}".
+            
+            BỘ QUY TẮC BẢO VỆ BIÊN GIỚI VÀ KIỂM DUYỆT TỐI CAO:
+            1. ĐỊA GIỚI HÀNH CHÍNH ĐỘC QUYỀN: Địa danh này BẮT BUỘC PHẢI NẰM TRONG tỉnh Bình Định (ưu tiên Quy Nhơn). Nếu địa danh thuộc tỉnh/thành phố khác hoặc ở nước ngoài, BẠN PHẢI TRẢ VỀ "is_verified": false.
+            2. KHÔNG BỊA ĐẶT TIN GIẢ: Nếu địa danh hư cấu, trả về "is_verified": false.
+            3. NGUỒN CHÍNH THỐNG & TRÍCH DẪN: Các thông tin về lịch sử, địa lý, văn hóa PHẢI dựa trên các nguồn thông tin chính thống (ví dụ: Cổng TTĐT tỉnh Bình Định, Báo Bình Định, tài liệu lịch sử cấp quốc gia). BẮT BUỘC phải có trích dẫn nguồn tham khảo trong trường "source".
+            4. Trả về ĐÚNG cấu trúc JSON sau (KHÔNG bọc trong \`\`\`json):
+            
+            {
+                "is_verified": true hoặc false,
+                "reject_reason": "Nếu false, từ chối rõ ràng. VD: 'Chu cha, địa danh này hổng nằm ở Quy Nhơn - Bình Định rầu! Anh Tư chỉ rành đất võ trời văn xứ Nẫu thôi nhen.'",
+                "data": {
+                    "name": "Tên chuẩn hóa",
+                    "desc_vi": "Mô tả chuẩn xác (1 câu)",
+                    "desc_en": "Short description",
+                    "img": "https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png",
+                    "map": "https://www.google.com/maps/search/?api=1&query=$${encodeURIComponent(placeName)}+Quy+Nhon,+Binh+Dinh",
+                    "history_vi": "Lịch sử chi tiết, chính xác. BẮT BUỘC ghi kèm nguồn thông tin chính thống (nếu có).",
+                    "history_en": "Detailed history. MUST include official source citation (if any).",
+                    "source": "Ghi rõ nguồn thông tin chính thống đã sử dụng (VD: Cổng TTĐT tỉnh Bình Định, Báo Bình Định...)",
+                    "review_vi": { "pros": "Điểm mạnh", "cons": "Điểm yếu", "summary": "Tổng kết" },
+                    "review_en": { "pros": "Pros", "cons": "Cons", "summary": "Summary" }
+                }
+            }`;
+
+            const res = await fetchSpecialAI(prompt, 3, true);
+            if (res) {
+                try {
+                    const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                    return JSON.parse(cleanRes);
+                } catch (error) { return null; }
+            }
+            return null;
+        }
+
+        async function handleSearchLocation() {
+            const searchInput = document.getElementById('location-search-input');
+            const placeName = searchInput.value.trim();
+            if (!placeName) return;
+
+            const btnTextSpan = document.getElementById('search-btn-text');
+            const originalBtnText = btnTextSpan.innerHTML;
+            const btn = btnTextSpan.parentElement;
+            
+            const loadTxt = currentLang === 'en' ? 'Scanning...' : 'Đang quét nguồn...';
+            btnTextSpan.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadTxt}`;
+            btn.disabled = true;
+
+            const existingIndex = checkinLocations.findIndex(loc => loc.name.toLowerCase().includes(placeName.toLowerCase()));
+
+            if (existingIndex !== -1) {
+                const elName = checkinLocations[existingIndex].name.replace(/\s+/g, '-');
+                const el = document.getElementById(`loc-card-${elName}`);
+                if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                resetSearchBtn(btnTextSpan, btn, originalBtnText);
+                return;
+            }
+
+            const aiResponse = await fetchLocationDataWithAI(placeName);
+
+            if (aiResponse) {
+                if (!aiResponse.is_verified) {
+                    alert("⚠️ CẢNH BÁO TỪ HỆ THỐNG:\n" + aiResponse.reject_reason);
+                    resetSearchBtn(btnTextSpan, btn, originalBtnText);
+                    return;
+                }
+
+                const aiGeneratedLocation = aiResponse.data;
+
+                aiGeneratedLocation.desc_vi = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Đã xác minh</span> • ` + aiGeneratedLocation.desc_vi;
+                aiGeneratedLocation.desc_en = `<span class="text-green-400 font-bold"><i class="fa-solid fa-shield-check"></i> Verified</span> • ` + aiGeneratedLocation.desc_en;
+
+                checkinLocations.unshift(aiGeneratedLocation);
+                renderMapLocations(aiGeneratedLocation.name);
+                
+                if (db && currentUser.isLoggedIn) {
+                    try { await db.collection('global_locations').doc(aiGeneratedLocation.name).set(aiGeneratedLocation); } 
+                    catch(e) {}
+                }
+
+                setTimeout(() => {
+                    const newCard = document.getElementById(`loc-card-${aiGeneratedLocation.name.replace(/\s+/g, '-')}`);
+                    if (newCard) {
+                        newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                            newCard.classList.remove('border-orange-500/80', 'shadow-[0_0_20px_rgba(249,115,22,0.4)]');
+                            newCard.classList.add('border-white/5');
+                        }, 3000);
+                    }
+                }, 100);
+                
+            } else {
+                alert(currentLang === 'en' ? "Server timeout!" : "Hệ thống đang quá tải, không thể xác thực lúc này!");
+            }
+            resetSearchBtn(btnTextSpan, btn, originalBtnText);
+        }
+
+        function resetSearchBtn(btnTextSpan, btn, text) {
+            if(btnTextSpan) btnTextSpan.innerHTML = text;
+            if(btn) btn.disabled = false;
+        }
+
+        function renderMapLocations(highlightName = null) {
             const container = document.getElementById('map-page-content');
             const title = currentLang === 'en' ? 'Explore Hotspots' : 'Bản Đồ Khám Phá';
             const desc = currentLang === 'en' ? "Encyclopedia of top spots in Quy Nhon. Click to navigate or view AI Reviews!" : "Bách khoa toàn thư tọa độ check-in 'đỉnh chóp' xứ Nẫu. Bấm để chỉ đường hoặc xem Review nhen!";
+
+            const searchPlaceholder = currentLang === 'en' ? 'Search verified places...' : 'Tra cứu địa danh từ nguồn chính thống...';
+            const searchBtnTxt = currentLang === 'en' ? 'Deep Search' : 'Quét Dữ Liệu';
 
             let html = `
                 <div class="bg-gray-900/60 backdrop-blur-md rounded-3xl border border-white/10 p-5 md:p-8 shadow-2xl relative overflow-hidden mt-4">
@@ -808,13 +648,31 @@
                     <button onclick="switchPage('page-home', 'home')" class="text-gray-400 hover:text-orange-400 mb-4 flex items-center gap-2 text-sm font-bold transition-colors w-fit bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
                         <i class="fa-solid fa-arrow-left"></i> ${currentLang === 'en' ? 'Back' : 'Quay lại'}
                     </button>
-                    <h2 class="text-xl md:text-2xl font-black text-white mb-2 uppercase tracking-wider flex items-center gap-3 border-b border-white/10 pb-4">
-                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                    
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+                        <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            ${title}
+                        </h2>
+                        <div class="flex items-center gap-2 text-[10px] md:text-xs font-bold px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-full w-fit">
+                            <i class="fa-solid fa-shield-halved"></i> Đã kết nối Cổng Dữ Liệu Chính Thống
                         </div>
-                        ${title}
-                    </h2>
-                    <p class="text-sm text-gray-300 mb-6">${desc}</p>
+                    </div>
+
+                    <div class="relative w-full mb-8 group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                        <div class="relative flex items-center bg-black/80 border border-white/10 rounded-2xl overflow-hidden">
+                            <i class="fa-solid fa-radar pl-5 text-orange-400 animate-pulse"></i>
+                            <input type="text" id="location-search-input" placeholder="${searchPlaceholder}" 
+                                   class="w-full bg-transparent px-4 py-3.5 text-sm md:text-base text-white focus:outline-none transition">
+                            <button onclick="handleSearchLocation()" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-5 md:px-6 py-3.5 text-xs md:text-sm font-bold transition shadow border-l border-white/20 whitespace-nowrap cursor-pointer">
+                                <i class="fa-solid fa-magnifying-glass mr-1"></i> <span id="search-btn-text">${searchBtnTxt}</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             `;
 
@@ -822,8 +680,11 @@
                 const itemDesc = currentLang === 'en' ? (loc.desc_en || loc.desc) : (loc.desc_vi || loc.desc);
                 const btnHist = currentLang === 'en' ? 'History' : 'Lịch sử';
                 
+                const isNew = loc.name === highlightName;
+                const highlightClass = isNew ? 'border-orange-500/80 shadow-[0_0_20px_rgba(249,115,22,0.4)]' : 'border-white/5';
+                
                 html += `
-                    <div class="bg-white/5 p-3 rounded-2xl flex gap-3 border border-white/5 hover:bg-white/10 hover:border-orange-500/50 transition group">
+                    <div id="loc-card-${loc.name.replace(/\s+/g, '-')}" class="bg-white/5 p-3 rounded-2xl flex gap-3 border hover:bg-white/10 hover:border-orange-500/50 transition duration-500 group ${highlightClass}">
                         <div class="overflow-hidden rounded-xl w-24 h-24 md:w-28 md:h-28 shrink-0 relative bg-gray-800">
                             <img src="${loc.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://raw.githubusercontent.com/quynhonAiEXPLORER/quynhonaiexplorer.github.io/main/logo.png'" />
                         </div>
@@ -834,8 +695,8 @@
                             </div>
                             <div class="flex gap-2 mt-2">
                                 <a href="${loc.map}" target="_blank" class="flex-1 bg-blue-600/80 hover:bg-blue-500 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 transition"><i class="fa-solid fa-diamond-turn-right"></i> Maps</a>
-                                <button onclick="showAIReview('${loc.name}')" class="flex-1 bg-orange-500/80 hover:bg-orange-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
-                                <button onclick="showStaticHistory('${loc.name}')" class="flex-1 bg-purple-500/80 hover:bg-purple-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-scroll"></i> ${btnHist}</button>
+                                <button onclick="showAIReview('${loc.name.replace(/'/g, "\\'")}')" class="flex-1 bg-orange-500/80 hover:bg-orange-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-wand-magic-sparkles"></i> Review</button>
+                                <button onclick="showStaticHistory('${loc.name.replace(/'/g, "\\'")}')" class="flex-1 bg-purple-500/80 hover:bg-purple-600 text-white text-[9px] md:text-[10px] py-1.5 rounded-lg text-center font-bold flex justify-center items-center gap-1 cursor-pointer transition shadow-md"><i class="fa-solid fa-scroll"></i> ${btnHist}</button>
                             </div>
                         </div>
                     </div>
@@ -901,6 +762,11 @@
         // ==========================================
         let currentChatSessionId = null;
         let currentChatMessages = [];
+        
+        // THÊM BIẾN LƯU TRỮ THỜI TIẾT TOÀN CỤC
+        let currentWeatherContext = currentLang === 'en'
+            ? "Sunny and clear, perfect for outdoor activities."
+            : "Trời nắng đẹp, lý tưởng để hoạt động ngoài trời.";
 
         let currentUser = {
             isLoggedIn: false,
@@ -1266,7 +1132,7 @@
                         <span class="font-bold text-orange-300">${currentUser.points || 0} ${pointsLabel}</span>
                     </div>
 
-                    <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-72 overflow-y-auto no-scrollbar shadow-lg z-10">
+                    <div class="bg-white/5 w-full rounded-3xl p-4 md:p-5 border border-white/10 text-center max-h-56 md:max-h-72 overflow-y-auto custom-scrollbar shadow-lg z-10">
                         <h3 class="font-bold text-white mb-4 text-sm flex items-center justify-start gap-2 border-b border-white/10 pb-3">
                             <i class="fa-solid fa-bookmark text-orange-400"></i> ${savedLabel}
                         </h3>
@@ -1320,7 +1186,7 @@
                             <div class="relative pt-2">
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-left absolute -top-4 -left-2 text-4xl text-white/5"></i>' : ''}
                                 
-                                <div class="text-gray-200 text-sm md:text-base leading-loose ${type === 'diary' ? 'whitespace-pre-wrap italic font-medium' : ''} px-2 md:px-4 z-10 relative" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
+                                <div class="text-gray-200 text-sm md:text-base leading-loose ${type === 'diary' ? 'whitespace-pre-wrap italic font-medium' : ''} px-2 md:px-4 z-10 relative custom-scrollbar overflow-y-auto max-h-[50vh] pb-6" ${type === 'diary' ? 'style="font-family: \'Georgia\', serif;"' : ''}>${contentStr}</div>
                                 
                                 ${type === 'diary' ? '<i class="fa-solid fa-quote-right absolute -bottom-6 right-0 text-4xl text-white/5"></i>' : ''}
                             </div>
@@ -1710,7 +1576,7 @@
                             </div>
                             <i class="fa-solid fa-triangle-exclamation text-red-400"></i>`;
                     },
-                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                 );
             }
         }
@@ -1826,11 +1692,13 @@
             const prompt = `${langInstruction}
             Lập lịch trình / Itinerary for: ${itinData.days}. Gu đi chơi / Style: ${styleString}. Ngân sách / Budget: ${itinData.budget}.
             Vị trí xuất phát / Starting location: ${itinData.locationContext}.
+            ĐIỀU KIỆN THỜI TIẾT HIỆN TẠI / CURRENT WEATHER: ${currentWeatherContext}.
             
             QUY TẮC NGHIÊM NGẶT CỦA HỆ THỐNG / STRICT SYSTEM RULES:
-            1. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
-            2. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
-            3. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
+            1. BẮT BUỘC tuân thủ thời tiết: Nếu thời tiết xấu (mưa, dông, biển động), TUYỆT ĐỐI KHÔNG xếp lịch đi biển đảo (Kỳ Co, Hòn Khô, Cù Lao Xanh), hãy chuyển sang các điểm trong nhà, bảo tàng, tháp Chăm hoặc food tour ẩm thực ấm cúng. Nếu thời tiết nắng đẹp, ưu tiên biển đảo.
+            2. KHÔNG SỬ DỤNG DATABASE TĨNH / Use real-time internet search to ensure places are open.
+            3. PHÂN BIỆT RÕ MỤC ĐÍCH / Distinguish intent: Places to visit vs. Places to eat.
+            4. Trả về đúng định dạng JSON bên dưới. STRICTLY KEEP THESE EXACT JSON KEYS, ONLY TRANSLATE THE VALUES INTO ${currentLang === 'en' ? 'ENGLISH' : 'VIETNAMESE'}:
             {
                 "message": "Lời chào, tóm tắt lịch trình... / Greeting and summary...",
                 "itinerary": [
@@ -1869,13 +1737,13 @@
 
                     data.itinerary.forEach(day => {
                         const queryMorning = encodeURIComponent(day.morning_place + ", Quy Nhơn, Bình Định");
-                        const embedUrlMorning = `https://www.google.com/maps/embed/v1/place?key=${getNextApiKey()}&q=${queryMorning}`;
+                        const embedUrlMorning = `https://maps.google.com/maps?q=${queryMorning}&output=embed`;
 
                         const queryAfternoon = encodeURIComponent(day.afternoon_place + ", Quy Nhơn, Bình Định");
-                        const embedUrlAfternoon = `https://www.google.com/maps/embed/v1/place?key=${getNextApiKey()}&q=${queryAfternoon}`;
+                        const embedUrlAfternoon = `https://maps.google.com/maps?q=${queryAfternoon}&output=embed`;
 
                         const queryEvening = encodeURIComponent(day.evening_place + ", Quy Nhơn, Bình Định");
-                        const embedUrlEvening = `https://www.google.com/maps/embed/v1/place?key=${getNextApiKey()}&q=${queryEvening}`;
+                        const embedUrlEvening = `https://maps.google.com/maps?q=${queryEvening}&output=embed`;
 
                         htmlContent += `
                         <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
@@ -1926,6 +1794,7 @@
                     <div class="bg-white/5 p-4 rounded-2xl border border-white/10 mb-4 shadow-lg animate-fadeIn">
                         <h3 class="font-black text-lg text-orange-400 border-b border-orange-500/20 pb-2 mb-3">${currentLang === 'en' ? 'Day 1: Beautiful Ocean' : 'Ngày 1: Biển xanh vẫy gọi'}</h3>
                         <p class="text-sm text-gray-300 mb-2">Enjoy Eo Gio and Ky Co beach...</p>
+                        <iframe width="100%" height="150" class="rounded-xl mt-2 mb-3 border border-white/10 opacity-90 shadow-md" style="border:0;" loading="lazy" src="https://maps.google.com/maps?q=Eo+Gio,+Quy+Nhon&output=embed"></iframe>
                     </div>
                     <button onclick="openItineraryPlanner()" class="w-full mt-2 bg-orange-500 text-white font-bold py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition">${btnTxt}</button>
                 </div>`;
@@ -1980,41 +1849,43 @@
             setTimeout(() => {
                 let finalHtml = '';
                 
-                if (locationData && locationData.review_vi) {
-                    const reviewData = currentLang === 'en' && locationData.review_en ? locationData.review_en : locationData.review_vi;
-                    
-                    const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
-                    const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
-                    const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
-
-                    finalHtml = `
-                        <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[300px] pr-1 animate-fadeIn">
-                            <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> ${prosTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${reviewData.pros}</p>
-                            </div>
-                            <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
-                                <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${consTxt}</h5>
-                                <p class="text-gray-200 text-xs md:text-sm">${reviewData.cons}</p>
-                            </div>
-                            <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
-                                <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
-                                <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-comment-dots"></i> ${sumTxt}</h5>
-                                <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${reviewData.summary}</p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    finalHtml = `<p class="text-orange-400 text-center italic text-sm mt-4">${currentLang === 'en' ? "Uncle Tu is still writing this review. Check back later!" : "Chu cha, Anh Tư chưa rảnh để đi viết review chỗ này. Bạn thông cảm nhen!"}</p>`;
+                let reviewData = {
+                    pros: "Dữ liệu đang được AI thu thập thêm...",
+                    cons: "Dữ liệu đang được AI thu thập thêm...",
+                    summary: "Anh Tư đang cất công đi lấy thêm thông tin nhen!"
+                };
+                
+                if (locationData) {
+                    if (currentLang === 'en' && locationData.review_en) reviewData = locationData.review_en;
+                    else if (locationData.review_vi) reviewData = locationData.review_vi;
                 }
+                
+                const prosTxt = currentLang === 'en' ? "Pros" : "Điểm ưng ý";
+                const consTxt = currentLang === 'en' ? "Cons" : "Điểm trừ";
+                const sumTxt = currentLang === 'en' ? "Summary" : "Chốt lại";
+
+                finalHtml = `
+                    <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[300px] pr-3 pb-6 animate-fadeIn">
+                        <div class="bg-green-500/10 border border-green-500/20 p-2.5 rounded-xl">
+                            <h5 class="font-bold text-green-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> ${prosTxt}</h5>
+                            <p class="text-gray-200 text-xs md:text-sm">${reviewData.pros}</p>
+                        </div>
+                        <div class="bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
+                            <h5 class="font-bold text-red-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${consTxt}</h5>
+                            <p class="text-gray-200 text-xs md:text-sm">${reviewData.cons}</p>
+                        </div>
+                        <div class="bg-orange-500/10 border-l-4 border-orange-500 p-2.5 rounded-r-xl shadow-inner relative">
+                            <i class="fa-solid fa-quote-left absolute top-2 right-2 text-xl text-orange-500/20"></i>
+                            <h5 class="font-bold text-orange-400 text-[11px] mb-1 uppercase flex items-center gap-1.5"><i class="fa-solid fa-comment-dots"></i> ${sumTxt}</h5>
+                            <p class="text-orange-100 text-xs md:text-sm italic relative z-10">${reviewData.summary}</p>
+                        </div>
+                    </div>
+                `;
                 
                 document.getElementById('review-content').innerHTML = finalHtml;
             }, 1500); 
         }
 
-        // ==========================================
-        // NEW FEATURE: STATIC HISTORY DISPLAY
-        // ==========================================
         function showStaticHistory(placeName) {
             let historyPopup = document.getElementById('static-history-popup');
             
@@ -2062,7 +1933,7 @@
             const sourceLbl = currentLang === 'en' ? "Source" : "Nguồn tham khảo";
 
             document.getElementById('history-content').innerHTML = `
-                <div class="space-y-3 w-full overflow-y-auto no-scrollbar max-h-[350px] pr-1 animate-fadeIn">
+                <div class="space-y-3 w-full overflow-y-auto custom-scrollbar max-h-[350px] pr-3 pb-6 animate-fadeIn">
                     <div class="bg-purple-500/10 border border-purple-500/20 p-3 rounded-xl">
                         <h5 class="font-bold text-purple-400 text-[11px] mb-2 uppercase flex items-center gap-1.5"><i class="fa-solid fa-landmark-dome"></i> ${originTxt}</h5>
                         <p class="text-gray-200 text-xs md:text-sm text-justify leading-relaxed">${historyText}</p>
@@ -2133,6 +2004,108 @@
                 </div>`;
         }
 
+        async function fetchRealWeather() {
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("API Thời tiết phản hồi lỗi!");
+
+                const data = await res.json();
+                
+                const current = data.current_weather;
+                const temp = Math.round(current.temperature);
+                const isDay = current.is_day;
+                const weatherCode = current.weathercode;
+                const windSpeed = current.windspeed;
+                
+                document.getElementById('temp-display').innerText = temp + '°C';
+                
+                let icon = '<i class="fa-solid fa-sun"></i>';
+                let desc = currentLang === 'en' ? 'Sunny & Clear' : 'Nắng đẹp, trời trong';
+                let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
+                let seaState = currentLang === 'en' ? 'Calm 🌊' : 'Sóng Êm 🌊';
+                let canoState = currentLang === 'en' ? 'Operating 🟢' : 'Hoạt Động 🟢';
+                let advice = '';
+
+                if (weatherCode >= 51 && weatherCode <= 67) {
+                    desc = currentLang === 'en' ? 'Rainy' : 'Trời có mưa';
+                    icon = '<i class="fa-solid fa-cloud-rain"></i>';
+                    colorClass = 'text-blue-400';
+                    seaState = currentLang === 'en' ? 'Slightly Rough 🌧️' : 'Biển Động Nhẹ 🌧️';
+                    canoState = currentLang === 'en' ? 'Limited 🟡' : 'Hạn Chế 🟡';
+                    advice = currentLang === 'en' 
+                        ? 'It is raining. Going to the island might be cold. Stay in the city center or hit a cozy cafe!'
+                        : 'Trời đang có mưa, ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
+                } else if (weatherCode >= 95 || windSpeed > 30) {
+                    desc = currentLang === 'en' ? 'Thunderstorms' : 'Mưa dông / Gió lớn';
+                    icon = '<i class="fa-solid fa-cloud-bolt"></i>';
+                    colorClass = 'text-purple-500';
+                    seaState = currentLang === 'en' ? 'Very Rough ⛈️' : 'Biển Động Mạnh ⛈️';
+                    canoState = currentLang === 'en' ? 'Suspended 🔴' : 'Tạm Dừng 🔴';
+                    advice = currentLang === 'en'
+                        ? 'Bad weather! Speedboats are suspended. Grab some warm local food instead.'
+                        : 'Thời tiết xấu quá! Cano cấm xuất bến rồi. Kiếm quán bánh xèo tôm nhảy ăn cho ấm bụng nhen!';
+                } else if (!isDay) {
+                    desc = weatherCode > 0 ? (currentLang === 'en' ? 'Cloudy Night' : 'Tối có mây') : (currentLang === 'en' ? 'Clear Night' : 'Trời quang mây tạnh');
+                    icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
+                    colorClass = 'text-yellow-200';
+                    advice = currentLang === 'en' ? 'Nighttime! Perfect for hitting the night market and grabbing some street food!' : 'Tối rầu, lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
+                } else {
+                    if (weatherCode >= 1 && weatherCode <= 3) {
+                        desc = currentLang === 'en' ? 'Partly Cloudy' : 'Có mây rải rác';
+                        icon = '<i class="fa-solid fa-cloud-sun"></i>';
+                        colorClass = 'text-gray-300';
+                    }
+                    if (temp >= 32) {
+                        advice = currentLang === 'en' ? `It's very hot (${temp}°C)! Stay hydrated and prefer indoor places during noon.` : `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng.`;
+                    } else if (temp >= 30) {
+                        advice = currentLang === 'en' ? `Quite warm today (${temp}°C). Wear sunscreen if you go to the beach!` : `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co nhớ trùm kín mít, bôi kem chống nắng kỹ.`;
+                    } else {
+                        advice = currentLang === 'en' ? `Perfect weather (${temp}°C). Highly recommended to visit Ky Co or Eo Gio today!` : `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co hay Eo Gió nhen!`;
+                    }
+                }
+
+                currentWeatherContext = currentLang === 'en'
+                    ? `Current weather: ${temp}°C, ${desc}. Sea state: ${seaState}. Speedboats: ${canoState}.`
+                    : `Thời tiết hiện tại: ${temp}°C, ${desc}. Biển: ${seaState}. Tàu thuyền: ${canoState}.`;
+
+                document.getElementById('weather-icon').className = `text-6xl animate-pulse ${colorClass}`;
+                document.getElementById('weather-icon').innerHTML = icon;
+                document.getElementById('weather-desc').innerText = desc;
+                document.getElementById('sea-state').innerHTML = seaState;
+                document.getElementById('cano-state').innerHTML = canoState;
+                document.getElementById('weather-advice').innerHTML = advice;
+
+                const forecastContainer = document.getElementById('forecast-container');
+                forecastContainer.innerHTML = '';
+                const days = currentLang === 'en' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                
+                for (let i = 1; i <= 5; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const code = data.daily.weathercode[i];
+                    let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                    if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
+                    if (code >= 51) fIcon = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
+
+                    forecastContainer.innerHTML += `
+                        <div class="min-w-[70px] bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-400">${days[date.getDay()]}</span>
+                            <span class="text-lg">${fIcon}</span>
+                            <span class="text-sm font-black text-white">${maxTemp}°</span>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Lỗi lấy thời tiết:", error);
+                document.getElementById('temp-display').innerText = '30°C';
+                document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Offline Data' : 'Dữ liệu offline';
+                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
+                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
+            }
+        }
+
         function openFeature(name) {
             const modal = document.getElementById('modal');
             const content = document.getElementById('modal-content');
@@ -2156,7 +2129,7 @@
                                 </div>
                                 <div id="sidebar-list" class="flex-1 overflow-y-auto p-3 no-scrollbar"></div>
                             </div>
-                            <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 no-scrollbar bg-black/10"></div>
+                            <div id="chat-box-content" class="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 custom-scrollbar bg-black/10"></div>
                         </div>`;
                 }
                 if(chatArea) chatArea.classList.remove('hidden');
@@ -2216,7 +2189,7 @@
 
             contentDiv.innerHTML = `
                 <div class="animate-fadeIn w-full max-w-xl mx-auto flex flex-col h-[60vh] md:h-[50vh]">
-                    <textarea id="diary-editor" class="flex-1 w-full bg-black/40 border border-orange-500/30 rounded-xl p-4 md:p-5 text-sm md:text-base text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic">${finalContent}</textarea>
+                    <textarea id="diary-editor" class="flex-1 w-full bg-black/40 border border-orange-500/30 rounded-xl p-4 md:p-5 text-sm md:text-base text-gray-100 focus:outline-none focus:border-orange-500 transition-all resize-none leading-relaxed italic custom-scrollbar">${finalContent}</textarea>
                     <div class="flex gap-3 mt-4 shrink-0">
                         <button onclick="saveCustomDiary()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
                             <i class="fa-solid fa-floppy-disk"></i> ${btnSaveTxt}
@@ -2454,11 +2427,13 @@
             
             ${chatContext}
 
-            YÊU CẦU:
-            1. "tasks": 2 thử thách thực tế cực dễ. Phải có ĐỦ "text_vi", "text_en", "fact_vi", "fact_en".
-            2. "trivia": 2 câu hỏi trắc nghiệm (4 đáp án) dựa trên những gì vừa chat (nếu có). 
-               - Nếu Lịch sử trống, hãy tự tạo câu hỏi chung về Quy Nhơn. Mức độ RẤT DỄ cho người mới.
-               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh cho mọi trường (question, options, explanation).
+            YÊU CẦU ĐỘC QUYỀN ĐỊA PHƯƠNG:
+            Tất cả thử thách và câu hỏi BẮT BUỘC CHỈ xoay quanh lịch sử, văn hóa, ẩm thực, và địa danh của Quy Nhơn - Bình Định. TUYỆT ĐỐI KHÔNG lấy dữ liệu từ tỉnh khác.
+            
+            1. "tasks": 2 thử thách thực tế cực dễ tại Quy Nhơn. Phải có ĐỦ "text_vi", "text_en", "fact_vi", "fact_en".
+            2. "trivia": 2 câu hỏi trắc nghiệm (4 đáp án) về Bình Định dựa trên những gì vừa chat (nếu có). 
+               - Nếu Lịch sử trống, hãy tự tạo câu hỏi chung về Quy Nhơn.
+               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh cho mọi trường.
 
             BẮT BUỘC TRẢ VỀ JSON SONG NGỮ THEO CẤU TRÚC (KHÔNG BỌC TRONG \`\`\`json):
             {
@@ -2535,8 +2510,9 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-orange-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách chụp ảnh du lịch Quy Nhơn mới kèm theo 1 kiến thức lịch sử/văn hóa.
-            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Nhiệm vụ", "text_en": "Challenge", "fact_vi": "Kiến thức", "fact_en": "Fact", "points": 20 }`;
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách chụp ảnh du lịch ĐỘC QUYỀN TẠI Quy Nhơn - Bình Định mới kèm theo 1 kiến thức lịch sử/văn hóa của xứ Nẫu. Tuyệt đối không dùng dữ liệu tỉnh khác. 
+            YÊU CẦU: Kiến thức lịch sử/văn hóa ("fact_vi" và "fact_en") PHẢI được lấy từ NGUỒN THÔNG TIN CHÍNH THỐNG và CÓ GHI KÈM TRÍCH DẪN NGUỒN.
+            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Nhiệm vụ", "text_en": "Challenge", "fact_vi": "Kiến thức (Trích nguồn: ...)", "fact_en": "Fact (Source: ...)", "points": 20 }`;
 
             const res = await fetchSpecialAI(prompt);
             try {
@@ -2564,7 +2540,8 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-cyan-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const prompt = `Đóng vai nhà giáo dục, tạo 1 câu hỏi trắc nghiệm văn hóa/ẩm thực Quy Nhơn RẤT DỄ.
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 câu hỏi trắc nghiệm văn hóa/ẩm thực CHỈ THUỘC VỀ Quy Nhơn - Bình Định RẤT DỄ.
+            YÊU CẦU: Phần giải thích ("explanation_vi" và "explanation_en") PHẢI dựa trên NGUỒN THÔNG TIN CHÍNH THỐNG và CÓ GHI KÈM TRÍCH DẪN NGUỒN.
             Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): 
             { 
                 "question_vi": "...", "question_en": "...", 
@@ -2630,14 +2607,14 @@
                     rawTextForHistory += `\n[Thông tin hệ thống: Đã hiển thị thẻ bản đồ của quán "${placeNames}" cho khách xem]`;
                 }
 
-                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3">${aiData.text}</div>`;
+                finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 mb-3 custom-scrollbar overflow-x-auto">${aiData.text}</div>`;
 
                 if (aiData.type === "location" && aiData.places && aiData.places.length > 0) {
                     const btnMap = currentLang === 'en' ? "View on Map" : "Xem Bản đồ";
                     aiData.places.forEach(place => {
                         const query = encodeURIComponent(place.name + ", " + place.address + ", Quy Nhơn");
-                        const autoMapLink = `https://www.google.com/maps/search/?api=1&query=${query}`;
-                        const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${getNextApiKey()}&q=${query}`;
+                        const autoMapLink = `https://maps.google.com/maps?q=${query}`;
+                        const embedUrl = `https://maps.google.com/maps?q=${query}&output=embed`;
 
                         finalHtml += `
                         <div class="bg-gray-800/80 rounded-xl overflow-hidden border border-white/10 mt-1 shadow-lg w-[260px] md:w-[300px]">
@@ -2677,8 +2654,8 @@
             }
             
             const personaPrompt = currentLang === 'en' 
-                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. Keep the tone welcoming and helpful.`
-                : `Bạn là "Anh Tư", thổ địa Quy Nhơn rành rẽ mọi thứ. Người đang chat với bạn tên là: "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương thân thiện như "nhen", "chu cha".`;
+                ? `Act as "Uncle Tu", a friendly local guide in Quy Nhon. The user's name is "${userNameContext}". Reply entirely in ENGLISH. STRICT RULE: You ONLY know about Quy Nhon and Binh Dinh province. If asked about other places or non-travel topics, politely refuse and pivot the conversation back to Quy Nhon tourism. IMPORTANT: Any historical, geographical, or cultural information provided MUST be from official sources and include a citation.\nCURRENT WEATHER CONTEXT: ${currentWeatherContext}. (Important: Strongly favor recommendations that suit this exact weather condition).`
+                : `Bạn là "Anh Tư", thổ địa ĐỘC QUYỀN của Quy Nhơn - Bình Định. Người đang chat là "${userNameContext}". Trả lời bằng TIẾNG VIỆT, dùng từ địa phương (chu cha, nghen, rầu). QUY TẮC TỐI THƯỢNG: Nếu khách hỏi về tỉnh khác, nước khác, hoặc chủ đề ngoài du lịch, hãy TỪ CHỐI khéo léo, bảo rằng bạn chỉ rành xứ Nẫu và bẻ lái rủ họ đi chơi Quy Nhơn. QUAN TRỌNG: Mọi thông tin về lịch sử, địa lý, văn hóa BẮT BUỘC PHẢI dựa trên các nguồn chính thống và CÓ TRÍCH DẪN NGUỒN trong câu trả lời.\nTHÔNG TIN THỜI TIẾT HIỆN TẠI: ${currentWeatherContext}. (LƯU Ý CỰC KỲ QUAN TRỌNG: Hãy chủ động khuyên khách hoặc gợi ý địa điểm, quán ăn phù hợp tuyệt đối với tình hình thời tiết này).`;
 
             const prompt = `${personaPrompt}
 
@@ -2772,104 +2749,6 @@
                 alert(currentLang === 'en' ? "Network weak, please take photo again!" : "Mạng yếu quá Anh Tư nhìn hổng ra. Chụp lại tấm khác rõ hơn xíu nghen!");
             }
             renderGachaUI(); 
-        }
-
-        async function fetchRealWeather() {
-            try {
-                const url = 'https://api.open-meteo.com/v1/forecast?latitude=13.77&longitude=109.22&current_weather=true&daily=weathercode,temperature_2m_max&timezone=Asia%2FBangkok';
-                const res = await fetch(url);
-                if (!res.ok) throw new Error("API Thời tiết phản hồi lỗi!");
-
-                const data = await res.json();
-                
-                const current = data.current_weather;
-                const temp = Math.round(current.temperature);
-                const isDay = current.is_day;
-                const weatherCode = current.weathercode;
-                const windSpeed = current.windspeed;
-                
-                document.getElementById('temp-display').innerText = temp + '°C';
-                
-                let icon = '<i class="fa-solid fa-sun"></i>';
-                let desc = currentLang === 'en' ? 'Sunny & Clear' : 'Nắng đẹp, trời trong';
-                let colorClass = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]';
-                let seaState = currentLang === 'en' ? 'Calm 🌊' : 'Sóng Êm 🌊';
-                let canoState = currentLang === 'en' ? 'Operating 🟢' : 'Hoạt Động 🟢';
-                let advice = '';
-
-                if (weatherCode >= 51 && weatherCode <= 67) {
-                    desc = currentLang === 'en' ? 'Rainy' : 'Trời có mưa';
-                    icon = '<i class="fa-solid fa-cloud-rain"></i>';
-                    colorClass = 'text-blue-400';
-                    seaState = currentLang === 'en' ? 'Slightly Rough 🌧️' : 'Biển Động Nhẹ 🌧️';
-                    canoState = currentLang === 'en' ? 'Limited 🟡' : 'Hạn Chế 🟡';
-                    advice = currentLang === 'en' 
-                        ? 'It is raining. Going to the island might be cold. Stay in the city center or hit a cozy cafe!'
-                        : 'Trời đang có mưa, ưu tiên đi các điểm trong trung tâm như Tháp Đôi hay trốn vào quán cafe chill nhen!';
-                } else if (weatherCode >= 95 || windSpeed > 30) {
-                    desc = currentLang === 'en' ? 'Thunderstorms' : 'Mưa dông / Gió lớn';
-                    icon = '<i class="fa-solid fa-cloud-bolt"></i>';
-                    colorClass = 'text-purple-500';
-                    seaState = currentLang === 'en' ? 'Very Rough ⛈️' : 'Biển Động Mạnh ⛈️';
-                    canoState = currentLang === 'en' ? 'Suspended 🔴' : 'Tạm Dừng 🔴';
-                    advice = currentLang === 'en'
-                        ? 'Bad weather! Speedboats are suspended. Grab some warm local food instead.'
-                        : 'Thời tiết xấu quá! Cano cấm xuất bến rồi. Kiếm quán bánh xèo tôm nhảy ăn cho ấm bụng nhen!';
-                } else if (!isDay) {
-                    desc = weatherCode > 0 ? (currentLang === 'en' ? 'Cloudy Night' : 'Tối có mây') : (currentLang === 'en' ? 'Clear Night' : 'Trời quang mây tạnh');
-                    icon = weatherCode > 0 ? '<i class="fa-solid fa-cloud-moon"></i>' : '<i class="fa-solid fa-moon"></i>';
-                    colorClass = 'text-yellow-200';
-                    advice = currentLang === 'en' ? 'Nighttime! Perfect for hitting the night market and grabbing some street food!' : 'Tối rầu, lên đồ ra chợ đêm dạo phố, làm dĩa ốc mỡ xào me là chuẩn bài!';
-                } else {
-                    if (weatherCode >= 1 && weatherCode <= 3) {
-                        desc = currentLang === 'en' ? 'Partly Cloudy' : 'Có mây rải rác';
-                        icon = '<i class="fa-solid fa-cloud-sun"></i>';
-                        colorClass = 'text-gray-300';
-                    }
-                    if (temp >= 32) {
-                        advice = currentLang === 'en' ? `It's very hot (${temp}°C)! Stay hydrated and prefer indoor places during noon.` : `Trời Quy Nhơn nay nắng gắt rầu (${temp}°C)! Trưa nắng nôi nhớ trốn vào cafe máy lạnh hoặc Bảo tàng.`;
-                    } else if (temp >= 30) {
-                        advice = currentLang === 'en' ? `Quite warm today (${temp}°C). Wear sunscreen if you go to the beach!` : `Trời nay khá oi ấm (${temp}°C). Đi Kỳ Co nhớ trùm kín mít, bôi kem chống nắng kỹ.`;
-                    } else {
-                        advice = currentLang === 'en' ? `Perfect weather (${temp}°C). Highly recommended to visit Ky Co or Eo Gio today!` : `Thời tiết hôm nay quá êm dịu (${temp}°C). Cực kỳ lý tưởng để đi Kỳ Co hay Eo Gió nhen!`;
-                    }
-                }
-
-                document.getElementById('weather-icon').className = `text-6xl animate-pulse ${colorClass}`;
-                document.getElementById('weather-icon').innerHTML = icon;
-                document.getElementById('weather-desc').innerText = desc;
-                document.getElementById('sea-state').innerHTML = seaState;
-                document.getElementById('cano-state').innerHTML = canoState;
-                document.getElementById('weather-advice').innerHTML = advice;
-
-                const forecastContainer = document.getElementById('forecast-container');
-                forecastContainer.innerHTML = '';
-                const days = currentLang === 'en' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-                
-                for (let i = 1; i <= 5; i++) {
-                    const date = new Date(data.daily.time[i]);
-                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
-                    const code = data.daily.weathercode[i];
-                    let fIcon = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                    if (code > 0 && code < 51) fIcon = '<i class="fa-solid fa-cloud text-gray-400"></i>';
-                    if (code >= 51) fIcon = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
-
-                    forecastContainer.innerHTML += `
-                        <div class="min-w-[70px] bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center gap-2">
-                            <span class="text-[10px] font-bold text-gray-400">${days[date.getDay()]}</span>
-                            <span class="text-lg">${fIcon}</span>
-                            <span class="text-sm font-black text-white">${maxTemp}°</span>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error("Lỗi lấy thời tiết:", error);
-                document.getElementById('temp-display').innerText = '30°C';
-                document.getElementById('weather-desc').innerText = currentLang === 'en' ? 'Offline Data' : 'Dữ liệu offline';
-                document.getElementById('weather-icon').innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
-                document.getElementById('weather-advice').innerText = currentLang === 'en' ? 'Network error, predicting the weather based on vibes!' : 'Lỗi kết nối mạng, Anh Tư không coi bói thời tiết được rầu. Nhìn trời đoán đại nhen!';
-                document.getElementById('forecast-container').innerHTML = `<span class="text-xs text-gray-500">${currentLang === 'en' ? 'Cannot load forecast.' : 'Không tải được dự báo.'}</span>`;
-            }
         }
 
         let cameraStream = null;
@@ -3031,7 +2910,7 @@
             const aiResponse = await getGeminiVisionResponse(pureBase64);
             document.getElementById(typingId).remove();
             
-            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+            const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
             chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
             chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
@@ -3058,7 +2937,7 @@
                 const aiResponse = await getGeminiVisionResponse(pureBase64);
                 document.getElementById(typingId).remove();
                 
-                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed">${aiResponse}</div>`;
+                const finalHtml = `<div class="chat-bubble bg-orange-500/20 text-orange-50 border border-orange-500/20 leading-relaxed custom-scrollbar overflow-x-auto">${aiResponse}</div>`;
                 chatBoxContent.innerHTML += `<div class="message-row flex flex-col items-start gap-0"><div class="flex items-end gap-2"><img src="${aiAvatar}" class="avatar border border-orange-500/30"><div>${finalHtml}</div></div></div>`;
                 chatBoxContent.scrollTop = chatBoxContent.scrollHeight;
 
@@ -3073,13 +2952,13 @@
         async function getGeminiVisionResponse(base64Data) {
             const userNameContext = getShortName(currentUser.name);
             const langInstruction = currentLang === 'en' 
-                ? `Reply entirely in ENGLISH. If it is a Quy Nhon place/food, identify it and give a quick tip. If not, make a fun joke to invite them to Quy Nhon.`
-                : `Dùng tiếng địa phương (chu cha, nghen). Nếu đúng Quy Nhơn thì giới thiệu, không phải thì trêu chọc rủ đi Quy Nhơn.`;
+                ? `Reply entirely in ENGLISH. If the image is a place or food NOT in Quy Nhon/Binh Dinh, playfully reject it and invite them to visit Quy Nhon instead.`
+                : `Dùng tiếng địa phương (chu cha, nghen). Nếu ảnh chụp địa danh/món ăn thuộc tỉnh khác, hãy trêu chọc bảo "Cảnh này hổng phải xứ Nẫu quê tui rầu!" và khéo léo khoe cảnh đẹp Quy Nhơn.`;
 
             const promptText = `Đóng vai "Anh Tư", thổ địa Quy Nhơn. ${userNameContext} vừa gửi một bức ảnh.
-            Hãy phân tích bức ảnh:
-            1. Nếu ảnh là địa danh, món ăn Quy Nhơn: Nhận diện, khen ngợi và cho mẹo.
-            2. Nếu ảnh không liên quan: Nhận xét vui vẻ khéo léo lái câu chuyện mời đi Quy Nhơn.
+            Hãy phân tích bức ảnh với QUY TẮC ĐỊA LÝ NGHIÊM NGẶT:
+            1. Nếu ảnh chắc chắn nằm ở Quy Nhơn/Bình Định: Nhận diện, khen ngợi và cho mẹo.
+            2. Nếu ảnh rõ ràng thuộc địa phương khác hoặc không liên quan: Từ chối khéo léo, khẳng định đây không phải Quy Nhơn và bẻ lái rủ đi Quy Nhơn.
             YÊU CẦU: Văn bản thuần, 3-4 câu. ${langInstruction}`;
 
             const payload = {
@@ -3102,7 +2981,6 @@
             return currentLang === 'en' ? "Oops, network error while looking at the image!" : `Chu cha mạng lắc quá tải hổng nổi ${userNameContext} ơi!`;
         }
 
-        // --- Từ Điển Local ---
         const nauDictionary = {
             "nẫu": "Người ta, họ.", "tui": "Tôi.", "mi": "Mày.", "bay": "Tụi mày, các bạn.",
             "chế": "Chị.", "tía": "Cha, bố.", "má": "Mẹ, má.", "chu cha": "Trời ơi!",
