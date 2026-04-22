@@ -2063,44 +2063,76 @@
                     </button>
                 `;
             } else {
-                let html = '<div class="space-y-4 text-left mt-4">';
+                let html = '<div class="space-y-3 text-left mt-2">';
                 const now = Date.now();
 
-                html += `<h3 class="font-black text-orange-400 mb-2 flex items-center gap-2"><i class="fa-solid fa-camera"></i> ${currentLang === 'en' ? 'PRACTICAL TASKS' : 'THỬ THÁCH THỰC TẾ'}</h3>`;
-                
+                // 1. In Thử thách thực tế (Tasks)
                 activeChallenges.forEach((chal, idx) => {
                     const isCompleted = chal.isCompleted;
+                    const timeSinceRefresh = now - (chal.lastRefreshed || 0);
+                    const cooldown = 3 * 60 * 60 * 1000; 
+                    const canRefresh = timeSinceRefresh >= cooldown;
+                    
                     const displayText = currentLang === 'en' ? (chal.text_en || chal.text_vi || chal.text) : (chal.text_vi || chal.text);
                     const factText = currentLang === 'en' ? (chal.fact_en || chal.fact_vi || '') : (chal.fact_vi || chal.fact_en || '');
+                    const typeLabel = currentLang === 'en' ? '📷 PHOTO TASK' : '📷 THỬ THÁCH CHỤP ẢNH';
+                    
+                    let refreshBtnHtml = '';
+                    if (!isCompleted) {
+                        if (canRefresh) {
+                            refreshBtnHtml = `<button onclick="refreshSingleChallenge(${idx})" class="text-xs bg-white/10 hover:bg-orange-500/40 hover:text-white text-blue-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
+                        } else {
+                            const remainingMins = Math.ceil((cooldown - timeSinceRefresh) / 60000);
+                            refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded"><i class="fa-solid fa-clock text-orange-400/70"></i> ${remainingMins}m</span>`;
+                        }
+                    }
 
                     html += `
-                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? 'border-green-500/40 bg-green-500/10' : 'border-white/10'} transition-all flex flex-col gap-2 shadow-lg">
+                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? 'border-green-500/40 bg-green-500/10' : 'border-white/10'} transition-all shadow-lg">
                             <div class="flex items-start md:items-center gap-3">
                                 <button onclick="toggleChallenge(${idx})" class="mt-1 md:mt-0 w-6 h-6 md:w-7 md:h-7 rounded-lg border-2 ${isCompleted ? 'bg-green-500 border-green-500 text-white cursor-default' : 'border-gray-400 text-transparent hover:border-orange-400'} flex items-center justify-center shrink-0 transition-colors">
                                     <i class="fa-solid fa-check text-xs md:text-sm"></i>
                                 </button>
                                 <div class="flex-1">
                                     <p class="text-sm md:text-base ${isCompleted ? 'text-gray-400 line-through' : 'text-white font-medium'} leading-snug">${displayText}</p>
-                                    <div class="flex items-center gap-2 mt-2">
-                                        <span class="text-[10px] md:text-xs bg-orange-500/20 text-orange-400 font-bold px-2 py-0.5 rounded border border-orange-500/20">+${chal.points} 💎</span>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] md:text-xs bg-orange-500/20 text-orange-400 font-bold px-2 py-0.5 rounded border border-orange-500/20">+${chal.points} 💎</span>
+                                            ${refreshBtnHtml}
+                                        </div>
+                                        <span class="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider">${typeLabel}</span>
                                     </div>
                                 </div>
                             </div>
                             ${factText && !isCompleted ? `
-                            <div class="mt-1 ml-9 md:ml-10 bg-blue-500/10 border border-blue-500/20 p-2.5 rounded-xl">
+                            <div class="mt-3 bg-blue-500/10 border border-blue-500/20 p-2.5 rounded-xl">
                                 <p class="text-[11px] md:text-xs text-blue-200 leading-relaxed italic"><i class="fa-solid fa-lightbulb text-yellow-400 mr-1 animate-pulse"></i><strong class="text-blue-300 font-bold">${currentLang === 'en' ? 'Did you know:' : 'Góc Khám Phá:'}</strong> ${factText}</p>
                             </div>` : ''}
                         </div>
                     `;
                 });
 
-                html += `<h3 class="font-black text-cyan-400 mt-6 mb-2 flex items-center gap-2"><i class="fa-solid fa-brain"></i> ${currentLang === 'en' ? 'CULTURAL QUIZ' : 'GIẢI ĐỐ VĂN HÓA'}</h3>`;
-                
+                // 2. In Trắc nghiệm văn hóa (Trivia) liền kề vào danh sách
                 activeTrivia.forEach((quiz, idx) => {
                     const isCompleted = quiz.isCompleted;
                     const qText = currentLang === 'en' ? quiz.question_en : quiz.question_vi;
                     const options = currentLang === 'en' ? quiz.options_en : quiz.options_vi;
+                    const typeLabel = currentLang === 'en' ? '🧠 CULTURAL QUIZ' : '🧠 TRẮC NGHIỆM VĂN HÓA';
                     
+                    const timeSinceRefresh = now - (quiz.lastRefreshed || 0);
+                    const cooldown = 3 * 60 * 60 * 1000; 
+                    const canRefresh = timeSinceRefresh >= cooldown;
+
+                    let refreshBtnHtml = '';
+                    if (!isCompleted) {
+                        if (canRefresh) {
+                            refreshBtnHtml = `<button onclick="refreshSingleTrivia(${idx})" class="text-xs bg-white/10 hover:bg-cyan-500/40 hover:text-white text-cyan-300 px-2 py-1 rounded transition border border-white/10"><i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Reroll' : 'Đổi'}</button>`;
+                        } else {
+                            const remainingMins = Math.ceil((cooldown - timeSinceRefresh) / 60000);
+                            refreshBtnHtml = `<span class="text-[10px] text-gray-400 bg-black/30 border border-white/10 px-2 py-1 rounded"><i class="fa-solid fa-clock text-cyan-400/70"></i> ${remainingMins}m</span>`;
+                        }
+                    }
+
                     let optionsHtml = '';
                     const labels = ['A', 'B', 'C', 'D'];
                     options.forEach((opt, oIdx) => {
@@ -2116,16 +2148,22 @@
                     let explanationHtml = '';
                     if (isCompleted) {
                         const expText = currentLang === 'en' ? quiz.explanation_en : quiz.explanation_vi;
-                        explanationHtml = `<div class="mt-3 bg-cyan-500/10 border border-cyan-500/20 p-3 rounded-xl text-xs text-cyan-200 italic leading-relaxed"><i class="fa-solid fa-graduation-cap text-yellow-400 mr-1"></i> <strong>${currentLang === 'en' ? 'Explanation:' : 'Giải thích:'}</strong> ${expText}</div>`;
+                        explanationHtml = `<div class="mt-3 bg-cyan-500/10 border border-cyan-500/20 p-2.5 rounded-xl text-xs text-cyan-200 italic leading-relaxed"><i class="fa-solid fa-graduation-cap text-yellow-400 mr-1"></i> <strong>${currentLang === 'en' ? 'Explanation:' : 'Giải thích:'}</strong> ${expText}</div>`;
                     }
 
                     html += `
-                        <div class="bg-white/5 p-4 rounded-2xl border ${isCompleted ? (quiz.user_answer === quiz.correct_index ? 'border-green-500/40 shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-red-500/40') : 'border-white/10'} shadow-lg">
-                            <div class="flex justify-between items-start mb-4 gap-3">
-                                <p class="font-bold text-white text-sm md:text-base leading-snug">${qText}</p>
-                                <span class="text-[10px] md:text-xs bg-cyan-500/20 text-cyan-400 font-bold px-2 py-0.5 rounded border border-cyan-500/20 shrink-0">+${quiz.points} 💎</span>
+                        <div class="bg-white/5 p-3 md:p-4 rounded-2xl border ${isCompleted ? (quiz.user_answer === quiz.correct_index ? 'border-green-500/40 bg-green-500/5' : 'border-red-500/40 bg-red-500/5') : 'border-white/10'} transition-all shadow-lg">
+                            <div class="flex-1 mb-3">
+                                <p class="text-sm md:text-base text-white font-medium leading-snug">${qText}</p>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] md:text-xs bg-cyan-500/20 text-cyan-400 font-bold px-2 py-0.5 rounded border border-cyan-500/20">+${quiz.points} 💎</span>
+                                        ${refreshBtnHtml}
+                                    </div>
+                                    <span class="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider">${typeLabel}</span>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 ${optionsHtml}
                             </div>
                             ${explanationHtml}
@@ -2133,14 +2171,24 @@
                     `;
                 });
 
-                const tasksDone = activeChallenges.every(c => c.isCompleted);
-                const triviaDone = activeTrivia.every(t => t.isCompleted);
-                if (tasksDone && triviaDone) {
+                const tasksDone = activeChallenges.length === 0 || activeChallenges.every(c => c.isCompleted);
+                const triviaDone = activeTrivia.length === 0 || activeTrivia.every(t => t.isCompleted);
+                
+                if (tasksDone && triviaDone && (activeChallenges.length > 0 || activeTrivia.length > 0)) {
                     html += `
                         <button onclick="clearAndRollGacha(event)" class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-95 flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-check-double"></i> ${currentLang === 'en' ? 'All done! Draw a new set' : 'Đã làm hết! Rút bộ câu hỏi mới nhen'}
+                            <i class="fa-solid fa-check-double"></i> ${currentLang === 'en' ? 'All done! Draw a new set' : 'Đã làm hết! Rút thẻ mới nhen'}
                         </button>`;
+                } else if (activeTrivia.length === 0 && activeChallenges.length > 0) {
+                    html += `
+                        <div class="mt-6 bg-orange-500/20 border border-orange-500/40 p-4 rounded-xl text-center">
+                            <p class="text-xs text-orange-200 mb-3">${currentLang === 'en' ? 'Update available! Reset to get the new cultural quizzes.' : 'Tư Nẫu vừa cập nhật thêm tính năng Giải đố Văn hóa cực hay! Hãy bốc lại nhiệm vụ nhé.'}</p>
+                            <button onclick="clearAndRollGacha(event)" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-2.5 rounded-lg shadow-lg active:scale-95 flex justify-center items-center gap-2 text-sm">
+                                <i class="fa-solid fa-rotate"></i> ${currentLang === 'en' ? 'Update Now' : 'Cập Nhật Câu Hỏi Mới'}
+                            </button>
+                        </div>`;
                 }
+
                 html += '</div>';
                 area.innerHTML = html;
             }
@@ -2194,8 +2242,8 @@
             YÊU CẦU:
             1. "tasks": 2 thử thách thực tế cực dễ. Phải có ĐỦ "text_vi", "text_en", "fact_vi", "fact_en".
             2. "trivia": 2 câu hỏi trắc nghiệm (4 đáp án) dựa trên những gì vừa chat (nếu có). 
-               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh tương ứng cho mọi trường (question, options, explanation).
-               - Mức độ: Rất dễ cho người mới.
+               - Nếu Lịch sử trống, hãy tự tạo câu hỏi chung về Quy Nhơn. Mức độ RẤT DỄ cho người mới.
+               - Phải có ĐỦ bản tiếng Việt và bản dịch tiếng Anh cho mọi trường (question, options, explanation).
 
             BẮT BUỘC TRẢ VỀ JSON SONG NGỮ THEO CẤU TRÚC (KHÔNG BỌC TRONG \`\`\`json):
             {
@@ -2230,7 +2278,8 @@
                         options_vi: t.options_vi, options_en: t.options_en,
                         correct_index: t.correct_index,
                         explanation_vi: t.explanation_vi, explanation_en: t.explanation_en,
-                        points: t.points || 10, isCompleted: false, user_answer: null
+                        points: t.points || 10, isCompleted: false, user_answer: null,
+                        lastRefreshed: Date.now()
                     }));
 
                     await saveUserData();
@@ -2271,7 +2320,7 @@
             const area = document.getElementById('gacha-content-area');
             area.innerHTML = '<div class="py-12 text-center text-orange-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
 
-            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách du lịch Quy Nhơn mới kèm theo 1 kiến thức lịch sử/văn hóa.
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 thử thách chụp ảnh du lịch Quy Nhơn mới kèm theo 1 kiến thức lịch sử/văn hóa.
             Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): { "text_vi": "Nhiệm vụ", "text_en": "Challenge", "fact_vi": "Kiến thức", "fact_en": "Fact", "points": 20 }`;
 
             const res = await fetchSpecialAI(prompt);
@@ -2283,10 +2332,46 @@
                     currentUser.challenges[index] = { 
                         text_vi: data.text_vi || data.text, 
                         text_en: data.text_en || data.text, 
-                        fact_vi: data.fact_vi || data.fact || "Tháp Đôi là một trong những cụm tháp Chăm hiếm hoi nằm ngay trong lòng thành phố.",
-                        fact_en: data.fact_en || data.fact || "The Twin Towers is one of the rare Cham tower clusters located right in the city.",
+                        fact_vi: data.fact_vi || data.fact || "Tháp Đôi là cụm tháp hiếm hoi nằm trong thành phố.",
+                        fact_en: data.fact_en || data.fact || "The Twin Towers is a rare cluster inside the city.",
                         points: data.points || 20, 
                         isCompleted: false, 
+                        lastRefreshed: Date.now() 
+                    };
+                    await saveUserData();
+                }
+            } catch(e) {}
+            renderGachaUI();
+        }
+
+        async function refreshSingleTrivia(index) {
+            if (!currentUser.isLoggedIn) return;
+            const area = document.getElementById('gacha-content-area');
+            area.innerHTML = '<div class="py-12 text-center text-cyan-400 flex flex-col items-center"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i></div>';
+
+            const prompt = `Đóng vai nhà giáo dục, tạo 1 câu hỏi trắc nghiệm văn hóa/ẩm thực Quy Nhơn RẤT DỄ.
+            Định dạng JSON BẮT BUỘC (Không bọc \`\`\`json): 
+            { 
+                "question_vi": "...", "question_en": "...", 
+                "options_vi": ["A","B","C","D"], "options_en": ["A","B","C","D"], 
+                "correct_index": 0, 
+                "explanation_vi": "...", "explanation_en": "...", 
+                "points": 10 
+            }`;
+
+            const res = await fetchSpecialAI(prompt);
+            try {
+                const cleanRes = res.replace(/```json/gi, '').replace(/```/gi, '').trim();
+                const data = JSON.parse(cleanRes);
+                
+                if (data && data.question_vi) {
+                    currentUser.trivia[index] = { 
+                        question_vi: data.question_vi, question_en: data.question_en, 
+                        options_vi: data.options_vi, options_en: data.options_en, 
+                        correct_index: data.correct_index, 
+                        explanation_vi: data.explanation_vi, explanation_en: data.explanation_en, 
+                        points: data.points || 10, 
+                        isCompleted: false, user_answer: null,
                         lastRefreshed: Date.now() 
                     };
                     await saveUserData();
